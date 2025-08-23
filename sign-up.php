@@ -116,7 +116,7 @@
 
               //signup ajax
             $.ajax({
-                url: 'https://valourempire.onrender.com/sign-up-ajax.php',
+                url: 'https://valourempire.onrender.com/ajax/sign-up-ajax.php',
                 method: 'POST',
                 data: {fn:fn, ln:ln, email:email, pwd:pwd, bizName:bizName, bizType:bizType, addr
                 :addr},
