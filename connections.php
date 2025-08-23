@@ -2,7 +2,7 @@
 $host = getenv('dpg-d2j08i0gjchc73bv0img-a.oregon-postgres.render.com');
 $db = getenv('udetails');
 $user = getenv('helkay');
-$password = getenv('qqjbzqfcPN3UbWsgQC4qOlglxifWfLTj');
+$pass = getenv('qqjbzqfcPN3UbWsgQC4qOlglxifWfLTj');
 $charset = 'utf8mb4'; 
 
 $users = "mysql:host=$host;dbname=$db;charset=$charset";
