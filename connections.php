@@ -3,12 +3,18 @@ $host = getenv('dpg-d2j08i0gjchc73bv0img-a.oregon-postgres.render.com');
 $db = getenv('udetails');
 $user = getenv('helkay');
 $password = getenv('qqjbzqfcPN3UbWsgQC4qOlglxifWfLTj');
+$charset = 'utf8mb4'; 
 
-$dsn = "pgsql:host=$host;port=5432;dbname=$db;";
+$users = "mysql:host=$host;dbname=$db;charset=$charset";
+$options = [
+    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,  // throw exceptions on errors
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,        // fetch associative arrays
+    PDO::ATTR_EMULATE_PREPARES   => false,                   // use native prepared statements
+];
+
 try {
-    $conn = new PDO($dsn, $user, $password);
-    echo "Connected to PostgreSQL successfully!";
-} catch (PDOException $e) {
-    echo "Connection failed: " . $e->getMessage();
+    $userdata = new PDO($users, $user, $pass, $options);
+    echo "Connected successfully!";
+} catch (\PDOException $e) {
+    echo "Connection failed: " . $e->getMessage()." for database: ".$db;
 }
-?>
