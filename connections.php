@@ -6,11 +6,6 @@ $dbPass = 'qqjbzqfcPN3UbWsgQC4qOlglxifWfLTj';
 $charset = 'utf8mb4';
 $dbPort = '5432';
 
-echo "DB_HOST: " . ($dbHost ? $dbHost : 'NOT SET') . "<br>";
-echo "DB_DATABASE: " . ($dbName ? $dbName : 'NOT SET') . "<br>";
-echo "DB_USERNAME: " . ($dbUser ? $dbUser : 'NOT SET') . "<br>";
-echo "DB_PORT: " . $dbPort . "<br>";
-echo "DB_PASSWORD: " . ($dbPass ? 'SET' : 'NOT SET') . "<br>";
 
 // Check if PostgreSQL extension is loaded
 if (!extension_loaded('pdo_pgsql')) {
@@ -25,7 +20,7 @@ try {
     $dsn = "pgsql:host=$dbHost;port=$dbPort;dbname=$dbName";
     $pdo = new PDO($dsn, $dbUser, $dbPass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    echo "Connection successful!";
+   // echo "Connection successful!";
 } catch (PDOException $e) {
     echo "Connection failed: " . $e->getMessage() . "<br>";
     echo "DSN used: " . $dsn;
