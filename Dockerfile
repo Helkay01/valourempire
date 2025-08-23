@@ -4,7 +4,9 @@ FROM php:8.2-apache
 # Install required system packages and PHP extensions
 RUN apt-get update && apt-get install -y \
     libpq-dev \
-    && docker-php-ext-install pdo pdo_pgsql
+    && docker-php-ext-install pdo pdo_pgsql pgsql \
+    && docker-php-ext-enable pdo_pgsql pgsql \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Enable Apache mod_rewrite (useful for many PHP frameworks)
 RUN a2enmod rewrite
