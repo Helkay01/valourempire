@@ -1,6 +1,6 @@
 <?php
 $dbHost = getenv('dpg-d2j08i0gjchc73bv0img-a.oregon-postgres.render.com');
-$dbHost = getenv('udetails');
+$dbName = getenv('udetails');
 $dbUser = getenv('helkay');
 $dbPass = getenv('qqjbzqfcPN3UbWsgQC4qOlglxifWfLTj');
 $charset = 'utf8mb4';
