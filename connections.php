@@ -9,10 +9,10 @@ $dbPort = '5432';
 
 // Check if PostgreSQL extension is loaded
 if (!extension_loaded('pdo_pgsql')) {
-    echo "ERROR: pdo_pgsql extension not loaded!<br>";
-    echo "Loaded extensions: " . implode(', ', get_loaded_extensions());
+  //  echo "ERROR: pdo_pgsql extension not loaded!<br>";
+  //  echo "Loaded extensions: " . implode(', ', get_loaded_extensions());
 } else {
-    echo "pdo_pgsql extension: LOADED<br>";
+ //   echo "pdo_pgsql extension: LOADED<br>";
 }
 
 // Try to connect
