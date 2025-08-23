@@ -1,8 +1,8 @@
 <?php
-$host = getenv('dpg-d2j08i0gjchc73bv0img-a.oregon-postgres.render.com');
-$db = getenv('udetails');
-$user = getenv('helkay');
-$pass = getenv('qqjbzqfcPN3UbWsgQC4qOlglxifWfLTj');
+$host = 'dpg-d2j08i0gjchc73bv0img-a.oregon-postgres.render.com';
+$db = 'udetails';
+$user = 'helkay';
+$pass = 'qqjbzqfcPN3UbWsgQC4qOlglxifWfLTj';
 $charset = 'utf8mb4'; 
 
 $users = "mysql:host=$host;dbname=$db;charset=$charset";
