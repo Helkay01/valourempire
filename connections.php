@@ -1,10 +1,10 @@
 <?php
-$dbHost = getenv('dpg-d2j08i0gjchc73bv0img-a.oregon-postgres.render.com');
-$dbName = getenv('udetails');
-$dbUser = getenv('helkay');
-$dbPass = getenv('qqjbzqfcPN3UbWsgQC4qOlglxifWfLTj');
+$dbHost = 'dpg-d2j08i0gjchc73bv0img-a.oregon-postgres.render.com';
+$dbName = 'udetails';
+$dbUser = 'helkay';
+$dbPass = 'qqjbzqfcPN3UbWsgQC4qOlglxifWfLTj';
 $charset = 'utf8mb4';
-$dbPort = getenv('DB_PORT') ?: '5432';
+$dbPort = '5432';
 
 echo "DB_HOST: " . ($dbHost ? $dbHost : 'NOT SET') . "<br>";
 echo "DB_DATABASE: " . ($dbName ? $dbName : 'NOT SET') . "<br>";
