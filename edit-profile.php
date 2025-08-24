@@ -3,12 +3,13 @@ session_start();
 include 'connections.php';  // Your existing DB connection
 
 // Assume user ID is stored in session
-$user_id = $_SESSION['user_id'] ?? null;
+$user_id = $_SESSION['user']['user_id'] ?? null;
 if (!$user_id) {
     // Redirect to login if not logged in
     header("Location: login.php");
     exit();
 }
+
 
 // Fetch user details
 $sql = "SELECT * FROM login WHERE id = :id";
@@ -22,7 +23,7 @@ $stmt->close();
 
 
 
-$user_id = $_SESSION['user_id'] ?? null;
+$user_id = $_SESSION['user'] ?? null;
 if (!$user_id) {
     header("Location: login.php");
     exit();
@@ -90,15 +91,15 @@ if(isset($_POST['saveProfile'])) {
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div>
             <label for="firstName">First Name</label>
-            <input type="text" name="firstName" id="firstName" value="<?= htmlspecialchars($user['fn'] ?? '') ?>" required class="w-full px-4 py-2 border rounded-md">
+            <input type="text" name="firstName" id="firstName" value="<?= htmlspecialchars($_SESSION['user']['fn'] ?? '') ?>" required class="w-full px-4 py-2 border rounded-md">
           </div>
           <div>
             <label for="lastName">Last Name</label>
-            <input type="text" name="lastName" id="lastName" value="<?= htmlspecialchars($user['ln'] ?? '') ?>" required class="w-full px-4 py-2 border rounded-md">
+            <input type="text" name="lastName" id="lastName" value="<?= htmlspecialchars($_SESSION['user']['ln'] ?? '') ?>" required class="w-full px-4 py-2 border rounded-md">
           </div>
           <div class="md:col-span-2">
             <label for="email">Email</label>
-            <input type="email" name="email" id="email" value="<?= htmlspecialchars($user['email'] ?? '') ?>" required class="w-full px-4 py-2 border rounded-md">
+            <input type="email" name="email" id="email" value="<?= htmlspecialchars($_SESSION['user']['email'] ?? '') ?>" required class="w-full px-4 py-2 border rounded-md">
           </div>
         </div>
       </section>
@@ -109,15 +110,15 @@ if(isset($_POST['saveProfile'])) {
         <div class="space-y-5">
           <div>
             <label for="businessName">Business Name</label>
-            <input type="text" name="businessName" id="businessName" value="<?= htmlspecialchars($user['biz_name'] ?? '') ?>" required class="w-full px-4 py-2 border rounded-md">
+            <input type="text" name="businessName" id="businessName" value="<?= htmlspecialchars($_SESSION['user']['biz_name'] ?? '') ?>" required class="w-full px-4 py-2 border rounded-md">
           </div>
           <div>
             <label for="businessType">Business Type</label>
-            <input type="text" name="businessType" id="businessType" value="<?= htmlspecialchars($user['biz_type'] ?? '') ?>" required class="w-full px-4 py-2 border rounded-md">
+            <input type="text" name="businessType" id="businessType" value="<?= htmlspecialchars($_SESSION['user']['biz_type'] ?? '') ?>" required class="w-full px-4 py-2 border rounded-md">
           </div>
           <div>
             <label for="businessAddress">Business Address</label>
-            <textarea name="businessAddress" id="businessAddress" rows="3" required class="w-full px-4 py-2 border rounded-md"><?= htmlspecialchars($user['biz_address'] ?? '') ?></textarea>
+            <textarea name="businessAddress" id="businessAddress" rows="3" required class="w-full px-4 py-2 border rounded-md"><?= htmlspecialchars($_SESSION['user']['biz_address'] ?? '') ?></textarea>
           </div>
         </div>
       </section>
