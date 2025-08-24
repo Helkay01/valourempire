@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
     try {
         // 3. Connect to database (assuming $userdata is your PDO connection)
-        $pdo = $userdata; // or replace with your actual PDO instance
+      //  $pdo = $userdata; // or replace with your actual PDO instance
 
         // 4. Check if email already exists
         $checkStmt = $pdo->prepare("SELECT 1 FROM login WHERE email = :email");
