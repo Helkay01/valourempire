@@ -34,7 +34,7 @@ if(isset($_POST['saveProfile'])) {
     $stmt->execute([$firstName, $lastName, $email, $businessName, $businessType, $businessAddress, $user_id]);
     if ($stmt) {
         
-        header("Location: edit_profile.php?status=success");
+        header("Location: edit-profile.php?status=success");
         exit();
     } else {
         die("Error updating profile: " . $pdo->error);
@@ -80,7 +80,7 @@ if(isset($_POST['saveProfile'])) {
             <label for="lastName">Last Name</label>
             <input type="text" name="lastName" id="lastName" value="<?= htmlspecialchars($_SESSION['user']['ln'] ?? '') ?>" required class="w-full px-4 py-2 border rounded-md">
           </div>
-          <div class="md:col-span-2">
+          <div hidden class="md:col-span-2">
             <label for="email">Email</label>
             <input type="email" name="email" id="email" value="<?= htmlspecialchars($_SESSION['user']['email'] ?? '') ?>" required class="w-full px-4 py-2 border rounded-md">
           </div>
