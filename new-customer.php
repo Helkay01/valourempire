@@ -50,7 +50,7 @@ if(isset($_POST['save_customer'])) {
   <!-- Main Content -->
   <main class="flex-grow flex items-center justify-center px-4 py-12">
     <div class="bg-white max-w-3xl w-full rounded-lg shadow-md border border-gray-300 p-8">
-      <form id="customerForm" class="space-y-6">
+      <form id="customerForm" method="POST" class="space-y-6">
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <!-- Customer Name -->
