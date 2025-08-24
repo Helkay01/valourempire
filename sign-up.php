@@ -127,6 +127,7 @@
                     }
                     else {
                         alert(data)
+                      consolg.log(data)
                     }
                   
                 }
