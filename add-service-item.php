@@ -9,8 +9,8 @@ if(isset($_POST['save_service'])) {
     $des = $_POST['description'] ?? '';
 
 
-    $stmt = $conn->prepare("INSERT INTO service_items (sn, cat, cost, des) VALUES (?, ?, ?, ?)");
-    $stmt->execute([$sn, $cat, $cost, $des]);
+    $stmt = $conn->prepare("INSERT INTO service_items (sn, cat, cost, des, date) VALUES (?, ?, ?, ?)");
+    $stmt->execute([$sn, $cat, $cost, $des, CURRENT_TIMESTAMP]);
 
     echo "Service saved successfully";
 
