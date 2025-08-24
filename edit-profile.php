@@ -11,7 +11,7 @@ if (!$user_id) {
 }
 
 // Fetch user details
-$sql = "SELECT * FROM login WHERE id = :id" LIMIT 1;
+$sql = "SELECT * FROM login WHERE id = :id";
 $stmt = $pdo->prepare($sql);
 $stmt->bind_param(":id", $user_id);
 $stmt->execute();
