@@ -70,8 +70,8 @@ include 'connections.php';
                       echo '<td class="px-4 py-2">'.$sn.'</td>';
                       echo '<td class="px-4 py-2">'.$cat.'</td>';
                       echo '<td class="px-4 py-2">'.$cost.'</td>';
-                      echo '<td class="px-4 py-2">'.$des.'</td>';
                       echo '<td class="px-4 py-2">'.$date.'</td>';
+                      echo '<td class="px-4 py-2">'.$des.'</td>';
                       echo '
                             <td class="px-4 py-2 space-x-3">
                                   <button onclick="editService(\''.$id.'\', \''.$sn.'\', \''.$cat.'\', \''.$cost.'\', \''.$des.'\')" class="text-blue-600 hover:underline text-sm">Edit</button>
