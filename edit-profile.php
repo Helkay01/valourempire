@@ -11,15 +11,6 @@ if (!$user_id) {
 }
 
 
-// Fetch user details
-$sql = "SELECT * FROM login WHERE id = :id";
-$stmt = $pdo->prepare($sql);
-$stmt->bindParam(":id", $user_id);
-$stmt->execute();
-$user = $result->fetch_assoc();
-$stmt->close();
-
-
 
 
 
