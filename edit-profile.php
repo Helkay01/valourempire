@@ -13,14 +13,6 @@ if (!$user_id) {
 
 
 
-
-$user_id = $_SESSION['user'] ?? null;
-if (!$user_id) {
-    header("Location: login.php");
-    exit();
-}
-
-
 if(isset($_POST['saveProfile'])) {
     
     // Grab POST data and sanitize (basic)
