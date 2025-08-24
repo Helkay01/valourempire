@@ -33,7 +33,7 @@ if(isset($_POST['saveProfile'])) {
    
     $stmt->execute([$firstName, $lastName, $email, $businessName, $businessType, $businessAddress, $user_id]);
     if ($stmt) {
-        $stmt->close();
+        
         header("Location: edit_profile.php?status=success");
         exit();
     } else {
