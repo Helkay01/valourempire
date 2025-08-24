@@ -45,8 +45,8 @@ include 'connections.php';
               <th class="px-4 py-2">Name</th>
               <th class="px-4 py-2">Category</th>
               <th class="px-4 py-2">Cost (₦)</th>
-              <th class="px-4 py-2">Date</th>
               <th class="px-4 py-2">Description</th>
+              <th class="px-4 py-2">Date</th>
               <th class="px-4 py-2">Actions</th>
             </tr>
           </thead>
@@ -70,8 +70,8 @@ include 'connections.php';
                       echo '<td class="px-4 py-2">'.$sn.'</td>';
                       echo '<td class="px-4 py-2">'.$cat.'</td>';
                       echo '<td class="px-4 py-2">'.$cost.'</td>';
-                      echo '<td class="px-4 py-2">'.$date.'</td>';
                       echo '<td class="px-4 py-2">'.$des.'</td>';
+                      echo '<td class="px-4 py-2">'.$date.'</td>';
                       echo '
                             <td class="px-4 py-2 space-x-3">
                                   <button onclick="editService(\''.$id.'\', \''.$sn.'\', \''.$cat.'\', \''.$cost.'\', \''.$des.'\')" class="text-blue-600 hover:underline text-sm">Edit</button>
