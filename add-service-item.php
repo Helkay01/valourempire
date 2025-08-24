@@ -9,8 +9,8 @@ if(isset($_POST['save_service'])) {
     $des = $_POST['description'] ?? '';
 
 
-    $stmt = $pdo->prepare("INSERT INTO service_items (sn, cat, cost, des, date) VALUES (?, ?, ?, ?)");
-    $stmt->execute([$sn, $cat, $cost, $des, CURRENT_TIMESTAMP]);
+    $stmt = $pdo->prepare("INSERT INTO service_items (sn, cat, cost, des, date) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)");
+    $stmt->execute([$sn, $cat, $cost, $des]);
 
     echo "Service saved successfully";
 
