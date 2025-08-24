@@ -11,9 +11,9 @@ if (!$user_id) {
 }
 
 // Fetch user details
-$sql = "SELECT * FROM login WHERE id = ?";
+$sql = "SELECT * FROM login WHERE id = :id" LIMIT 1;
 $stmt = $pdo->prepare($sql);
-$stmt->bind_param("i", $user_id);
+$stmt->bind_param(":id", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 $user = $result->fetch_assoc();
@@ -45,16 +45,16 @@ if(isset($_POST['saveProfile'])) {
     }
     
     // Prepare update query
-    $sql = "UPDATE users SET first_name = ?, last_name = ?, email = ?, business_name = ?, business_type = ?, business_address = ? WHERE id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssssssi", $firstName, $lastName, $email, $businessName, $businessType, $businessAddress, $user_id);
+    $sql = "UPDATE LOGIN SET fn = ?, ln = ?, email = ?, biz_name = ?, biz_type = ?, biz_address = ? WHERE user_id = ?";
+    $stmt = pdo->prepare($sql);
+    $stmt->bind_param($firstName, $lastName, $email, $businessName, $businessType, $businessAddress, $user_id);
     
     if ($stmt->execute()) {
         $stmt->close();
         header("Location: edit_profile.php?status=success");
         exit();
     } else {
-        die("Error updating profile: " . $conn->error);
+        die("Error updating profile: " . pdo->error);
     }
 
 }
