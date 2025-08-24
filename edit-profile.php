@@ -29,7 +29,7 @@ if(isset($_POST['saveProfile'])) {
     
     // Prepare update query
     $sql = "UPDATE LOGIN SET fn = ?, ln = ?, email = ?, biz_name = ?, biz_type = ?, biz_address = ? WHERE user_id = ?";
-    $stmt = pdo->prepare($sql);
+    $stmt = $pdo->prepare($sql);
     $stmt->bind_param($firstName, $lastName, $email, $businessName, $businessType, $businessAddress, $user_id);
     
     if ($stmt->execute()) {
