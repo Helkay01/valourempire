@@ -99,7 +99,7 @@ if(isset($_POST['save_service'])) {
           </thead>
           <tbody id="serviceTable" class="divide-y divide-gray-200">
             <?php
-                $stmt = $biz->query("SELECT id, sn, cat, cost, des, date FROM service_items ORDER BY id DESC");
+                $stmt = $pdo->query("SELECT id, sn, cat, cost, des, date FROM service_items ORDER BY id DESC");
                 $services = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 foreach($services as $service) {
