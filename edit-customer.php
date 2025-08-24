@@ -1,3 +1,27 @@
+<?php
+include 'connections.php';
+
+if(isset($_POST['update_customer'])) {
+    $name = $_POST['customerName'];
+    $email = $_POST['email'];
+    $phone = $_POST['phone'];
+    $address = $_POST['address'];
+    $notes = $_POST['notes'];
+
+    $stmt = $pdo->prepare("UPDATE customers SET name = ?, email = ?, phone = ?, address = ?, notes = ? WHERE id = ?;
+    $stmt->execute([$name, $email, $phone, $address, $notes], $id);
+
+    echo "Service saved successfully";
+
+
+
+}
+
+?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="en" >
 <head>
@@ -29,6 +53,12 @@
       <form id="customerForm" class="space-y-6">
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+  
+<?php
+    
+
+?>
           <!-- Customer Name -->
           <div>
             <label for="customerName" class="block text-sm font-medium text-gray-700 mb-1">Customer Name <span class="text-red-500">*</span></label>
@@ -100,11 +130,11 @@
         <!-- Submit Button -->
         <div class="pt-4 text-right">
           <button
-            type="submit"
+            type="submit" edit="update_cusstomer"
             class="inline-flex justify-center rounded-md border border-transparent bg-blue-600 px-6 py-2 text-white font-semibold
                    hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 transition"
           >
-            Save Customer
+            Edit Customer
           </button>
         </div>
 
