@@ -127,7 +127,7 @@
                     }
                     else {
                         alert(data)
-                      consolg.log(data)
+                      console.log(data)
                     }
                   
                 }
