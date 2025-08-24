@@ -16,8 +16,8 @@ if (isset($_POST['sign_in'])) {
 
         if ($user && password_verify($password, $user['pwd'])) {
             // Successful login
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['email'] = $user['email'];
+            $_SESSION['user'] = $user;
+
             header("Location: index.php");
             exit();
         } else {
