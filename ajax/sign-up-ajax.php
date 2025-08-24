@@ -43,8 +43,8 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
         // 7. Insert new user
         $ins = "INSERT INTO login 
-            (user_id, fn, ln, email, pwd, biz_name, biz_type, biz_address) 
-            VALUES (:uid, :fn, :ln, :email, :pwd, :bn, :bt, :ba)";
+            (user_id, fn, ln, email, pwd, biz_name, biz_type, biz_address, date) 
+            VALUES (:uid, :fn, :ln, :email, :pwd, :bn, :bt, :ba, CURRENT_TIMESTAMP)";
 
         $stmt = $pdo->prepare($ins);
         $stmt->execute([
