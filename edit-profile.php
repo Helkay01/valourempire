@@ -30,14 +30,14 @@ if(isset($_POST['saveProfile'])) {
     // Prepare update query
     $sql = "UPDATE LOGIN SET fn = ?, ln = ?, email = ?, biz_name = ?, biz_type = ?, biz_address = ? WHERE user_id = ?";
     $stmt = $pdo->prepare($sql);
-    $stmt->bindParam($firstName, $lastName, $email, $businessName, $businessType, $businessAddress, $user_id);
-    
-    if ($stmt->execute()) {
+   
+    $stmt->execute([$firstName, $lastName, $email, $businessName, $businessType, $businessAddress, $user_id]);
+    if ($stmt) {
         $stmt->close();
         header("Location: edit_profile.php?status=success");
         exit();
     } else {
-        die("Error updating profile: " . pdo->error);
+        die("Error updating profile: " . $pdo->error);
     }
 
 }
