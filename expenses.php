@@ -42,8 +42,8 @@ if (isset($_POST['expenses'])) {
         echo json_encode(['error' => 'Database error: ' . $e->getMessage()]);
     }
 } else {
-    http_response_code(405); // Method Not Allowed
-    echo json_encode(['error' => 'Only POST requests are allowed']);
+   // http_response_code(405); // Method Not Allowed
+  //  echo json_encode(['error' => 'Only POST requests are allowed']);
 }
 
 
@@ -57,6 +57,13 @@ if (isset($_POST['expenses'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Record Expense - ERP Style</title>
   <script src="https://cdn.tailwindcss.com"></script>
+
+<script>
+    // Get today's date in YYYY-MM-DD format
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('date').max = today;
+  </script>
+    
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col">
 
