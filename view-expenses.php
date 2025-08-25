@@ -96,13 +96,13 @@ try {
                   <?= date("M d, Y", strtotime($expense['date'])) ?>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                  <?= htmlspecialchars($expense['category']) ?>
+                  <?= $expense['category'] ?>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                  <?= htmlspecialchars($expense['payment_method']) ?>
+                  <?= $expense['payment_method'] ?>
                 </td>
-                <td class="px-6 py-4 text-sm text-gray-600 max-w-xs truncate" title="<?= htmlspecialchars($expense['description']) ?>">
-                  <?= htmlspecialchars($expense['description']) ?>
+                <td class="px-6 py-4 text-sm text-gray-600 max-w-xs truncate" title="<?= $expense['des'] ?>">
+                  <?= $expense['des'] ?>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900 text-right">
                   ₦<?= number_format($expense['amount'], 2) ?>
