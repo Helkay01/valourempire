@@ -3,29 +3,30 @@
 require_once 'connections.php';
 
 // Default date range if none selected
-$startDate = $_GET['start_date'];
-$endDate   = $_GET['end_date'];
+if(isset($_GET['start_date']) & isset($_GET['end_date'])) {
+    $startDate = $_GET['start_date'];
+    $endDate   = $_GET['end_date'];
 
-// Prepare expenses array
-$expenses = [];
+    // Prepare expenses array
+    $expenses = [];
+    
+    try {
+        $stmt = $pdo->prepare("
+            SELECT *
+            FROM expenses
+            WHERE date BETWEEN :start_date AND :end_date
+            ORDER BY date DESC
+        ");
+        $stmt->execute([
+            ':start_date' => $startDate,
+            ':end_date'   => $endDate
+        ]);
+        $expenses = $stmt->fetchAll();
+    } catch (PDOException $e) {
+        $error = "Database error: " . htmlspecialchars($e->getMessage());
+    }
 
-try {
-    $stmt = $pdo->prepare("
-        SELECT *
-        FROM expenses
-        WHERE date BETWEEN :start_date AND :end_date
-        ORDER BY date DESC
-    ");
-    $stmt->execute([
-        ':start_date' => $startDate,
-        ':end_date'   => $endDate
-    ]);
-    $expenses = $stmt->fetchAll();
-} catch (PDOException $e) {
-    $error = "Database error: " . htmlspecialchars($e->getMessage());
 }
-
-
   
 ?>
 
