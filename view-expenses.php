@@ -39,9 +39,11 @@ if(isset($_GET['start_date']) & isset($_GET['end_date'])) {
   <script src="https://cdn.tailwindcss.com"></script>
 
 <script>
+window.onload = function() {
      // Get today's date in YYYY-MM-DD format
         const today = new Date().toISOString().split('T')[0];
         document.getElementById('start-date').max = today;
+)
 </script>
     
 </head>
