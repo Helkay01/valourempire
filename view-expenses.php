@@ -36,6 +36,13 @@ try {
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>All Expenses - ERP Style</title>
   <script src="https://cdn.tailwindcss.com"></script>
+
+<script>
+     // Get today's date in YYYY-MM-DD format
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('start-date').max = today;
+</script>
+    
 </head>
 <body class="bg-gray-50 min-h-screen text-gray-800 p-6 flex flex-col">
 
@@ -58,7 +65,7 @@ try {
     <form method="get" class="flex flex-wrap items-end gap-4">
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">Start Date:</label>
-        <input type="date" name="start_date" value="<?= htmlspecialchars($startDate) ?>" class="border rounded px-3 py-2">
+        <input type="date" id="start-date" name="start_date" value="<?= htmlspecialchars($startDate) ?>" max="" class="border rounded px-3 py-2">
       </div>
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">End Date:</label>
