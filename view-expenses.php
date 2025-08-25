@@ -43,7 +43,7 @@ window.onload = function() {
      // Get today's date in YYYY-MM-DD format
         const today = new Date().toISOString().split('T')[0];
         document.getElementById('start-date').max = today;
-)
+}
 </script>
     
 </head>
