@@ -155,7 +155,11 @@ window.onload = function() {
             placeholder="What was this expense for?"
             class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm placeholder-gray-400
                    focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 transition resize-none"
-          ><?php if(isset($_GET['des'])) { echo $_GET['des'] } ?></textarea>
+          ><?php 
+                if(isset($_GET['des'])) {
+                    echo $_GET['des']; 
+                } 
+          ?></textarea>
         </div>
 
         <!-- Amount -->
@@ -169,7 +173,11 @@ window.onload = function() {
             step="0.01"
             required
             placeholder="0.00"
-            value="<?php if(isset($_GET['amount'])) { echo $_GET['amount'] } ?>"
+            value="<?php 
+                        if(isset($_GET['amount'])) {
+                            echo $_GET['amount']; 
+                        } 
+                    ?>"
             class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm placeholder-gray-400
                    focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 transition"
           />
