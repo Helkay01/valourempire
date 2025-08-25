@@ -118,7 +118,7 @@ window.onload = function() {
                   ₦<?= number_format($expense['amount'], 2) ?>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-center">
-                  <a href="edit-expense.php?id=<?= $expense['id'] ?>&cat=<?= $expense['category'] ?>&des=<?= $expense['des'] ?>&amount=<?= number_format($expense['amount'], 2) ?>&pm=<?= $expense['payment_method'] ?>" class="inline-flex items-center px-3 py-1.5 border border-blue-600 text-blue-600 rounded hover:bg-blue-50">
+                  <a href="edit-expenses.php?id=<?= $expense['id'] ?>&cat=<?= $expense['category'] ?>&des=<?= $expense['des'] ?>&amount=<?= number_format($expense['amount'], 2) ?>&pm=<?= $expense['payment_method'] ?>" class="inline-flex items-center px-3 py-1.5 border border-blue-600 text-blue-600 rounded hover:bg-blue-50">
                     Edit
                   </a>
                 </td>
