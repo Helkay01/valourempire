@@ -36,12 +36,17 @@ if (isset($_POST['expenses'])) {
         ]);
 
         echo 'Expense updated successfully';
-        header("Location: edit-expenses.php?id=" . $_GET['id'] . 
-       "&cat=" . urlencode($category) . 
-       "&des=" . urlencode($description) . 
-       "&amount=" . urlencode($amount) . 
-       "&pm=" . urlencode($paymentMethod) . 
-       "&status=success");
+    
+        $url = 'edit-expenses.php?id=' . $_GET['id'] .
+       '&cat=' . urlencode($category) .
+       '&des=' . urlencode($description) .
+       '&amount=' . urlencode($amount) .
+       '&pm=' . urlencode($paymentMethod) .
+       '&status=success';
+
+        echo "<script>window.location.href = '$url';</script>";
+
+
 
 
     } catch (PDOException $e) {
