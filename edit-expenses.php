@@ -24,18 +24,18 @@ if (isset($_POST['expenses'])) {
     $amount = floatval($_POST['amount']);
 
     try {
-        $stmt = $pdo->prepare("INSERT INTO expenses (category, payment_method, des, amount, date)
-                               VALUES (:category, :payment_method, :description, :amount, :date)");
+        $stmt = $pdo->prepare("UPDATE expenses SET category = :category, payment_method = :payment_method, des = :description, amount = :amount, date = :date WHERE id = :id");
 
         $stmt->execute([
             ':category' => $category,
             ':payment_method' => $paymentMethod,
             ':description' => $description,
             ':amount' => $amount,
-            ':date' => $date
+            ':date' => $date,
+            ':id' => $_GET['id']
         ]);
 
-        echo 'Expense saved successfully';
+        echo 'Expense updated successfully';
       
     } catch (PDOException $e) {
         http_response_code(500);
@@ -81,8 +81,8 @@ window.onload = function() {
         </a>
 
 
-      <h1 class="text-3xl font-semibold text-gray-900">💸 Record Expense</h1>
-      <p class="text-gray-600 mt-1 text-sm">Fill out the form below to save a new expense.</p>
+      <h1 class="text-3xl font-semibold text-gray-900">💸 Edit Expense</h1>
+      <p class="text-gray-600 mt-1 text-sm">Fill out the form below to edit expense.</p>
     </div>
   </header>
 
@@ -116,6 +116,7 @@ window.onload = function() {
               required
               class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm placeholder-gray-400
                      focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 transition"
+              value="<?php if(isset($_GET['cat'])) { echo $_GET['cat'] } ?>"
             />
           </div>
 
@@ -127,6 +128,7 @@ window.onload = function() {
               required
               class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm placeholder-gray-400
                      focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 transition"
+              
             >
               <option value="" disabled selected>Select method</option>
               <option value="Cash">Cash</option>
@@ -149,7 +151,7 @@ window.onload = function() {
             placeholder="What was this expense for?"
             class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm placeholder-gray-400
                    focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 transition resize-none"
-          ></textarea>
+          ><?php if(isset($_GET['des'])) { echo $_GET['des'] } ?></textarea>
         </div>
 
         <!-- Amount -->
@@ -163,6 +165,7 @@ window.onload = function() {
             step="0.01"
             required
             placeholder="0.00"
+            value="<?php if(isset($_GET['amount'])) { echo $_GET['amount'] } ?>"
             class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm placeholder-gray-400
                    focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 transition"
           />
