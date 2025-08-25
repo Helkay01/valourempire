@@ -3,7 +3,7 @@
 include 'connections.php';
 
 // Only accept POST requests
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if (isset($_POST['expenses'])) {
     // Validate required fields
     $required_fields = ['date', 'category', 'paymentMethod', 'amount'];
     foreach ($required_fields as $field) {
@@ -161,6 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <!-- Submit Button -->
         <div class="pt-4 text-right">
           <button
+            name="expenses"
             type="submit"
             class="inline-flex justify-center rounded-md border border-transparent bg-blue-600 px-6 py-2 text-white font-semibold
                    hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 transition"
