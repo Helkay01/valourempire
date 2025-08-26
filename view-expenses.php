@@ -15,7 +15,7 @@ if(isset($_GET['start_date']) & isset($_GET['end_date'])) {
             SELECT *
             FROM expenses
             WHERE date BETWEEN :start_date AND :end_date
-            ORDER BY date DESC
+            ORDER BY id DESC
         ");
         $stmt->execute([
             ':start_date' => $startDate,
