@@ -1,15 +1,30 @@
 <?php
 require_once 'connections.php';
 
-// Fetch transactions from DB
+// Get filtered dates if provided
+$startDate = $_GET['startDate'] ?? '';
+$endDate = $_GET['endDate'] ?? '';
+
+// Build SQL with optional date filter
+$sql = "SELECT * FROM cash";
+$params = [];
+
+if ($startDate && $endDate) {
+    $sql .= " WHERE date BETWEEN :start AND :end";
+    $params[':start'] = $startDate;
+    $params[':end'] = $endDate;
+}
+
+$sql .= " ORDER BY date DESC";
+
 try {
-    $stmt = $pdo->query("SELECT * FROM cash ORDER BY date DESC");
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
     $transactions = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     die("Database error: " . $e->getMessage());
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -38,25 +53,27 @@ try {
   <!-- Main Content -->
   <main class="max-w-4xl mx-auto px-6 py-10 space-y-12">
 
-    <!-- Date Range Filter -->
-    <section class="bg-white p-6 rounded-lg shadow-md">
+    <!-- Date Range Filter Form -->
+    <form method="GET" class="bg-white p-6 rounded-lg shadow-md space-y-6">
       <h2 class="text-xl font-semibold mb-4">📅 Filter by Date Range</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label for="startDate" class="block text-sm font-medium text-gray-700">Start Date</label>
-          <input type="date" id="startDate" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" max="">
+          <input type="date" name="startDate" id="startDate" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                 value="<?= htmlspecialchars($startDate) ?>">
         </div>
         <div>
           <label for="endDate" class="block text-sm font-medium text-gray-700">End Date</label>
-          <input type="date" id="endDate" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+          <input type="date" name="endDate" id="endDate" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                 value="<?= htmlspecialchars($endDate) ?>">
         </div>
       </div>
       <div class="mt-6">
-        <button id="loadButton" class="w-full md:w-auto bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-md text-sm font-medium">
+        <button type="submit" class="w-full md:w-auto bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-md text-sm font-medium">
           🔍 Load Transactions
         </button>
       </div>
-    </section>
+    </form>
 
     <!-- Table Section -->
     <section class="bg-white p-6 rounded-lg shadow-md">
@@ -70,60 +87,25 @@ try {
               <th class="px-4 py-2">Amount (₦)</th>
             </tr>
           </thead>
-          <tbody id="cashTable" class="divide-y divide-gray-200">
-            <?php foreach ($transactions as $txn): ?>
+          <tbody class="divide-y divide-gray-200">
+            <?php if (count($transactions) === 0): ?>
               <tr>
-                <td class="px-4 py-2"><?= htmlspecialchars(date("d M Y", strtotime($txn['date']))) ?></td>
-                <td class="px-4 py-2"><?= htmlspecialchars($txn['note']) ?></td>
-                <td class="px-4 py-2">₦<?= $txn['amount']?></td>
+                <td colspan="3" class="text-center py-4 text-gray-500">No transactions found for the selected range.</td>
               </tr>
-            <?php endforeach; ?>
+            <?php else: ?>
+              <?php foreach ($transactions as $txn): ?>
+                <tr>
+                  <td class="px-4 py-2"><?= htmlspecialchars(date("d M Y", strtotime($txn['date']))) ?></td>
+                  <td class="px-4 py-2"><?= htmlspecialchars($txn['note']) ?></td>
+                  <td class="px-4 py-2">₦<?= $txn['amount'] ?></td>
+                </tr>
+              <?php endforeach; ?>
+            <?php endif; ?>
           </tbody>
         </table>
       </div>
     </section>
 
   </main>
-
-  <!-- JavaScript -->
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const today = new Date().toISOString().split("T")[0];
-      document.getElementById("startDate").max = today;
-
-      document.getElementById("loadButton").addEventListener("click", () => {
-        const startDate = document.getElementById("startDate").value;
-        const endDate = document.getElementById("endDate").value;
-        const tableBody = document.getElementById("cashTable");
-        const rows = Array.from(tableBody.querySelectorAll("tr"));
-
-        if (!startDate || !endDate) {
-          alert("Please select both start and end dates.");
-          return;
-        }
-
-        const start = new Date(startDate);
-        const end = new Date(endDate);
-
-        if (start > end) {
-          alert("Start Date cannot be after End Date.");
-          return;
-        }
-
-        // Filter rows
-        rows.forEach(row => {
-          const dateText = row.children[0].textContent.trim();
-          const txnDate = new Date(dateText);
-
-          if (txnDate >= start && txnDate <= end) {
-            row.style.display = "";
-          } else {
-            row.style.display = "none";
-          }
-        });
-      });
-    });
-  </script>
-
 </body>
 </html>
