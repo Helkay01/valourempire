@@ -5,7 +5,7 @@ include 'connections.php';
 // Only accept POST requests
 if (isset($_POST['expenses'])) {
     // Validate required fields
-    $required_fields = ['date', 'category', 'paymentMethod', 'amount'];
+    $required_fields = ['date', 'category', 'amount'];
     foreach ($required_fields as $field) {
         if (empty($_POST[$field])) {
             http_response_code(400);
