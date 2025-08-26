@@ -13,7 +13,7 @@ if (isset($_POST['save_bank'])) {
 
     // Insert into DB
     $stmt = $pdo->prepare("INSERT INTO bank (acct_name, bank_name, acct_type, balance, acct_no) VALUES (?, ?, ?, ?, ?)");
-    $done = $stmt->execute([$accountName, $bankName, $accountType, $balance, $acctNo)]);
+    $done = $stmt->execute([$accountName, $bankName, $accountType, $balance, $acctNo]);
 
     if($done) {
        // Sanitize: remove non-alphanumeric characters (table names must be safe)
@@ -39,7 +39,7 @@ if (isset($_POST['save_bank'])) {
                 $date = date('Y-m-d');
               
                 $createTableSQL = $pdo->prepare("INSERT INTO `$tableName` (bank_name, acct_no, des, date) VALUES (?, ?, ?, ?)");
-                $savedAll = $createTableSQL->execute([$bankName, $acctNo, $des, $date)]);
+                $savedAll = $createTableSQL->execute([$bankName, $acctNo, $des, $date]);
                 echo 'created';
             }
             
