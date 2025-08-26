@@ -29,9 +29,12 @@ if (isset($_POST['record'])) {
         ]);
 
         // Redirect or show success
-        echo "✅ Entry recorded successfully.";
-         header("Location: petty-cash.php?status=success"); // optional redirect
-        // exit;
+         echo '
+            <script>
+                window.location.href = "petty-cassh.php?status=success";
+            </script>
+        ';
+
 
     } catch (PDOException $e) {
         echo "❌ Database error: " . $e->getMessage();
@@ -106,8 +109,8 @@ if (isset($_POST['record'])) {
         </div>
 
         <div>
-          <label for="note" class="block text-sm font-medium text-gray-700 mb-1">Note / Description (optional)</label>
-          <textarea id="note" rows="3" name="note" class="w-full border px-3 py-2 rounded-md resize-none" placeholder="e.g. Float for operations"></textarea>
+          <label for="note" class="block text-sm font-medium text-gray-700 mb-1">Note / Description </label>
+          <textarea id="note" rows="3" name="note" class="w-full border px-3 py-2 rounded-md resize-none" required placeholder="e.g. Float for operations"></textarea>
         </div>
 
         <div class="text-right">
