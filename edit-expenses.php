@@ -177,7 +177,7 @@ window.onload = function() {
         <div>
           <label for="amount" class="block text-sm font-medium text-gray-700 mb-1">Amount (₦) <span class="text-red-500">*</span></label>
           <input
-            type="number"
+            type="text"
             id="amount"
             name="amount"
             min="0"
