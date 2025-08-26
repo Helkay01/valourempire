@@ -29,6 +29,7 @@ if (isset($_POST['save_bank'])) {
                 bank_name TEXT NOT NULL,
                 acct_no TEXT NOT NULL,
                 des TEXT NOT NULL,
+                amount TEXT NOT NULL,
                 date TEXT NOT NULL
             )";
         
@@ -38,9 +39,11 @@ if (isset($_POST['save_bank'])) {
                 $des = " ";
                 $date = date('Y-m-d');
               
-                $createTableSQL = $pdo->prepare("INSERT INTO `$tableName` (bank_name, acct_no, des, date) VALUES (?, ?, ?, ?)");
-                $savedAll = $createTableSQL->execute([$bankName, $acctNo, $des, $date]);
-                echo 'created';
+                $createTableSQL = $pdo->prepare("INSERT INTO $tableName (bank_name, acct_no, des, amount, date) VALUES (?, ?, ?, ?, ?)");
+                $savedAll = $createTableSQL->execute([$bankName, $acctNo, $des, $amount, $date]);
+                if($savedAll) {
+                    echo 'created';
+                }
             }
             
 
@@ -136,7 +139,7 @@ $accounts = $pdo->query("SELECT * FROM bank ORDER BY id DESC")->fetchAll(PDO::FE
               <th class="px-4 py-2">Bank Name</th>
               <th class="px-4 py-2">Account No</th>
               <th class="px-4 py-2">Description</th>
-              <th class="px-4 py-2">Date</th>
+              <th class="px-4 py-2">Balance</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-200">
