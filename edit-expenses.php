@@ -136,7 +136,7 @@ window.onload = function() {
             />
           </div>
 
-          <div>
+          <div hidden>
             <label for="paymentMethod" class="block text-sm font-medium text-gray-700 mb-1">Payment Method <span class="text-red-500">*</span></label>
             <select
               id="paymentMethod"
