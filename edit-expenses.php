@@ -20,7 +20,7 @@ if (isset($_POST['expenses'])) {
     $date = $_POST['date'];
     $category = trim($_POST['category']);
     $description = trim($_POST['description'] ?? '');
-    $amount = floatval($_POST['amount']);
+    $amount = $_POST['amount'];
 
     try {
         $stmt = $pdo->prepare("UPDATE expenses SET category = :category, des = :description, amount = :amount, date = :date WHERE id = :id");
