@@ -34,7 +34,7 @@ if (isset($_POST['save_bank'])) {
             if ($created !== false) {
                 $des = " ";
                 $date = date('Y-m-d');
-                $insertStmt = $pdo->prepare("INSERT INTO`$tableName (bank_name, acct_no, des, amount, date) VALUES (?, ?, ?, ?, ?)");
+                $insertStmt = $pdo->prepare("INSERT INTO $tableName (bank_name, acct_no, des, amount, date) VALUES (?, ?, ?, ?, ?)");
                 $savedAll = $insertStmt->execute([$bankName, $acctNum, $des, $balance, $date]);
         
                 if ($savedAll) {
