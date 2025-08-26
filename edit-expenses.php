@@ -19,7 +19,6 @@ if (isset($_POST['expenses'])) {
     // Sanitize and assign values
     $date = $_POST['date'];
     $category = trim($_POST['category']);
-    $paymentMethod = trim($_POST['paymentMethod']);
     $description = trim($_POST['description'] ?? '');
     $amount = floatval($_POST['amount']);
 
@@ -40,7 +39,6 @@ if (isset($_POST['expenses'])) {
        '&cat=' . urlencode($category) .
        '&des=' . urlencode($description) .
        '&amount=' . urlencode($amount) .
-       '&pm=' . urlencode($paymentMethod) .
        '&status=success';
 
         echo "<script>window.location.href = '$url';</script>";
@@ -135,26 +133,7 @@ window.onload = function() {
             />
           </div>
 
-          <div hidden>
-            <label for="paymentMethod" class="block text-sm font-medium text-gray-700 mb-1">Payment Method <span class="text-red-500">*</span></label>
-            <select
-              id="paymentMethod"
-              name="paymentMethod"
-              required
-              class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm placeholder-gray-400
-                     focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 transition"
-              
-            >
-              <option value="" disabled selected>Select method</option>
-              <option value="Cash">Cash</option>
-              <option value="Bank Transfer">Bank Transfer</option>
-              <option value="Credit Card">Credit Card</option>
-              <option value="Mobile Payment">Mobile Payment</option>
-              <option value="Cheque">Cheque</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-        </div>
+       
 
         <!-- Description -->
         <div>
