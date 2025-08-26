@@ -40,7 +40,7 @@ if (isset($_POST['save_bank'])) {
                 $date = date('Y-m-d');
               
                 $createTableSQL = $pdo->prepare("INSERT INTO $tableName (bank_name, acct_no, des, amount, date) VALUES (?, ?, ?, ?, ?)");
-                $savedAll = $createTableSQL->execute([$bankName, $acctNo, $des, $amount, $date]);
+                $savedAll = $createTableSQL->execute([$bankName, $acctNo, $des, $balance, $date]);
                 if($savedAll) {
                     echo 'created';
                 }
