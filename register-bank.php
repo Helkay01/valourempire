@@ -138,7 +138,7 @@ $accounts = $pdo->query("SELECT * FROM bank ORDER BY id DESC")->fetchAll(PDO::FE
             <tr>
               <th class="px-4 py-2">Bank Name</th>
               <th class="px-4 py-2">Account No</th>
-              <th class="px-4 py-2">Description</th>
+              <th class="px-4 py-2">Account Type</th>
               <th class="px-4 py-2">Balance</th>
             </tr>
           </thead>
