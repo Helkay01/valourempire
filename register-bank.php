@@ -15,39 +15,42 @@ if (isset($_POST['save_bank'])) {
     $stmt = $pdo->prepare("INSERT INTO bank (acct_name, bank_name, acct_type, balance, acct_no) VALUES (?, ?, ?, ?, ?)");
     $done = $stmt->execute([$accountName, $bankName, $accountType, $balance, $acctNo]);
 
-    if($done) {
-       // Sanitize: remove non-alphanumeric characters (table names must be safe)
-        $acctNo = preg_replace('/[^a-zA-Z0-9_]/', '', $acctNo);
+    if ($done) {
+            $acctNum = preg_replace('/[^a-zA-Z0-9_]/', '', $acctNo);
+            $tableName = "acct_" . $acctNo;
         
-        // Prefix to ensure valid table name
-        $tableName = "acct_" . $acctNo;
+            $createTableSQL = "
+                CREATE TABLE IF NOT EXISTS $tableName (
+                    id SERIAL PRIMARY KEY,
+                    bank_name TEXT NOT NULL,
+                    acct_no TEXT NOT NULL,
+                    des TEXT NOT NULL,
+                    amount DECIMAL(15,2) NOT NULL,
+                    date TEXT NOT NULL
+                )";
+            
+            $created = $pdo->exec($createTableSQL);
         
-        // Build SQL with backticks
-        $createTableSQL = "
-            CREATE TABLE IF NOT EXISTS $tableName (
-                id SERIAL PRIMARY KEY,
-                bank_name TEXT NOT NULL,
-                acct_no TEXT NOT NULL,
-                des TEXT NOT NULL,
-                amount TEXT NOT NULL,
-                date TEXT NOT NULL
-            )";
-        
-        $created = $pdo->exec($createTableSQL);
-
-            if($created) {
+            if ($created !== false) {
                 $des = " ";
                 $date = date('Y-m-d');
-              
-                $createTableSQL = $pdo->prepare("INSERT INTO $tableName (bank_name, acct_no, des, amount, date) VALUES (?, ?, ?, ?, ?)");
-                $savedAll = $createTableSQL->execute([$bankName, $acctNo, $des, $balance, $date]);
-                if($savedAll) {
+                $insertStmt = $pdo->prepare("INSERT INTO`$tableName (bank_name, acct_no, des, amount, date) VALUES (?, ?, ?, ?, ?)");
+                $savedAll = $insertStmt->execute([$bankName, $acctNum, $des, $balance, $date]);
+        
+                if ($savedAll) {
                     echo 'created';
+                } else {
+                    echo 'Initial insert failed.';
                 }
+            } else {
+                echo 'Table creation failed.';
             }
-            
+        }
 
-    }
+
+
+
+    
 }
 
 // Fetch existing accounts
