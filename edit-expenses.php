@@ -186,7 +186,7 @@ window.onload = function() {
             placeholder="0.00"
             value="<?php 
                         if(isset($_GET['amount'])) {
-                            echo $_GET['amount']; 
+                           echo number_format($_GET['amount'], 2)
                         } 
                     ?>"
             class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm placeholder-gray-400
