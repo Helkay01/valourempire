@@ -135,7 +135,7 @@ window.onload = function() {
                     // Fetch existing accounts
                     $accounts = $pdo->query("SELECT * FROM bank ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC);
                     foreach ($accounts as $acct) {
-                        echo '<option value="' . $acct['acct_num'] . '">' . $acct['bank_name'] . ' - ' . $acct['acct_no'] . '</option>';
+                        echo '<option value="' . $acct['acct_no'] . '">' . $acct['bank_name'] . ' - ' . $acct['acct_no'] . '</option>';
                     }
                     
               ?>
