@@ -31,7 +31,7 @@ if (isset($_POST['record'])) {
         // Redirect or show success
          echo '
             <script>
-                window.location.href = "petty-cassh.php?status=success";
+                window.location.href = "petty-cash.php?status=success";
             </script>
         ';
 
