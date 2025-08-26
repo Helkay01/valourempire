@@ -36,13 +36,7 @@ if (isset($_POST['record'])) {
     } catch (PDOException $e) {
         echo "❌ Database error: " . $e->getMessage();
     }
-} else {
-    echo "Invalid request.";
-}
-?>
-
-
-
+} 
 
 ?>
 
