@@ -130,11 +130,14 @@ window.onload = function() {
             >
               <option value="" disabled selected>Select method</option>
               <option value="Cash">Cash</option>
-              <option value="Bank Transfer">Bank Transfer</option>
-              <option value="Credit Card">Credit Card</option>
-              <option value="Mobile Payment">Mobile Payment</option>
-              <option value="Cheque">Cheque</option>
-              <option value="Other">Other</option>
+              <?php
+                    // Fetch existing accounts
+                    $accounts = $pdo->query("SELECT * FROM bank ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC);
+                    foreach($accounts as $acct) {
+                        echo '<option value="'.$acct['acct_num'].'">'.$bank_name. - '.$acct_num.'</option>';
+                    }
+              ?>
+              
             </select>
           </div>
         </div>
