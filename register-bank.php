@@ -24,7 +24,7 @@ if (isset($_POST['save_bank'])) {
         
         // Build SQL with backticks
         $createTableSQL = "
-            CREATE TABLE IF NOT EXISTS `$tableName` (
+            CREATE TABLE IF NOT EXISTS $tableName (
                 id SERIAL PRIMARY KEY,
                 bank_name TEXT NOT NULL,
                 acct_no TEXT NOT NULL,
