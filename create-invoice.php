@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $items = $_POST['items'] ?? [];
 
     // Validate basic inputs
-    if (!$billTo || !$issueDate || !is_array($items) || count($items) === 0) {
+    if (!$billTo || !$issueDate) {
         die("Invalid input. Please fill all required fields.");
     }
 
