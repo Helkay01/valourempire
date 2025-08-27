@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $qty = intval($item['quantity']);
             $unitPrice = floatval($item['unit_price']);
             $itemTotal = $qty * $unitPrice;
-            $stmtItem->execute([$invoiceId, $item['name'], $qty, $unitPrice, $itemTotal]);
+            $stmtItem->execute([$invoiceNumber, $item['name'], $qty, $unitPrice, $itemTotal]);
         }
 
         $pdo->commit();
