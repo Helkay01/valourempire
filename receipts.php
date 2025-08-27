@@ -67,7 +67,7 @@ include "connections.php";
         <datalist id="clientName">
               <?php
                     $sel = "SELECT * FROM customers";
-                    $res = $conn->query($sel);
+                    $res = $pdo->query($sel);
                     $dets = $res->fetchAll(PDO::FETCH_ASSOC);
                 
                     foreach ($dets as $det) {
