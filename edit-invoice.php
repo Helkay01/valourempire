@@ -107,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="grid grid-cols-2 gap-4 mb-4">
                 <div>
                     <label class="block mb-1">Bill To</label>
-                    <input type="text" name="bill_to" value="<?= htmlspecialchars($invoiceData['bill_to']) ?>" required class="w-full border px-3 py-2 rounded">
+                    <input type="text" name="bill_to" readonly value="<?= htmlspecialchars($invoiceData['bill_to']) ?>" required class="w-full border px-3 py-2 rounded">
                 </div>
                 <div>
                     <label class="block mb-1">Invoice Number</label>
