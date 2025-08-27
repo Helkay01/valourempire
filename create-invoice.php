@@ -3,24 +3,24 @@
 require_once 'connections.php';
 
 function generateInvoiceNumber($pdo) {
-    // Simple: get max invoice_number, increment or create a new one
-    // Here just a timestamp-based unique number (safe for example)
     return 'INV-' . date('YmdHis');
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Get POST data safely and validate
     $billTo = $_POST['bill_to'] ?? '';
     $issueDate = $_POST['issue_date'] ?? '';
     $discount = floatval($_POST['discount'] ?? 0);
-    $items = $_POST['items'] ?? [];
+    $itemsJson = $_POST['items_json'] ?? '';
+
+    // Decode JSON to array
+    $items = json_decode($itemsJson, true);
 
     // Validate basic inputs
-    if (!$billTo || !$issueDate) {
-        die("Invalid input. Please fill all required fields.");
+    if (!$billTo || !$issueDate || !is_array($items) || count($items) === 0) {
+        die("Invalid input. Please fill all required fields and add at least one item.");
     }
 
-    // Calculate subtotal from items (validate items)
+    // Calculate subtotal
     $subtotal = 0;
     foreach ($items as $item) {
         $qty = intval($item['quantity'] ?? 0);
@@ -34,11 +34,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $total = $subtotal - $discount;
     if ($total < 0) $total = 0;
 
-    // Generate invoice number
     $invoiceNumber = generateInvoiceNumber($pdo);
 
     try {
-        // Begin transaction
         $pdo->beginTransaction();
 
         // Insert invoice
@@ -46,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute([$billTo, $issueDate, $subtotal, $discount, $total, $invoiceNumber]);
         $invoiceId = $stmt->fetchColumn();
 
-        // Insert items
+        // Insert each item
         $stmtItem = $pdo->prepare("INSERT INTO invoice_items (invoice_id, item_name, quantity, unit_price, total) VALUES (?, ?, ?, ?, ?)");
         foreach ($items as $item) {
             $qty = intval($item['quantity']);
@@ -55,9 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmtItem->execute([$invoiceId, $item['name'], $qty, $unitPrice, $itemTotal]);
         }
 
-        // Commit
         $pdo->commit();
-
         $successMessage = "Invoice saved successfully with Invoice Number: $invoiceNumber";
 
     } catch (Exception $e) {
@@ -66,6 +62,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
