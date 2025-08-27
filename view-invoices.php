@@ -68,9 +68,18 @@ try {
         </div>
     </form>
 
+
+<?php if ($startDate && $endDate): ?>
     <?php if (empty($invoices)): ?>
-        <div class="text-gray-600">No invoices found.</div>
+        <div class="text-gray-600">No invoices found in the selected date range.</div>
     <?php else: ?>
+        <!-- TABLE DISPLAY CODE HERE -->
+    <?php endif; ?>
+<?php endif; ?>
+
+
+
+
         <div class="overflow-x-auto">
             <table class="min-w-full text-sm text-left border border-gray-300">
                 <thead class="bg-gray-200 text-gray-700 uppercase text-xs">
