@@ -242,7 +242,7 @@ include "connections.php";
     window.onload = () => {
       document.getElementById("paymentDate").valueAsDate = new Date();
       setAmount();
-      displayUnpaidInvoices();
+     
      
     };
   </script>
