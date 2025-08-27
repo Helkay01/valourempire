@@ -73,6 +73,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Create Invoice</title>
   <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    
 <style>
   /* Remove arrows in Chrome, Safari, Edge */
   input::-webkit-outer-spin-button,
@@ -190,10 +193,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition">
           Save Invoice
         </button>
-        <button type="button" onclick="window.print()"
+        <button type="button" onclick="downloadPDF()"
                 class="bg-gray-200 text-gray-800 px-6 py-2 rounded hover:bg-gray-300 transition">
-          Download PDF
+              Download PDF
         </button>
+
       </div>
 
       <!-- Hidden input to send items as JSON -->
@@ -204,6 +208,88 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   <!-- JS Logic -->
   <script>
+
+       async function downloadPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    const billTo = document.getElementById("bill_to").value;
+    const issueDate = document.querySelector('input[name="issue_date"]').value;
+    const invoiceNumber = "INV-" + new Date().toISOString().replace(/[-:.TZ]/g, '').slice(0,14);
+
+    const rows = document.querySelectorAll("#invoice-items tr");
+    const items = [];
+    let subtotal = 0;
+
+    rows.forEach(row => {
+      const name = row.querySelector(".item-name").value.trim();
+      const qty = parseInt(row.querySelector(".item-qty").value);
+      const unitPrice = parseFloat(row.querySelector(".item-price").value);
+      const total = qty * unitPrice;
+      items.push([name, qty, unitPrice.toFixed(2), total.toFixed(2)]);
+      subtotal += total;
+    });
+
+    const discount = parseFloat(document.getElementById("discount-inp").value) || 0;
+    const total = subtotal - discount;
+
+    // === ERP-Style PDF Layout ===
+    let y = 10;
+
+    doc.setFontSize(16);
+    doc.text("INVOICE", 90, y);
+    y += 10;
+
+    doc.setFontSize(11);
+    doc.text(`Invoice No: ${invoiceNumber}`, 14, y);
+    doc.text(`Issue Date: ${issueDate}`, 150, y);
+    y += 10;
+
+    doc.text(`Bill To: ${billTo}`, 14, y);
+    y += 10;
+
+    // Table headers
+    doc.setFont("helvetica", "bold");
+    doc.text("Item", 14, y);
+    doc.text("Qty", 80, y);
+    doc.text("Unit Price", 110, y);
+    doc.text("Total", 160, y);
+    doc.setFont("helvetica", "normal");
+    y += 6;
+
+    items.forEach(item => {
+      doc.text(item[0], 14, y);
+      doc.text(String(item[1]), 80, y, { align: "right" });
+      doc.text("₦" + item[2], 110, y, { align: "right" });
+      doc.text("₦" + item[3], 160, y, { align: "right" });
+      y += 6;
+    });
+
+    y += 10;
+    doc.setFont("helvetica", "bold");
+    doc.text("Subtotal:", 130, y);
+    doc.text("₦" + subtotal.toFixed(2), 160, y, { align: "right" });
+    y += 6;
+    doc.text("Discount:", 130, y);
+    doc.text("₦" + discount.toFixed(2), 160, y, { align: "right" });
+    y += 6;
+    doc.text("Total:", 130, y);
+    doc.text("₦" + (total < 0 ? 0 : total.toFixed(2)), 160, y, { align: "right" });
+
+    y += 20;
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "italic");
+    doc.text("This is a system-generated invoice. No signature required.", 14, y);
+
+    doc.save(`${invoiceNumber}.pdf`);
+  }
+
+
+
+
+
+
+      
     function addItemRow(name = '', qty = 1, unitPrice = 0) {
       const tbody = document.getElementById("invoice-items");
       const row = document.createElement("tr");
