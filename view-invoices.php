@@ -68,51 +68,44 @@ try {
         </div>
     </form>
 
-
-<?php if ($startDate && $endDate): ?>
-    <?php if (empty($invoices)): ?>
-        <div class="text-gray-600">No invoices found in the selected date range.</div>
-    <?php else: ?>
-        <!-- TABLE DISPLAY CODE HERE -->
-    <?php endif; ?>
-<?php endif; ?>
-
-
-
-
-        <div class="overflow-x-auto">
-            <table class="min-w-full text-sm text-left border border-gray-300">
-                <thead class="bg-gray-200 text-gray-700 uppercase text-xs">
-                    <tr>
-                        <th class="px-4 py-3 border">Invoice ID</th>
-                        <th class="px-4 py-3 border">Bill To</th>
-                        <th class="px-4 py-3 border">Issue Date</th>
-                        <th class="px-4 py-3 border text-right">Subtotal</th>
-                        <th class="px-4 py-3 border text-right">Discount</th>
-                        <th class="px-4 py-3 border text-right">Total</th>
-                        <th class="px-4 py-3 border text-center">Action</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-200">
-                    <?php foreach ($invoices as $invoice): ?>
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-4 py-3 border"><?= htmlspecialchars($invoice['invoice_id']) ?></td>
-                            <td class="px-4 py-3 border"><?= htmlspecialchars($invoice['bill_to']) ?></td>
-                            <td class="px-4 py-3 border"><?= htmlspecialchars($invoice['issue_date']) ?></td>
-                            <td class="px-4 py-3 border text-right">₦<?= number_format($invoice['subtotal'], 2) ?></td>
-                            <td class="px-4 py-3 border text-right">₦<?= number_format($invoice['discount'], 2) ?></td>
-                            <td class="px-4 py-3 border text-right font-semibold">₦<?= number_format($invoice['total'], 2) ?></td>
-                            <td class="px-4 py-3 border text-center">
-                                <a href="edit-invoice.php?invoice_id=<?= urlencode($invoice['invoice_id']) ?>"
-                                   class="inline-block bg-blue-600 text-white text-sm px-4 py-2 rounded hover:bg-blue-700">
-                                    Edit
-                                </a>
-                            </td>
+    <?php if ($startDate && $endDate): ?>
+        <?php if (empty($invoices)): ?>
+            <div class="text-gray-600">No invoices found in the selected date range.</div>
+        <?php else: ?>
+            <div class="overflow-x-auto">
+                <table class="min-w-full text-sm text-left border border-gray-300">
+                    <thead class="bg-gray-200 text-gray-700 uppercase text-xs">
+                        <tr>
+                            <th class="px-4 py-3 border">Invoice ID</th>
+                            <th class="px-4 py-3 border">Bill To</th>
+                            <th class="px-4 py-3 border">Issue Date</th>
+                            <th class="px-4 py-3 border text-right">Subtotal</th>
+                            <th class="px-4 py-3 border text-right">Discount</th>
+                            <th class="px-4 py-3 border text-right">Total</th>
+                            <th class="px-4 py-3 border text-center">Action</th>
                         </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <?php foreach ($invoices as $invoice): ?>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-4 py-3 border"><?= htmlspecialchars($invoice['invoice_id']) ?></td>
+                                <td class="px-4 py-3 border"><?= htmlspecialchars($invoice['bill_to']) ?></td>
+                                <td class="px-4 py-3 border"><?= htmlspecialchars($invoice['issue_date']) ?></td>
+                                <td class="px-4 py-3 border text-right">₦<?= number_format($invoice['subtotal'], 2) ?></td>
+                                <td class="px-4 py-3 border text-right">₦<?= number_format($invoice['discount'], 2) ?></td>
+                                <td class="px-4 py-3 border text-right font-semibold">₦<?= number_format($invoice['total'], 2) ?></td>
+                                <td class="px-4 py-3 border text-center">
+                                    <a href="edit-invoice.php?invoice_id=<?= urlencode($invoice['invoice_id']) ?>"
+                                       class="inline-block bg-blue-600 text-white text-sm px-4 py-2 rounded hover:bg-blue-700">
+                                        Edit
+                                    </a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        <?php endif; ?>
     <?php endif; ?>
 
     <div class="mt-6">
