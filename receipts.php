@@ -1,3 +1,10 @@
+<?php
+include "connections.php";
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
