@@ -47,7 +47,7 @@ try {
                             <td class="px-4 py-3 border text-right">₦<?= number_format($invoice['discount'], 2) ?></td>
                             <td class="px-4 py-3 border text-right font-semibold">₦<?= number_format($invoice['total'], 2) ?></td>
                             <td class="px-4 py-3 border text-center">
-                                <a href="edit_invoice.php?invoice_id=<?= urlencode($invoice['invoice_id']) ?>" 
+                                <a href="edit-invoice.php?invoice_id=<?= urlencode($invoice['invoice_id']) ?>" 
                                    class="inline-block bg-blue-600 text-white text-sm px-4 py-2 rounded hover:bg-blue-700">
                                     Edit
                                 </a>
