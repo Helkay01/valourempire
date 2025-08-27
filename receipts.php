@@ -61,42 +61,39 @@ include "connections.php";
 
     <!-- Client & Receipt Info -->
     <div class="grid md:grid-cols-2 gap-6 mb-6">
-      <div>
-        <label for="clientName" class="block text-sm font-medium text-gray-700">Client Name</label>
-        <input list="clientName" required id="searchClient" placeholder="Select or type client name..." class="px-4 py-2 border border-gray-300 rounded-md w-full focus:ring-2 focus:ring-blue-500 outline-none" />
-        <datalist id="clientName">
+
+        <div>
+            <label for="clientName" class="block text-sm font-medium text-gray-700">Client Name</label>
+            <input list="clientName" required id="searchClient" placeholder="Select or type client name..." class="px-4 py-2 border border-gray-300 rounded-md w-full focus:ring-2 focus:ring-blue-500 outline-none" />
+            <input type="hidden" id="clientId" name="clientId" />
+            <datalist id="clientName">
               <?php
-                    $sel = "SELECT * FROM customers";
-                    $res = $pdo->query($sel);
-                    $dets = $res->fetchAll(PDO::FETCH_ASSOC);
-                
-                    foreach ($dets as $det) {
-                        echo '<option value="' . htmlspecialchars($det['name']) . '">' . htmlspecialchars($det['name']) . '</option>';
-                    }
+                $clientMap = [];
+                foreach ($dets as $det) {
+                    echo '<option value="' . htmlspecialchars($det['name']) . '"></option>';
+                    $clientMap[$det['name']] = $det['id'];
+                }
               ?>
-
-          
-          
-    
-        </datalist>
-      </div>
+            </datalist>
+      </div>    
+    </div>
 
       <div>
-        <label for="clientEmail" class="block text-sm font-medium text-gray-700">Client Email or phone no</label>
-        <input type="email" required id="clientEmail" placeholder="Client Email or phone no" class="mt-1 w-full border px-4 py-2 rounded focus:ring-2 focus:ring-blue-500"/>
+        <label for="clientEmail" class="block text-sm font-medium text-gray-700">Client Email (optional) </label>
+        <input type="email" id="clientEmail" placeholder="Client Email or phone no" class="mt-1 w-full border px-4 py-2 rounded focus:ring-2 focus:ring-blue-500"/>
       </div>
 
     
       <div>
         <label for="paymentDate" class="block text-sm font-medium text-gray-700">Payment Date</label>
-        <input type="date" required id="paymentDate" class="mt-1 w-full border px-4 py-2 rounded focus:ring-2 focus:ring-blue-500"/>
+        <input required type="date" required id="paymentDate" class="mt-1 w-full border px-4 py-2 rounded focus:ring-2 focus:ring-blue-500"/>
       </div>
 
 
 
       <div class="md:col-span-2">
           <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
-          <textarea id="description" rows="3" required placeholder="Enter description here..." class="mt-1 w-full border px-4 py-2 rounded focus:ring-2 focus:ring-blue-500"></textarea>
+          <textarea required id="description" rows="3" required placeholder="Enter description here..." class="mt-1 w-full border px-4 py-2 rounded focus:ring-2 focus:ring-blue-500"></textarea>
       </div>
 
 
@@ -174,6 +171,15 @@ include "connections.php";
 <!-- JavaScript -->
 <script>
 
+
+  const clientMap = <?php echo json_encode($clientMap); ?>;
+
+  document.getElementById('searchClient').addEventListener('input', function () {
+    const name = this.value.trim();
+    const clientId = clientMap[name] || "";
+    document.getElementById('clientId').value = clientId;
+    console.log("Selected Client ID:", clientId);
+  });
 
 
 
