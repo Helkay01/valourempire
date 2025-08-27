@@ -109,7 +109,7 @@ try {
     <?php endif; ?>
 
     <div class="mt-6">
-        <a href="create_invoice.php" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700">+ Create New Invoice</a>
+        <a href="create-invoice.php" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700">+ Create New Invoice</a>
     </div>
 </div>
 
