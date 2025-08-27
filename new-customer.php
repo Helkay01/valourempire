@@ -7,9 +7,10 @@ if(isset($_POST['save_customer'])) {
     $phone = $_POST['phone'];
     $address = $_POST['address'];
     $notes = $_POST['notes'];
+    $unpaid = "0";
 
-    $stmt = $pdo->prepare("INSERT INTO customers (name, email, phone, address, notes, date) VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP)");
-    $stmt->execute([$name, $email, $phone, $address, $notes]);
+    $stmt = $pdo->prepare("INSERT INTO customers (name, email, phone, address, notes, date, unpaid) VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP, ?)");
+    $stmt->execute([$name, $email, $phone, $address, $notes, $unpaid]);
 
     echo "Service saved successfully";
 
