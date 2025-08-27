@@ -68,6 +68,8 @@ include "connections.php";
             <input type="hidden" id="clientId" name="clientId" />
             <datalist id="clientName">
               <?php
+                $sel = "SELECT * FROM customers"; $res = $pdo->query($sel);
+                $dets = $res->fetchAll(PDO::FETCH_ASSOC);
                 $clientMap = [];
                 foreach ($dets as $det) {
                     echo '<option value="' . htmlspecialchars($det['name']) . '"></option>';
