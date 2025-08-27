@@ -23,7 +23,7 @@ try {
 <body class="bg-gray-100 p-6 min-h-screen">
 
 <div class="max-w-6xl mx-auto bg-white p-6 rounded shadow">
-    <h1 class="text-2xl font-bold mb-6 text-gray-800">All Invoices</h1>
+    <h1 class="text-2xl font-bold mb-6 text-gray-800">Outstanding Invoices</h1>
 
     <?php if (empty($invoices)): ?>
         <div class="text-gray-600">No invoices found.</div>
