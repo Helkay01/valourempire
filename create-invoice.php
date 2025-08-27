@@ -40,8 +40,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pdo->beginTransaction();
 
         // Insert invoice
-        $stmt = $pdo->prepare("INSERT INTO invoices (bill_to, issue_date, subtotal, discount, total, invoice_id) VALUES (?, ?, ?, ?, ?, ?) RETURNING id");
-        $stmt->execute([$billTo, $issueDate, $subtotal, $discount, $total, $invoiceNumber]);
+        $status = "unpaid";
+        $stmt = $pdo->prepare("INSERT INTO invoices (bill_to, issue_date, subtotal, discount, total, invoice_id, status) VALUES (?, ?, ?, ?, ?, ?) RETURNING id");
+        $stmt->execute([$billTo, $issueDate, $subtotal, $discount, $total, $invoiceNumber, $status]);
         $invoiceId = $stmt->fetchColumn();
 
         // Insert each item
