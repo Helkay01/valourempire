@@ -32,8 +32,8 @@ include 'connections.php';
         <div>
           <button onclick="toggleSubMenu('productsSubMenu')" class="w-full text-left py-2.5 px-4 rounded hover:bg-blue-100 hover:text-blue-600">📦 Service Items</button>
           <div id="productsSubMenu" class="pl-8 mt-1 hidden text-sm">
-            <a href="add-service-item.html" class="block py-1 px-2 rounded hover:bg-gray-100">Add a service item</a>
-            <a href="manage-service-item.html" class="block py-1 px-2 rounded hover:bg-gray-100">Manage service item</a>
+            <a href="add-service-item.php" class="block py-1 px-2 rounded hover:bg-gray-100">Add a service item</a>
+            <a href="manage-service-item.php" class="block py-1 px-2 rounded hover:bg-gray-100">Manage service item</a>
           </div>
         </div>
 
@@ -41,12 +41,13 @@ include 'connections.php';
         <div>
           <button onclick="toggleSubMenu('reportsSubMenu')" class="w-full text-left py-2.5 px-4 rounded hover:bg-blue-100 hover:text-blue-600">📈 Financial Reports</button>
           <div id="reportsSubMenu" class="pl-8 mt-1 hidden text-sm">
-            <a href="view-expenses.html" class="block py-1 px-2 rounded hover:bg-gray-100">Expenses report</a>
-            <a href="other-income.html" class="block py-1 px-2 rounded hover:bg-gray-100">Other income</a>
-            <a href="income-statement.html" class="block py-1 px-2 rounded hover:bg-gray-100">Income statement</a>
-            <a href="payables.html" class="block py-1 px-2 rounded hover:bg-gray-100">Payables</a>
-            <a href="outstanding-invoices.html" class="block py-1 px-2 rounded hover:bg-gray-100">Receivables</a>
-            <a href="financial-position.html" class="block py-1 px-2 rounded hover:bg-gray-100">Financial Position</a>
+            <a href="view-expenses.php" class="block py-1 px-2 rounded hover:bg-gray-100">Expenses report</a>
+           <!-- <a href="other-income.php" class="block py-1 px-2 rounded hover:bg-gray-100">Other income</a> -->
+            <a href="income-statement.php" class="block py-1 px-2 rounded hover:bg-gray-100">Income statement</a>
+            <a href="payables.php" class="block py-1 px-2 rounded hover:bg-gray-100">Payables</a>
+            <a href="outstanding-invoices.php" class="block py-1 px-2 rounded hover:bg-gray-100">Receivables</a>
+            
+         <!--   <a href="financial-position.php" class="block py-1 px-2 rounded hover:bg-gray-100">Financial Position</a> -->
           </div>
         </div>
 
@@ -54,10 +55,10 @@ include 'connections.php';
         <div>
           <button onclick="toggleSubMenu('shortTermSubMenu')" class="w-full text-left py-2.5 px-4 rounded hover:bg-blue-100 hover:text-blue-600">💵 Short-Term Assets</button>
           <div id="shortTermSubMenu" class="pl-8 mt-1 hidden text-sm">
-            <a href="register-bank.html" class="block py-1 px-2 rounded hover:bg-gray-100">Bank</a>
-            <a href="outstanding-invoices.html" class="block py-1 px-2 rounded hover:bg-gray-100">Receivables</a>
-            <a href="petty-cash.html" class="block py-1 px-2 rounded hover:bg-gray-100">Petty cash</a>
-            <a href="view-cash.html" class="block py-1 px-2 rounded hover:bg-gray-100">View cash transactions</a>
+            <a href="register-bank.php" class="block py-1 px-2 rounded hover:bg-gray-100">Bank</a>
+            <a href="outstanding-invoices.php" class="block py-1 px-2 rounded hover:bg-gray-100">Receivables</a>
+            <a href="petty-cash.php" class="block py-1 px-2 rounded hover:bg-gray-100">Petty cash</a>
+            <a href="view-cash.php" class="block py-1 px-2 rounded hover:bg-gray-100">View cash transactions</a>
           </div>
         </div>
 
@@ -65,7 +66,7 @@ include 'connections.php';
         <div>
           <button onclick="toggleSubMenu('customersSubMenu')" class="w-full text-left py-2.5 px-4 rounded hover:bg-blue-100 hover:text-blue-600">👤 Customers</button>
           <div id="customersSubMenu" class="pl-8 mt-1 hidden text-sm">
-            <a href="new-customer.html" class="block py-1 px-2 rounded hover:bg-gray-100">Manage customers</a>
+            <a href="new-customer.php" class="block py-1 px-2 rounded hover:bg-gray-100">Manage customers</a>
           </div>
         </div>
 
@@ -73,10 +74,10 @@ include 'connections.php';
         <div>
           <button onclick="toggleSubMenu('invoicesSubMenu')" class="w-full text-left py-2.5 px-4 rounded hover:bg-blue-100 hover:text-blue-600">📝 Invoices</button>
           <div id="invoicesSubMenu" class="pl-8 mt-1 hidden text-sm">
-            <a href="create-invoice.html" class="block py-1 px-2 rounded hover:bg-gray-100">Create invoice</a>
-            <a href="create-invoice.html" class="block py-1 px-2 rounded hover:bg-gray-100">Edit invoice</a>
-            <a href="outstanding-invoices.html" class="block py-1 px-2 rounded hover:bg-gray-100">Outstanding</a>
-            <a href="view-invoices.html" class="block py-1 px-2 rounded hover:bg-gray-100">View invoices</a>
+            <a href="create-invoice.php" class="block py-1 px-2 rounded hover:bg-gray-100">Create invoice</a>
+            <a href="edit-invoice.php" class="block py-1 px-2 rounded hover:bg-gray-100">Edit invoice</a>
+            <a href="outstanding-invoices.php" class="block py-1 px-2 rounded hover:bg-gray-100">Outstanding</a>
+            <a href="view-invoices.php" class="block py-1 px-2 rounded hover:bg-gray-100">View invoices</a>
           </div>
         </div>
 
@@ -84,8 +85,8 @@ include 'connections.php';
         <div>
           <button onclick="toggleSubMenu('receiptsSubMenu')" class="w-full text-left py-2.5 px-4 rounded hover:bg-blue-100 hover:text-blue-600">📑 Receipts</button>
           <div id="receiptsSubMenu" class="pl-8 mt-1 hidden text-sm">
-            <a href="receipt.html" class="block py-1 px-2 rounded hover:bg-gray-100">Create receipt</a>
-            <a href="view-all-receipts.html" class="block py-1 px-2 rounded hover:bg-gray-100">View All</a>
+            <a href="receipt.php" class="block py-1 px-2 rounded hover:bg-gray-100">Create receipt</a>
+            <a href="view-all-receipts.php" class="block py-1 px-2 rounded hover:bg-gray-100">View All</a>
           </div>
         </div>
 
@@ -93,8 +94,8 @@ include 'connections.php';
         <div>
           <button onclick="toggleSubMenu('expensesSubMenu')" class="w-full text-left py-2.5 px-4 rounded hover:bg-blue-100 hover:text-blue-600">💸 Expenses</button>
           <div id="expensesSubMenu" class="pl-8 mt-1 hidden text-sm">
-            <a href="expenses.html" class="block py-1 px-2 rounded hover:bg-gray-100">Record expenses</a>
-            <a href="view-expenses.html" class="block py-1 px-2 rounded hover:bg-gray-100">View All</a>
+            <a href="expenses.php" class="block py-1 px-2 rounded hover:bg-gray-100">Record expenses</a>
+            <a href="view-expenses.php" class="block py-1 px-2 rounded hover:bg-gray-100">View All</a>
           </div>
         </div>
 
@@ -102,8 +103,8 @@ include 'connections.php';
         <div>
           <button onclick="toggleSubMenu('settingsSubMenu')" class="w-full text-left py-2.5 px-4 rounded hover:bg-blue-100 hover:text-blue-600">⚙️ Settings</button>
           <div id="settingsSubMenu" class="pl-8 mt-1 hidden text-sm">
-            <a href="edit-profile.html" class="block py-1 px-2 rounded hover:bg-gray-100">Edit profile & business info</a>
-            <a href="change-password.html" class="block py-1 px-2 rounded hover:bg-gray-100">Change password</a>
+            <a href="edit-profile.php" class="block py-1 px-2 rounded hover:bg-gray-100">Edit profile & business info</a>
+            <a href="change-password.php" class="block py-1 px-2 rounded hover:bg-gray-100">Change password</a>
           </div>
         </div>
 
