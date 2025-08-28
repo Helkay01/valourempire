@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Insert invoice
         $status = "unpaid";
-        $stmt = $pdo->prepare("INSERT INTO invoices (bill_to, issue_date, subtotal, discount, total, invoice_id, status) VALUES (?, ?, ?, ?, ?, ?) RETURNING id");
+        $stmt = $pdo->prepare("INSERT INTO invoices (bill_to, issue_date, subtotal, discount, total, invoice_id, status) VALUES (?, ?, ?, ?, ?, ?, ?)");
         $stmt->execute([$billTo, $issueDate, $subtotal, $discount, $total, $invoiceNumber, $status]);
         $invoiceId = $stmt->fetchColumn();
 
