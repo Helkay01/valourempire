@@ -243,7 +243,7 @@ document.getElementById('bill_to').addEventListener('input', function () {
   });
 
   document.getElementById('bill_to_id').value = matchedId;
-  
+});
 
 async function downloadPDF() {
   const { jsPDF } = window.jspdf;
