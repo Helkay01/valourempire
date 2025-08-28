@@ -64,15 +64,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 
-// Fetch clients
-$sel = "SELECT * FROM customers";
-$res = $pdo->query($sel);
-$dets = $res->fetchAll(PDO::FETCH_ASSOC);
-$clientMap = [];
-foreach ($dets as $det) {
-    $clientMap[$det['name']] = $det['id'];
-
-}
 
 ?>
 
@@ -135,11 +126,11 @@ foreach ($dets as $det) {
               required
               class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"/>
 
-            <input type="hidde" id="clientId" name="clientId" />
+          
             <datalist id="clientName">
-            <?php foreach ($dets as $det): ?>
-              <option value="<?= htmlspecialchars($det['name']) ?>"></option>
-            <?php endforeach; ?>
+           
+              <option value="olaab">Olaab</option>
+           
           </datalist>
         </div>
 
@@ -221,14 +212,7 @@ foreach ($dets as $det) {
   <!-- JS Logic -->
   <script>
 
-    const clientMap = <?= json_encode($clientMap); ?>;
-
-    document.getElementById('searchClient').addEventListener('input', function () {
-      const name = this.value.trim();
-      const clientId = clientMap[name] || "";
-      document.getElementById('clientId').value = clientId;
-    });
-
+  
 
 async function downloadPDF() {
   const { jsPDF } = window.jspdf;
