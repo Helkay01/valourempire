@@ -73,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $pdo->commit();
         $successMessage = "Invoice updated successfully.";
-        echo $successMessage;
+       
         
         list($invoiceData, $invoiceItems) = loadInvoice($pdo, $invoiceId);
 
