@@ -82,7 +82,7 @@ foreach ($dets as $det) {
      <!-- Warning Alert -->
     <div class="m-6 bg-yellow-100 border border-yellow-400 text-yellow-800 px-4 py-3 rounded relative" role="alert">
       <strong class="font-bold">Caution!</strong>
-      <span class="block sm:inline">Please proceed carefully. Receipts cannot be edited or deleted. Errors may impact your financial record.</span>
+      <span class="block sm:inline">Please proceed carefully. Receipts cannot be edited or deleted. Errors may impact your financial records.</span>
     </div>
     
     <form method="POST">
