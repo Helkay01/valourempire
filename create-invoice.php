@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $issueDate = $_POST['issue_date'] ?? '';
     $discount = floatval($_POST['discount'] ?? 0);
     $itemsJson = $_POST['items_json'] ?? '';
+    $clientId = $_POST['bill_to_id'];
 
     // Decode JSON to array
     $items = json_decode($itemsJson, true);
@@ -43,8 +44,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Insert invoice
         $status = "unpaid";
-        $stmt = $pdo->prepare("INSERT INTO invoices (bill_to, issue_date, subtotal, discount, total, invoice_id, status) VALUES (?, ?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$billTo, $issueDate, $subtotal, $discount, $total, $invoiceNumber, $status]);
+        $stmt = $pdo->prepare("INSERT INTO invoices (bill_to, issue_date, subtotal, discount, total, invoice_id, status, client_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$billTo, $issueDate, $subtotal, $discount, $total, $invoiceNumber, $status, $clientId]);
 
         // Get last inserted ID (optional if you want to use auto-incremented ID for relational FK)
         // $invoiceId = $pdo->lastInsertId(); 
@@ -143,7 +144,7 @@ try {
                       class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"/>
                 
                   <!-- Hidden input to hold the customer ID -->
-                  <input type="hidde" name="bill_to_id" id="bill_to_id" />
+                  <input type="hidden" name="bill_to_id" id="bill_to_id" />
                 
                   <datalist id="clientName">
                     <?php foreach ($customers as $customer): ?>
