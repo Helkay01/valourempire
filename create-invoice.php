@@ -6,6 +6,8 @@ function generateInvoiceNumber($pdo) {
     return 'INV-' . date('YmdHis');
 }
 
+$successMessage = ''; // Ensure this is defined before use in HTML
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $billTo = $_POST['bill_to'] ?? '';
     $issueDate = $_POST['issue_date'] ?? '';
@@ -43,7 +45,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $status = "unpaid";
         $stmt = $pdo->prepare("INSERT INTO invoices (bill_to, issue_date, subtotal, discount, total, invoice_id, status) VALUES (?, ?, ?, ?, ?, ?, ?)");
         $stmt->execute([$billTo, $issueDate, $subtotal, $discount, $total, $invoiceNumber, $status]);
-        $invoiceId = $stmt->fetchColumn();
+
+        // Get last inserted ID (optional if you want to use auto-incremented ID for relational FK)
+        // $invoiceId = $pdo->lastInsertId(); 
 
         // Insert each item
         $stmtItem = $pdo->prepare("INSERT INTO invoice_items (invoice_id, item_name, quantity, unit_price, total) VALUES (?, ?, ?, ?, ?)");
@@ -63,8 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-
-
+    
 ?>
 
 
