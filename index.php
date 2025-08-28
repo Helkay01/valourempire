@@ -85,7 +85,7 @@ include 'connections.php';
         <div>
           <button onclick="toggleSubMenu('receiptsSubMenu')" class="w-full text-left py-2.5 px-4 rounded hover:bg-blue-100 hover:text-blue-600">📑 Receipts</button>
           <div id="receiptsSubMenu" class="pl-8 mt-1 hidden text-sm">
-            <a href="receipt.php" class="block py-1 px-2 rounded hover:bg-gray-100">Create receipt</a>
+            <a href="receipts.php" class="block py-1 px-2 rounded hover:bg-gray-100">Create receipt</a>
             <a href="view-all-receipts.php" class="block py-1 px-2 rounded hover:bg-gray-100">View All</a>
           </div>
         </div>
