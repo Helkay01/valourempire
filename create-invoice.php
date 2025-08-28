@@ -62,7 +62,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         die("Error saving invoice: " . $e->getMessage());
     }
 }
-?>
 
 
 // Fetch clients
@@ -74,6 +73,8 @@ foreach ($dets as $det) {
     $clientMap[$det['name']] = $det['id'];
 
 }
+
+?>
 
 
 <!DOCTYPE html>
