@@ -17,7 +17,7 @@ try {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>All Invoices</title>
+    <title>All outstanding invoices</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 p-6 min-h-screen">
@@ -51,7 +51,7 @@ try {
                             <td class="px-4 py-3 border text-right">₦<?= number_format($invoice['discount'], 2) ?></td>
                             <td class="px-4 py-3 border text-right font-semibold">₦<?= number_format($invoice['total'], 2) ?></td>
                             <td class="px-4 py-3 border text-center">
-                                <a href="edit_invoice.php?invoice_id=<?= urlencode($invoice['invoice_id']) ?>" 
+                                <a href="receipts.php?invoice_id=<?= urlencode($invoice['invoice_id']) ?>" 
                                    class="inline-block bg-blue-600 text-white text-sm px-4 py-2 rounded hover:bg-blue-700">
                                     Write receipt
                                 </a>
