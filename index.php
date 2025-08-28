@@ -1,3 +1,167 @@
 <?php
 include 'connections.php';
 
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Responsive Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+  <!-- Mobile Sidebar Overlay -->
+  <div id="mobileSidebar" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden md:hidden" onclick="toggleSidebar()"></div>
+
+  <!-- Wrapper (Flex layout on desktop) -->
+  <div class="md:flex">
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed md:static top-0 left-0 w-64 h-full bg-white shadow-lg z-50 overflow-y-auto transform -translate-x-full transition-transform duration-300 md:translate-x-0">
+      <div class="p-6 border-b">
+        <h2 class="text-xl font-semibold text-gray-800">My Dashboard</h2>
+      </div>
+
+      <nav class="mt-6 space-y-2">
+        <a href="#" class="block py-2.5 px-4 rounded transition hover:bg-blue-100 hover:text-blue-600">🏠 Dashboard</a>
+
+        <!-- Service Items -->
+        <div>
+          <button onclick="toggleSubMenu('productsSubMenu')" class="w-full text-left py-2.5 px-4 rounded hover:bg-blue-100 hover:text-blue-600">📦 Service Items</button>
+          <div id="productsSubMenu" class="pl-8 mt-1 hidden text-sm">
+            <a href="add-service-item.html" class="block py-1 px-2 rounded hover:bg-gray-100">Add a service item</a>
+            <a href="manage-service-item.html" class="block py-1 px-2 rounded hover:bg-gray-100">Manage service item</a>
+          </div>
+        </div>
+
+        <!-- Financial Reports -->
+        <div>
+          <button onclick="toggleSubMenu('reportsSubMenu')" class="w-full text-left py-2.5 px-4 rounded hover:bg-blue-100 hover:text-blue-600">📈 Financial Reports</button>
+          <div id="reportsSubMenu" class="pl-8 mt-1 hidden text-sm">
+            <a href="view-expenses.html" class="block py-1 px-2 rounded hover:bg-gray-100">Expenses report</a>
+            <a href="other-income.html" class="block py-1 px-2 rounded hover:bg-gray-100">Other income</a>
+            <a href="income-statement.html" class="block py-1 px-2 rounded hover:bg-gray-100">Income statement</a>
+            <a href="payables.html" class="block py-1 px-2 rounded hover:bg-gray-100">Payables</a>
+            <a href="outstanding-invoices.html" class="block py-1 px-2 rounded hover:bg-gray-100">Receivables</a>
+            <a href="financial-position.html" class="block py-1 px-2 rounded hover:bg-gray-100">Financial Position</a>
+          </div>
+        </div>
+
+        <!-- Short-Term Assets -->
+        <div>
+          <button onclick="toggleSubMenu('shortTermSubMenu')" class="w-full text-left py-2.5 px-4 rounded hover:bg-blue-100 hover:text-blue-600">💵 Short-Term Assets</button>
+          <div id="shortTermSubMenu" class="pl-8 mt-1 hidden text-sm">
+            <a href="register-bank.html" class="block py-1 px-2 rounded hover:bg-gray-100">Bank</a>
+            <a href="outstanding-invoices.html" class="block py-1 px-2 rounded hover:bg-gray-100">Receivables</a>
+            <a href="petty-cash.html" class="block py-1 px-2 rounded hover:bg-gray-100">Petty cash</a>
+            <a href="view-cash.html" class="block py-1 px-2 rounded hover:bg-gray-100">View cash transactions</a>
+          </div>
+        </div>
+
+        <!-- Customers -->
+        <div>
+          <button onclick="toggleSubMenu('customersSubMenu')" class="w-full text-left py-2.5 px-4 rounded hover:bg-blue-100 hover:text-blue-600">👤 Customers</button>
+          <div id="customersSubMenu" class="pl-8 mt-1 hidden text-sm">
+            <a href="new-customer.html" class="block py-1 px-2 rounded hover:bg-gray-100">Manage customers</a>
+          </div>
+        </div>
+
+        <!-- Invoices -->
+        <div>
+          <button onclick="toggleSubMenu('invoicesSubMenu')" class="w-full text-left py-2.5 px-4 rounded hover:bg-blue-100 hover:text-blue-600">📝 Invoices</button>
+          <div id="invoicesSubMenu" class="pl-8 mt-1 hidden text-sm">
+            <a href="create-invoice.html" class="block py-1 px-2 rounded hover:bg-gray-100">Create invoice</a>
+            <a href="create-invoice.html" class="block py-1 px-2 rounded hover:bg-gray-100">Edit invoice</a>
+            <a href="outstanding-invoices.html" class="block py-1 px-2 rounded hover:bg-gray-100">Outstanding</a>
+            <a href="view-invoices.html" class="block py-1 px-2 rounded hover:bg-gray-100">View invoices</a>
+          </div>
+        </div>
+
+        <!-- Receipts -->
+        <div>
+          <button onclick="toggleSubMenu('receiptsSubMenu')" class="w-full text-left py-2.5 px-4 rounded hover:bg-blue-100 hover:text-blue-600">📑 Receipts</button>
+          <div id="receiptsSubMenu" class="pl-8 mt-1 hidden text-sm">
+            <a href="receipt.html" class="block py-1 px-2 rounded hover:bg-gray-100">Create receipt</a>
+            <a href="view-all-receipts.html" class="block py-1 px-2 rounded hover:bg-gray-100">View All</a>
+          </div>
+        </div>
+
+        <!-- Expenses -->
+        <div>
+          <button onclick="toggleSubMenu('expensesSubMenu')" class="w-full text-left py-2.5 px-4 rounded hover:bg-blue-100 hover:text-blue-600">💸 Expenses</button>
+          <div id="expensesSubMenu" class="pl-8 mt-1 hidden text-sm">
+            <a href="expenses.html" class="block py-1 px-2 rounded hover:bg-gray-100">Record expenses</a>
+            <a href="view-expenses.html" class="block py-1 px-2 rounded hover:bg-gray-100">View All</a>
+          </div>
+        </div>
+
+        <!-- Settings -->
+        <div>
+          <button onclick="toggleSubMenu('settingsSubMenu')" class="w-full text-left py-2.5 px-4 rounded hover:bg-blue-100 hover:text-blue-600">⚙️ Settings</button>
+          <div id="settingsSubMenu" class="pl-8 mt-1 hidden text-sm">
+            <a href="edit-profile.html" class="block py-1 px-2 rounded hover:bg-gray-100">Edit profile & business info</a>
+            <a href="change-password.html" class="block py-1 px-2 rounded hover:bg-gray-100">Change password</a>
+          </div>
+        </div>
+
+      </nav>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="flex-1 flex flex-col min-h-screen">
+
+      <!-- Header -->
+      <header class="bg-white shadow p-4 flex justify-between items-center sticky top-0 z-30">
+        <button class="md:hidden text-gray-700 text-xl" onclick="toggleSidebar()">☰</button>
+        <h1 class="text-lg font-semibold">Dashboard</h1>
+        <span class="text-gray-600">Hi, User</span>
+      </header>
+
+      <!-- Alert -->
+      <div class="m-6 bg-yellow-100 border border-yellow-400 text-yellow-800 px-4 py-3 rounded relative" role="alert">
+        <strong class="font-bold">Warning!</strong>
+        <span class="block sm:inline"> Please check your inputs carefully.</span>
+      </div>
+
+      <!-- Dashboard Cards -->
+      <main class="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+          <div class="text-gray-500">Total sales (This month)</div>
+          <div class="text-2xl font-semibold mt-2">0</div>
+        </div>
+        <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+          <div class="text-gray-500">Invoices (Unpaid)</div>
+          <div class="text-2xl font-semibold mt-2">0</div>
+        </div>
+        <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+          <div class="text-gray-500">Revenue (This month)</div>
+          <div class="text-2xl font-semibold mt-2">₦0</div>
+        </div>
+        <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+          <div class="text-gray-500">Customers</div>
+          <div class="text-2xl font-semibold mt-2">0</div>
+        </div>
+      </main>
+
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('mobileSidebar');
+      sidebar.classList.toggle('-translate-x-full');
+      overlay.classList.toggle('hidden');
+    }
+
+    function toggleSubMenu(id) {
+      const submenu = document.getElementById(id);
+      submenu.classList.toggle('hidden');
+    }
+  </script>
+</body>
+</html>
