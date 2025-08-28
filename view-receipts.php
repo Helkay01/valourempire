@@ -1,41 +1,26 @@
 <?php
-include "connections.php";
+include "connections.php"; // Assumes $pdo is set
 
-// Set default values
-$startDate = '';
-$endDate = '';
 $receipts = [];
+$errorMessage = "";
 
-if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET['filter'])) {
-    $startDate = $_GET['start_date'] ?? '';
-    $endDate = $_GET['end_date'] ?? '';
+if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["start_date"], $_GET["end_date"])) {
+    $start = $_GET["start_date"];
+    $end = $_GET["end_date"];
 
-    // Validate dates
-    $errors = [];
-    if ($startDate && $startDate > date('Y-m-d')) {
-        $errors[] = "Start date cannot be in the future.";
-    }
-    if ($endDate && $endDate < $startDate) {
-        $errors[] = "End date cannot be earlier than start date.";
-    }
-
-    if (empty($errors)) {
-        $query = "
-            SELECT r.*, c.name as client_name
-            FROM receipts r
-            JOIN customers c ON r.client_id = c.id
-            WHERE (:startDate IS NULL OR r.payment_date >= :startDate)
-              AND (:endDate IS NULL OR r.payment_date <= :endDate)
-            ORDER BY r.payment_date DESC
-        ";
-
-        $stmt = $pdo->prepare($query);
-        $stmt->execute([
-            ':startDate' => $startDate ?: null,
-            ':endDate' => $endDate ?: null,
-        ]);
-
-        $receipts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    if (strtotime($start) > strtotime($end)) {
+        $errorMessage = "Start date cannot be after end date.";
+    } else {
+        try {
+            $stmt = $pdo->prepare("SELECT * FROM receipts WHERE payment_date BETWEEN :start AND :end ORDER BY payment_date DESC");
+            $stmt->execute([
+                ':start' => $start,
+                ':end' => $end
+            ]);
+            $receipts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            $errorMessage = "Error retrieving receipts: " . $e->getMessage();
+        }
     }
 }
 ?>
@@ -43,74 +28,81 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET['filter'])) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Receipt List</title>
+  <meta charset="UTF-8">
+  <title>Receipts Report</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 text-gray-800 p-6">
+<body class="bg-gray-50 p-8 text-gray-800">
+  <div class="max-w-5xl mx-auto bg-white p-6 rounded shadow border">
 
-  <div class="max-w-6xl mx-auto bg-white p-8 rounded shadow">
-    <h1 class="text-2xl font-bold mb-6">All Receipts</h1>
+    <h1 class="text-2xl font-bold mb-6">Receipt Report</h1>
 
-    <!-- Filter Form -->
-    <form method="GET" class="grid md:grid-cols-3 gap-4 mb-6">
-      <div>
-        <label for="start_date" class="block text-sm font-medium text-gray-700">Start Date</label>
-        <input type="date" id="start_date" name="start_date" max="<?= date('Y-m-d') ?>" value="<?= htmlspecialchars($startDate) ?>" class="mt-1 w-full border px-3 py-2 rounded" />
-      </div>
-      <div>
-        <label for="end_date" class="block text-sm font-medium text-gray-700">End Date</label>
-        <input type="date" id="end_date" name="end_date" value="<?= htmlspecialchars($endDate) ?>" class="mt-1 w-full border px-3 py-2 rounded" />
-      </div>
-      <div class="flex items-end">
-        <button type="submit" name="filter" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">Filter</button>
-      </div>
-    </form>
-
-    <!-- Errors -->
-    <?php if (!empty($errors)): ?>
-      <div class="mb-4 bg-red-100 text-red-800 border border-red-300 px-4 py-3 rounded">
-        <ul class="list-disc list-inside">
-          <?php foreach ($errors as $error): ?>
-            <li><?= htmlspecialchars($error) ?></li>
-          <?php endforeach; ?>
-        </ul>
+    <?php if ($errorMessage): ?>
+      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+        <?= htmlspecialchars($errorMessage) ?>
       </div>
     <?php endif; ?>
 
-    <!-- Results -->
+    <form method="GET" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <div>
+        <label for="start_date" class="block text-sm font-medium text-gray-700">Start Date</label>
+        <input type="date" id="start_date" name="start_date" required
+               max="<?= date('Y-m-d') ?>"
+               value="<?= htmlspecialchars($_GET['start_date'] ?? '') ?>"
+               class="mt-1 w-full border px-4 py-2 rounded focus:ring-2 focus:ring-blue-500" />
+      </div>
+
+      <div>
+        <label for="end_date" class="block text-sm font-medium text-gray-700">End Date</label>
+        <input type="date" id="end_date" name="end_date" required
+               value="<?= htmlspecialchars($_GET['end_date'] ?? '') ?>"
+               class="mt-1 w-full border px-4 py-2 rounded focus:ring-2 focus:ring-blue-500" />
+      </div>
+
+      <div class="flex items-end">
+        <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition w-full">
+          Filter Receipts
+        </button>
+      </div>
+    </form>
+
     <?php if (!empty($receipts)): ?>
       <div class="overflow-x-auto">
-        <table class="min-w-full table-auto border border-gray-300">
-          <thead class="bg-gray-200">
+        <table class="min-w-full bg-white border border-gray-200 rounded">
+          <thead class="bg-gray-100">
             <tr>
-              <th class="px-4 py-2 text-left">Date</th>
-              <th class="px-4 py-2 text-left">Client</th>
-              <th class="px-4 py-2 text-left">Email</th>
-              <th class="px-4 py-2 text-left">Method</th>
-              <th class="px-4 py-2 text-left">Description</th>
-              <th class="px-4 py-2 text-right">Amount</th>
+              <th class="py-2 px-4 border-b text-left">Date</th>
+              <th class="py-2 px-4 border-b text-left">Client ID</th>
+              <th class="py-2 px-4 border-b text-left">Email</th>
+              <th class="py-2 px-4 border-b text-left">Description</th>
+              <th class="py-2 px-4 border-b text-left">Method</th>
+              <th class="py-2 px-4 border-b text-left">Amount</th>
             </tr>
           </thead>
           <tbody>
             <?php foreach ($receipts as $receipt): ?>
-              <tr class="border-t">
-                <td class="px-4 py-2"><?= htmlspecialchars($receipt['payment_date']) ?></td>
-                <td class="px-4 py-2"><?= htmlspecialchars($receipt['client_name']) ?></td>
-                <td class="px-4 py-2"><?= htmlspecialchars($receipt['client_email']) ?></td>
-                <td class="px-4 py-2"><?= htmlspecialchars($receipt['payment_method']) ?></td>
-                <td class="px-4 py-2"><?= htmlspecialchars($receipt['description']) ?></td>
-                <td class="px-4 py-2 text-right">₦<?= number_format($receipt['amount'], 2) ?></td>
+              <tr>
+                <td class="py-2 px-4 border-b"><?= htmlspecialchars($receipt['payment_date']) ?></td>
+                <td class="py-2 px-4 border-b"><?= htmlspecialchars($receipt['client_id']) ?></td>
+                <td class="py-2 px-4 border-b"><?= htmlspecialchars($receipt['client_email']) ?></td>
+                <td class="py-2 px-4 border-b"><?= htmlspecialchars($receipt['description']) ?></td>
+                <td class="py-2 px-4 border-b"><?= htmlspecialchars($receipt['payment_method']) ?></td>
+                <td class="py-2 px-4 border-b"><?= number_format($receipt['amount'], 2) ?></td>
               </tr>
             <?php endforeach; ?>
           </tbody>
         </table>
       </div>
-    <?php elseif (isset($_GET['filter'])): ?>
-      <p class="text-gray-600 mt-4">No receipts found for the selected date range.</p>
+    <?php elseif ($_SERVER["REQUEST_METHOD"] === "GET"): ?>
+      <p class="mt-4 text-gray-500">No receipts found for the selected date range.</p>
     <?php endif; ?>
+
   </div>
 
+  <script>
+    // Prevent start date from selecting future dates
+    const today = new Date().toISOString().split("T")[0];
+    document.getElementById("start_date").setAttribute("max", today);
+  </script>
 </body>
 </html>
