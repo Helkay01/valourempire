@@ -91,7 +91,7 @@ foreach ($dets as $det) {
         <div>
           <label for="searchClient" class="block text-sm font-medium text-gray-700">Client Name</label>
           <input list="clientName" required id="searchClient" placeholder="Select or type client name..." class="px-4 py-2 border border-gray-300 rounded-md w-full focus:ring-2 focus:ring-blue-500 outline-none" />
-          <input type="hidden" id="clientId" name="clientId" />
+          <input type="hidde" id="clientId" name="clientId" />
           <datalist id="clientName">
             <?php foreach ($dets as $det): ?>
               <option value="<?= htmlspecialchars($det['name']) ?>"></option>
