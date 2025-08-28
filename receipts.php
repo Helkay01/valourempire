@@ -40,7 +40,8 @@ $res = $pdo->query($sel);
 $dets = $res->fetchAll(PDO::FETCH_ASSOC);
 $clientMap = [];
 foreach ($dets as $det) {
-    $clientMap[$det['name']] = $det['id'];
+   // $clientMap[$det['name']] = $det['id'];
+    $clientMap[$det['unpaid']] = $det['id'];
 }
 ?>
 
