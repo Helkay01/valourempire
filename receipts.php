@@ -91,12 +91,7 @@ foreach ($dets as $det) {
         <div>
           <label for="searchClient" class="block text-sm font-medium text-gray-700">Client Name</label>
           <input list="clientName" required id="searchClient" 
-              value="
-                  <?php
-                    $cName = $_GET['client_name'] ?? "";
-                    echo $cName;
-                ?>
-              "
+              value="<?php $cName = echo $_GET['client_name'] ?? ""; ?>"
               placeholder="Select or type client name..." class="px-4 py-2 border border-gray-300 rounded-md w-full focus:ring-2 focus:ring-blue-500 outline-none" />
           <input type="hidden" id="clientId" name="clientId" />
           <datalist id="clientName">
@@ -134,13 +129,8 @@ foreach ($dets as $det) {
 
       <div class="mb-6">
         <label for="amount" class="block text-sm font-medium text-gray-700">Amount</label>
-        <input required type="number"
-            value="
-                  <?php
-                    $amt = $_GET['amount'] ?? "";
-                    echo $amt;
-                ?>
-              "
+        <input required type="text"
+            value="<?php echo $amt = $_GET['amount'] ?? "";?>"
             step="0.01" name="amount" id="amount" class="mt-1 w-64 border px-4 py-2 rounded focus:ring-2 focus:ring-blue-500"/>
       </div>
 
