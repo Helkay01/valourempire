@@ -67,6 +67,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
+
+
+// Fetch customers for datalist
+$customers = [];
+try {
+    $stmt = $pdo->query("SELECT id, name FROM customers");
+    $customers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (Exception $e) {
+    die("Failed to fetch customers: " . $e->getMessage());
+}
+
+
+
     
 ?>
 
@@ -119,23 +132,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
       <!-- Invoice Header -->
       <div class="grid md:grid-cols-2 gap-6 mb-6">
-        <div>
-          <label class="block text-sm font-medium text-gray-700">Bill To</label>
-          <input 
-              list="browsers"
-              id="bill_to"
-              name="bill_to"
-              placeholder="Select or type a browser..."
-              required
-              class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"/>
+            <div>
+                  <label class="block text-sm font-medium text-gray-700">Bill To</label>
+                  <input 
+                      list="clientName" 
+                      id="bill_to" 
+                      name="bill_to" 
+                      required 
+                      placeholder="Start typing customer name..."
+                      class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"/>
+                
+                  <!-- Hidden input to hold the customer ID -->
+                  <input type="hidde" name="bill_to_id" id="bill_to_id" />
+                
+                  <datalist id="clientName">
+                    <?php foreach ($customers as $customer): ?>
+                      <option data-id="<?= $customer['id'] ?>" value="<?= htmlspecialchars($customer['name']) ?>"></option>
+                    <?php endforeach; ?>
+                  </datalist>
+            </div>
 
           
-            <datalist id="clientName">
-           
-              <option value="olaab">Olaab</option>
-           
-          </datalist>
-        </div>
 
         <div>
           <label class="block text-sm font-medium text-gray-700">Invoice Number</label>
@@ -214,7 +231,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   <!-- JS Logic -->
   <script>
+document.getElementById('bill_to').addEventListener('input', function () {
+  const input = this.value;
+  const options = document.querySelectorAll('#clientName option');
+  let matchedId = '';
 
+  options.forEach(option => {
+    if (option.value === input) {
+      matchedId = option.getAttribute('data-id');
+    }
+  });
+
+  document.getElementById('bill_to_id').value = matchedId;
   
 
 async function downloadPDF() {
