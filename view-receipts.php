@@ -72,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["start_date"], $_GET["en
           <thead class="bg-gray-100">
             <tr>
               <th class="py-2 px-4 border-b text-left">Date</th>
-              <th class="py-2 px-4 border-b text-left">Client ID</th>
+              <th class="py-2 px-4 border-b text-left">Client name</th>
               <th class="py-2 px-4 border-b text-left">Email</th>
               <th class="py-2 px-4 border-b text-left">Description</th>
               <th class="py-2 px-4 border-b text-left">Method</th>
@@ -83,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["start_date"], $_GET["en
             <?php foreach ($receipts as $receipt): ?>
               <tr>
                 <td class="py-2 px-4 border-b"><?= htmlspecialchars($receipt['payment_date']) ?></td>
-                <td class="py-2 px-4 border-b"><?= htmlspecialchars($receipt['client_id']) ?></td>
+                <td class="py-2 px-4 border-b"><?= htmlspecialchars($receipt['client_name']) ?></td>
                 <td class="py-2 px-4 border-b"><?= htmlspecialchars($receipt['client_email']) ?></td>
                 <td class="py-2 px-4 border-b"><?= htmlspecialchars($receipt['description']) ?></td>
                 <td class="py-2 px-4 border-b"><?= htmlspecialchars($receipt['payment_method']) ?></td>
