@@ -46,13 +46,15 @@ try {
 <body class="bg-gray-100 p-6 min-h-screen">
 
 
-<a href="/" class="inline-flex items-center text-indigo-600 hover:text-indigo-800 mb-6">
-      <!-- back icon -->
-      Back to Dashboard
-    </a>
 
     
 <div class="max-w-6xl mx-auto bg-white p-6 rounded shadow">
+   <a href="/" class="inline-flex items-center text-indigo-600 hover:text-indigo-800 mb-6">
+      <!-- back icon -->
+      < Back to Dashboard
+    </a>
+
+   
     <h1 class="text-2xl font-bold mb-6 text-gray-800">All Invoices</h1>
 
     <!-- Date Range Filter -->
