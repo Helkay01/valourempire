@@ -3,9 +3,15 @@ include "connections.php";
 
 $successMessage = "";
 $errorMessage = "";
+$status = "paid";
+$new_balance = "0";
 
 // Check if invoice_id is set
 $invoiceId = $_GET['invoice_id'] ?? null;
+$balance = (float)$_GET['amount'] ?? null;
+$total = (float)$_GET['total'] ?? null;
+$paid = (float)$_GET['paid'] ?? null;
+
 
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -15,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $paymentDate = $_POST["paymentDate"];
         $description = $_POST["description"];
         $paymentMethod = $_POST["paymentMethod"];
-        $amount = $_POST["amount"];
+        $amount = (float)$_POST["amount"];
 
         $stmt = $pdo->prepare("INSERT INTO receipts (client_id, client_email, payment_date, description, payment_method, amount) 
                                VALUES (:client_id, :client_email, :payment_date, :description, :payment_method, :amount)");
@@ -30,6 +36,24 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         ]);
 
         $successMessage = "Receipt saved successfully.";
+
+        $selInv = $pdo->prepare("SELECT * FROM invoices WHERE invoice_id = :id");
+        $selInv->bindParam(':id', $invoiceId);
+        $selInv->execute();
+        $amt_paid = (float)$selInv->fetch(PDO::FETCH_ASSOC)['paid'];
+        $total_paid = $amt_paid + $amount;
+        
+        if($amount === $balance) {
+            $updInv = $pdo->prepare("UPDATE invoices SET status = :status, paid = :paid, balance = :balance WHERE invoice_id = :id");
+            $updInv->bindParam(':id', $invoiceId);
+            $updInv->bindParam(':status', $status);
+            $updInv->bindParam(':paid', $total_paid);
+            $updInv->bindParam(':balance', $new_balance);
+            $updInv->execute();
+        }
+        
+
+        
       
     } catch (Exception $e) {
         $errorMessage = "Error saving receipt: " . $e->getMessage();
