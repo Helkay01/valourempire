@@ -42,7 +42,7 @@ if(isset($_POST['save_service'])) {
   <main class="max-w-5xl mx-auto px-6 py-10">
     <!-- Form Section -->
     <div class="bg-white shadow rounded-lg p-6 mb-10">
-      <a href="/dashboard.html" class="inline-flex items-center text-indigo-600 hover:text-indigo-800 mb-6">
+      <a href="/" class="inline-flex items-center text-indigo-600 hover:text-indigo-800 mb-6">
         <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
              xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path>
