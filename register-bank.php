@@ -1,6 +1,16 @@
 <?php
-// Include the PDO connection
-require_once "connections.php";
+session_start();
+require 'connections.php'; // Assumes $conn is a PDO instance
+
+// Ensure user is logged in
+if (!isset($_SESSION['user'])) {
+   // die("Unauthorized access.");
+    header("Location: login.php");
+}
+
+$user_id = $_SESSION['user']['user_id'];
+
+
 
 
 // Handle form submission
@@ -70,6 +80,13 @@ $accounts = $pdo->query("SELECT * FROM bank ORDER BY id DESC")->fetchAll(PDO::FE
 </head>
 <body class="bg-gray-100 text-gray-800 min-h-screen flex flex-col">
 
+<a href="/" class="inline-flex items-center text-indigo-600 hover:text-indigo-800 mb-6">
+      <!-- back icon -->
+      Back to Dashboard
+    </a>
+
+
+    
   <!-- Header -->
   <header class="bg-white shadow border-b">
     <div class="max-w-4xl mx-auto px-6 py-5">
