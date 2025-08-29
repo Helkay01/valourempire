@@ -106,6 +106,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body class="bg-gray-100 min-h-screen p-6">
 
 <div class="max-w-4xl mx-auto bg-white p-6 rounded shadow">
+   <a href="/" class="inline-flex items-center text-indigo-600 hover:text-indigo-800 mb-6">
+      <!-- back icon -->
+      Back to Dashboard
+    </a>
+   
     <h1 class="text-2xl font-bold mb-4">Edit Invoice</h1>
 
     <?php if ($successMessage): ?>
