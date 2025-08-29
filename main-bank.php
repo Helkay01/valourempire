@@ -77,6 +77,17 @@ if (isset($_POST['record'])) {
   <!-- Main Content -->
   <main class="max-w-4xl mx-auto px-6 py-10 space-y-12">
 
+     
+      <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
+        <?php 
+            if (isset($_GET['status'])) {
+                echo $_GET['status'];
+            }
+        ?>
+      </div>
+    
+
+    
     <!-- Form Section -->
     <section class="bg-white p-6 rounded-lg shadow-md">
       <h2 class="text-xl font-semibold mb-4">📝 New Entry</h2>
