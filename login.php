@@ -41,11 +41,12 @@ if (isset($_POST['sign_in'])) {
 
     <?php
         if (isset($_GET['status'])) {
-              echo '<div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
-                        {$_GET['status']}
-                    </div>';
+            echo '<div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">'
+                . htmlspecialchars($_GET['status']) .
+                 '</div>';
         }
     ?>
+
     
   <div class="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
     <h2 class="text-2xl font-semibold text-center text-gray-800">Login to Your Account</h2>
