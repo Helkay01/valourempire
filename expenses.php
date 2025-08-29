@@ -130,7 +130,7 @@ window.onload = function() {
             >
               <option value="" disabled selected>Select method</option>
               <option value="Cash">Cash</option>
-              <option value="Cash">Bank</option>
+              <option value="Bank">Bank</option>
                 
               <?php
                                        
