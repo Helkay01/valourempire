@@ -4,6 +4,9 @@ include "connections.php";
 $successMessage = "";
 $errorMessage = "";
 
+// Check if invoice_id is set
+$invoiceId = $_GET['invoice_id'] ?? null;
+
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     try {
@@ -27,7 +30,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         ]);
 
         $successMessage = "Receipt saved successfully.";
-
       
     } catch (Exception $e) {
         $errorMessage = "Error saving receipt: " . $e->getMessage();
@@ -41,7 +43,6 @@ $dets = $res->fetchAll(PDO::FETCH_ASSOC);
 $clientMap = [];
 foreach ($dets as $det) {
     $clientMap[$det['name']] = $det['id'];
-
 }
 ?>
 
@@ -65,6 +66,8 @@ foreach ($dets as $det) {
   </style>
 </head>
 <body class="bg-white text-gray-800 p-6">
+
+<?php if ($invoiceId): ?>
   <div id="receiptContent" class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow border border-gray-200">
 
     <?php if ($successMessage): ?>
@@ -143,30 +146,41 @@ foreach ($dets as $det) {
         </button>
       </div>
     </form>
+  </div> <!-- End of #receiptContent -->
+
+<?php else: ?>
+  <div class="max-w-2xl mx-auto mt-10 bg-yellow-100 border border-yellow-400 text-yellow-800 px-6 py-4 rounded">
+    <strong class="font-bold">Invoice ID not set.</strong>
+    <p class="mt-1">Please provide an <code>invoice_id</code> in the URL to access the receipt form.</p>
+    <p class="text-sm mt-2 text-gray-600">Example: <code>?invoice_id=123&client_name=John&amount=250</code></p>
   </div>
+<?php endif; ?>
 
-  <script>
-    const clientMap = <?= json_encode($clientMap); ?>;
+<script>
+  const clientMap = <?= json_encode($clientMap); ?>;
 
-    document.getElementById('searchClient').addEventListener('input', function () {
-      const name = this.value.trim();
-      const clientId = clientMap[name] || "";
-      document.getElementById('clientId').value = clientId;
-    });
+  document.getElementById('searchClient')?.addEventListener('input', function () {
+    const name = this.value.trim();
+    const clientId = clientMap[name] || "";
+    document.getElementById('clientId').value = clientId;
+  });
 
-    document.getElementById("paymentDate").valueAsDate = new Date();
+  const paymentDateInput = document.getElementById("paymentDate");
+  if (paymentDateInput) {
+    paymentDateInput.valueAsDate = new Date();
+  }
 
-    async function downloadPDF() {
-      const { jsPDF } = window.jspdf;
-      const element = document.getElementById("receiptContent");
-      const canvas = await html2canvas(element, { scale: 2, backgroundColor: "#ffffff" });
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "mm", "a4");
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-      pdf.save("receipt.pdf");
-    }
-  </script>
+  async function downloadPDF() {
+    const { jsPDF } = window.jspdf;
+    const element = document.getElementById("receiptContent");
+    const canvas = await html2canvas(element, { scale: 2, backgroundColor: "#ffffff" });
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF("p", "mm", "a4");
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+    pdf.save("receipt.pdf");
+  }
+</script>
 </body>
 </html>
