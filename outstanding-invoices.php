@@ -38,6 +38,8 @@ try {
                         <th class="px-4 py-3 border text-right">Subtotal</th>
                         <th class="px-4 py-3 border text-right">Discount</th>
                         <th class="px-4 py-3 border text-right">Total</th>
+                        <th class="px-4 py-3 border text-right">Amount paid</th>
+                        <th class="px-4 py-3 border text-right">Balance</th>
                         <th class="px-4 py-3 border text-center">Action</th>
                     </tr>
                 </thead>
@@ -50,6 +52,8 @@ try {
                             <td class="px-4 py-3 border text-right">₦<?= number_format($invoice['subtotal'], 2) ?></td>
                             <td class="px-4 py-3 border text-right">₦<?= number_format($invoice['discount'], 2) ?></td>
                             <td class="px-4 py-3 border text-right font-semibold">₦<?= number_format($invoice['total'], 2) ?></td>
+                            <td class="px-4 py-3 border text-right">₦<?= number_format($invoice['paid'], 2) ?></td>
+                            <td class="px-4 py-3 border text-right font-semibold">₦<?= number_format($invoice['balance'], 2) ?></td>
                             <td class="px-4 py-3 border text-center">
                                 <a href="receipts.php?invoice_id=<?= urlencode($invoice['invoice_id']) ?>&client_name=<?= urlencode($invoice['bill_to']) ?>&client_id=<?= urlencode($invoice['client_id']) ?>&amount=<?= urlencode($invoice['total']) ?>" 
                                    class="inline-block bg-blue-600 text-white text-sm px-4 py-2 rounded hover:bg-blue-700">
