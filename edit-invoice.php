@@ -1,5 +1,17 @@
 <?php
-require_once 'connections.php';
+session_start();
+require 'connections.php'; // Assumes $conn is a PDO instance
+
+// Ensure user is logged in
+if (!isset($_SESSION['user'])) {
+   // die("Unauthorized access.");
+    header("Location: login.php");
+}
+
+$user_id = $_SESSION['user']['user_id'];
+
+
+
 
 $invoiceData = null;
 $invoiceItems = [];
