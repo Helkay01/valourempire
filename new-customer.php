@@ -1,5 +1,19 @@
 <?php
-include 'connections.php';
+session_start();
+require 'connections.php'; // Assumes $conn is a PDO instance
+
+// Ensure user is logged in
+if (!isset($_SESSION['user'])) {
+   // die("Unauthorized access.");
+    header("Location: login.php");
+}
+
+$user_id = $_SESSION['user']['user_id'];
+
+
+
+
+
 
 if(isset($_POST['save_customer'])) {
     $name = $_POST['customerName'];
@@ -37,7 +51,7 @@ if(isset($_POST['save_customer'])) {
   <header class="bg-white shadow-sm border-b border-gray-200">
     <div class="max-w-4xl mx-auto px-6 py-5">
 
-      <a href="file:///C:/Code/Acc/dashboard.html" class="inline-flex items-center text-indigo-600 hover:text-indigo-800 mb-6">
+      <a href="/" class="inline-flex items-center text-indigo-600 hover:text-indigo-800 mb-6">
         <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path>
       </svg>
