@@ -22,6 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $description = $_POST["description"];
         $paymentMethod = $_POST["paymentMethod"];
         $amount = (float)$_POST["amount"];
+        $clientName = $_POST["clientName"];
 
 
 
@@ -43,8 +44,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $updInv->execute();
 
             if($updInv) {
-                 $stmt = $pdo->prepare("INSERT INTO receipts (client_id, client_email, payment_date, description, payment_method, amount) 
-                               VALUES (:client_id, :client_email, :payment_date, :description, :payment_method, :amount)");
+                 $stmt = $pdo->prepare("INSERT INTO receipts (client_id, client_email, payment_date, description, payment_method, amount, client_name) 
+                               VALUES (:client_id, :client_email, :payment_date, :description, :payment_method, :amount, :client_nane)");
 
                 $stmt->execute([
                     ':client_id' => $clientId,
@@ -52,7 +53,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     ':payment_date' => $paymentDate,
                     ':description' => $description,
                     ':payment_method' => $paymentMethod,
-                    ':amount' => $amount
+                    ':amount' => $amount,
+                    ':client_name' => $clientName
                 ]);
 
                 $successMessage = "Receipt saved successfully.";
@@ -74,8 +76,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $updInv->execute();
 
              if($updInv) {
-                 $stmt = $pdo->prepare("INSERT INTO receipts (client_id, client_email, payment_date, description, payment_method, amount) 
-                               VALUES (:client_id, :client_email, :payment_date, :description, :payment_method, :amount)");
+                 $stmt = $pdo->prepare("INSERT INTO receipts (client_id, client_email, payment_date, description, payment_method, amount, client_name) 
+                               VALUES (:client_id, :client_email, :payment_date, :description, :payment_method, :amount, :client_name)");
 
                 $stmt->execute([
                     ':client_id' => $clientId,
@@ -83,7 +85,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     ':payment_date' => $paymentDate,
                     ':description' => $description,
                     ':payment_method' => $paymentMethod,
-                    ':amount' => $amount
+                    ':amount' => $amount,
+                    ':client_name' => $clientName
                 ]);
 
                 $successMessage = "Receipt saved successfully.";
@@ -161,7 +164,7 @@ foreach ($dets as $det) {
       <div class="grid md:grid-cols-2 gap-6 mb-6">
         <div>
           <label for="searchClient" class="block text-sm font-medium text-gray-700">Client Name</label>
-          <input list="clientName" required id="searchClient" 
+          <input name="clientName" list="clientName" required id="searchClient" 
               value="<?php $cName = $_GET['client_name'] ?? "";  echo $cName; ?>"
               placeholder="Select or type client name..." class="px-4 py-2 border border-gray-300 rounded-md w-full focus:ring-2 focus:ring-blue-500 outline-none" />
           <input type="hidden" id="clientId" name="clientId" />
