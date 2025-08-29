@@ -61,6 +61,10 @@ $customers = $pdo->query("SELECT * FROM customers ORDER BY date DESC")->fetchAll
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col">
+   <a href="/" class="inline-flex items-center text-indigo-600 hover:text-indigo-800 mb-6">
+      <!-- back icon -->
+      Back to Dashboard
+    </a>
 
 <header class="bg-white shadow-sm border-b border-gray-200">
   <div class="max-w-4xl mx-auto px-6 py-5">
