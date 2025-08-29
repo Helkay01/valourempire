@@ -151,7 +151,7 @@ foreach ($dets as $det) {
 <?php else: ?>
   <div class="max-w-2xl mx-auto mt-10 bg-yellow-100 border border-yellow-400 text-yellow-800 px-6 py-4 rounded">
     <strong class="font-bold">Invoice ID not set.</strong>
-    <p class="mt-1">Please create invoice or check <a href="outstanding-invoices.php">outstanding invoices</a> to access the receipt form.</p>
+    <p class="mt-1">Please create invoice or check <a style="color: blue" href="outstanding-invoices.php">outstanding invoices</a> to access the receipt form.</p>
       
   </div>
 <?php endif; ?>
