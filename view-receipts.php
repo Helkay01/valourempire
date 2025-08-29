@@ -1,5 +1,17 @@
 <?php
-include "connections.php"; // Assumes $pdo is set
+session_start();
+require 'connections.php'; // Assumes $conn is a PDO instance
+
+// Ensure user is logged in
+if (!isset($_SESSION['user'])) {
+   // die("Unauthorized access.");
+    header("Location: login.php");
+}
+
+$user_id = $_SESSION['user']['user_id'];
+
+
+
 
 $receipts = [];
 $errorMessage = "";
@@ -33,6 +45,12 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["start_date"], $_GET["en
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50 p-8 text-gray-800">
+
+<a href="/" class="inline-flex items-center text-indigo-600 hover:text-indigo-800 mb-6">
+      <!-- back icon -->
+      Back to Dashboard
+    </a>
+    
   <div class="max-w-5xl mx-auto bg-white p-6 rounded shadow border">
 
     <h1 class="text-2xl font-bold mb-6">Receipt Report</h1>
