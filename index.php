@@ -59,6 +59,7 @@ include 'connections.php';
             <a href="outstanding-invoices.php" class="block py-1 px-2 rounded hover:bg-gray-100">Receivables</a>
             <a href="petty-cash.php" class="block py-1 px-2 rounded hover:bg-gray-100">Petty cash</a>
             <a href="view-cash.php" class="block py-1 px-2 rounded hover:bg-gray-100">View cash transactions</a>
+            <a href="view-bank.php" class="block py-1 px-2 rounded hover:bg-gray-100">View bank transactions</a>
           </div>
         </div>
 
