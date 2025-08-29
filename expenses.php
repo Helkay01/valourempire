@@ -35,6 +35,18 @@ if (isset($_POST['expenses'])) {
             ':date' => $date
         ]);
 
+                if($paymentMethod === "Cash") {
+                    $exp = "Expenses recored ({$category})";
+                    
+                    $stmt = $pdo->prepare("INSERT INTO cash (from_bk, amount, note, date)VALUES (:bank_account, :amount, :note, :date)");
+                    $stmt->bindParam(':bank_account', $exp);
+                    $stmt->bindParam(':amount', $amount);
+                    $stmt->bindParam(':note', $description);
+                    $stmt->bindParam(':date', $date);
+                    $stmt->execute();
+                    
+                }
+
         echo 'Expense saved successfully';
       
     } catch (PDOException $e) {
