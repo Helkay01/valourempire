@@ -47,6 +47,17 @@ if (isset($_POST['expenses'])) {
                     
                 }
 
+                if($paymentMethod === "Bank") {
+                    $stmt = $pdo->prepare("INSERT INTO main_bank (amount, note, date)VALUES (:amount, :note, :date)");
+                
+                    $stmt->bindParam(':amount', $amount);
+                    $stmt->bindParam(':note', $description);
+                    $stmt->bindParam(':date', $date);
+                    $stmt->execute();
+                    
+                }
+                 
+
         echo 'Expense saved successfully';
       
     } catch (PDOException $e) {
