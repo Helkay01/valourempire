@@ -4,7 +4,7 @@ include "connections.php";
 $successMessage = "";
 $errorMessage = "";
 $status = "paid";
-$new_balance = "0";
+$new_balance = "";
 
 // Check if invoice_id is set
 $invoiceId = $_GET['invoice_id'] ?? null;
@@ -44,9 +44,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $total_paid = $amt_paid + $amount;
         
         if($amount === $balance) {
+            $new_balance = "0";
+            
             $updInv = $pdo->prepare("UPDATE invoices SET status = :status, paid = :paid, balance = :balance WHERE invoice_id = :id");
             $updInv->bindParam(':id', $invoiceId);
             $updInv->bindParam(':status', $status);
+            $updInv->bindParam(':paid', $total_paid);
+            $updInv->bindParam(':balance', $new_balance);
+            $updInv->execute();
+        }
+
+         if($amount < $balance) {
+            $new_balance = $total - $total_paid;
+            
+            $updInv = $pdo->prepare("UPDATE invoices SET paid = :paid, balance = :balance WHERE invoice_id = :id");
+            $updInv->bindParam(':id', $invoiceId);
             $updInv->bindParam(':paid', $total_paid);
             $updInv->bindParam(':balance', $new_balance);
             $updInv->execute();
