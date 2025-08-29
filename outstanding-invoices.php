@@ -55,7 +55,7 @@ try {
                             <td class="px-4 py-3 border text-right">₦<?= number_format($invoice['paid'], 2) ?></td>
                             <td class="px-4 py-3 border text-right font-semibold">₦<?= number_format($invoice['balance'], 2) ?></td>
                             <td class="px-4 py-3 border text-center">
-                                <a href="receipts.php?invoice_id=<?= urlencode($invoice['invoice_id']) ?>&client_name=<?= urlencode($invoice['bill_to']) ?>&client_id=<?= urlencode($invoice['client_id']) ?>&amount=<?= urlencode($invoice['total']) ?>" 
+                                <a href="receipts.php?invoice_id=<?= urlencode($invoice['invoice_id']) ?>&client_name=<?= urlencode($invoice['bill_to']) ?>&client_id=<?= urlencode($invoice['client_id']) ?>&amount=<?= urlencode($invoice['balance']) ?>&total=<?= urlencode($invoice['total']) ?>&paid=<?= urlencode($invoice['paid']) ?>" 
                                    class="inline-block bg-blue-600 text-white text-sm px-4 py-2 rounded hover:bg-blue-700">
                                     Write receipt
                                 </a>
