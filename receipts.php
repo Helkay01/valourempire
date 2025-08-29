@@ -1,5 +1,19 @@
 <?php
-include "connections.php";
+session_start();
+require 'connections.php'; // Assumes $conn is a PDO instance
+
+// Ensure user is logged in
+if (!isset($_SESSION['user'])) {
+   // die("Unauthorized access.");
+    header("Location: login.php");
+}
+
+$user_id = $_SESSION['user']['user_id'];
+
+
+
+
+
 
 $successMessage = "";
 $errorMessage = "";
@@ -179,6 +193,11 @@ foreach ($dets as $det) {
 </head>
 <body class="bg-white text-gray-800 p-6">
 
+<a href="/" class="inline-flex items-center text-indigo-600 hover:text-indigo-800 mb-6">
+      <!-- back icon -->
+      Back to Dashboard
+    </a>
+    
 <?php if ($invoiceId): ?>
   <div id="receiptContent" class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow border border-gray-200">
 
