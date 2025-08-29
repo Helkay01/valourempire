@@ -4,7 +4,7 @@ require 'connections.php'; // Assumes $conn is a PDO instance
 
 // Ensure user is logged in
 if (!isset($_SESSION['user'])) {
-    die("Unauthorized access.");
+   // die("Unauthorized access.");
     header("Location: login.php");
 }
 
