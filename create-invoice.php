@@ -44,8 +44,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Insert invoice
         $status = "unpaid";
-        $stmt = $pdo->prepare("INSERT INTO invoices (bill_to, issue_date, subtotal, discount, total, invoice_id, status, client_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$billTo, $issueDate, $subtotal, $discount, $total, $invoiceNumber, $status, $clientId]);
+        $paid = "0";
+        $balance = "0";
+        
+        $stmt = $pdo->prepare("INSERT INTO invoices (bill_to, issue_date, subtotal, discount, total, invoice_id, status, client_id, paid, balance) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$billTo, $issueDate, $subtotal, $discount, $total, $invoiceNumber, $status, $clientId, $paid, $balance]);
 
         // Get last inserted ID (optional if you want to use auto-incremented ID for relational FK)
         // $invoiceId = $pdo->lastInsertId(); 
