@@ -23,20 +23,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $paymentMethod = $_POST["paymentMethod"];
         $amount = (float)$_POST["amount"];
 
-        $stmt = $pdo->prepare("INSERT INTO receipts (client_id, client_email, payment_date, description, payment_method, amount) 
-                               VALUES (:client_id, :client_email, :payment_date, :description, :payment_method, :amount)");
 
-        $stmt->execute([
-            ':client_id' => $clientId,
-            ':client_email' => $clientEmail,
-            ':payment_date' => $paymentDate,
-            ':description' => $description,
-            ':payment_method' => $paymentMethod,
-            ':amount' => $amount
-        ]);
 
-        $successMessage = "Receipt saved successfully.";
-
+       
         $selInv = $pdo->prepare("SELECT * FROM invoices WHERE invoice_id = :id");
         $selInv->bindParam(':id', $invoiceId);
         $selInv->execute();
@@ -52,8 +41,29 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $updInv->bindParam(':paid', $total_paid);
             $updInv->bindParam(':balance', $new_balance);
             $updInv->execute();
+
+            if($updInv) {
+                 $stmt = $pdo->prepare("INSERT INTO receipts (client_id, client_email, payment_date, description, payment_method, amount) 
+                               VALUES (:client_id, :client_email, :payment_date, :description, :payment_method, :amount)");
+
+                $stmt->execute([
+                    ':client_id' => $clientId,
+                    ':client_email' => $clientEmail,
+                    ':payment_date' => $paymentDate,
+                    ':description' => $description,
+                    ':payment_method' => $paymentMethod,
+                    ':amount' => $amount
+                ]);
+
+                $successMessage = "Receipt saved successfully.";
+
+            }
+            
         }
 
+
+
+        
          if($amount < $balance) {
             $new_balance = $total - $total_paid;
             
@@ -62,8 +72,30 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $updInv->bindParam(':paid', $total_paid);
             $updInv->bindParam(':balance', $new_balance);
             $updInv->execute();
+
+             if($updInv) {
+                 $stmt = $pdo->prepare("INSERT INTO receipts (client_id, client_email, payment_date, description, payment_method, amount) 
+                               VALUES (:client_id, :client_email, :payment_date, :description, :payment_method, :amount)");
+
+                $stmt->execute([
+                    ':client_id' => $clientId,
+                    ':client_email' => $clientEmail,
+                    ':payment_date' => $paymentDate,
+                    ':description' => $description,
+                    ':payment_method' => $paymentMethod,
+                    ':amount' => $amount
+                ]);
+
+                $successMessage = "Receipt saved successfully.";
+
+            }
+             
         }
         
+
+        if ($amount > $balance) {
+            $errorMessage = "Error saving receipt: {$amount} is less than {$balance}";
+        }
 
         
       
@@ -125,7 +157,7 @@ foreach ($dets as $det) {
       <span class="block sm:inline">Please proceed carefully. Receipts cannot be edited or deleted. Errors may impact your financial records.</span>
     </div>
     
-    <form method="POST">
+    <form id="receiptForm" method="POST">
       <div class="grid md:grid-cols-2 gap-6 mb-6">
         <div>
           <label for="searchClient" class="block text-sm font-medium text-gray-700">Client Name</label>
