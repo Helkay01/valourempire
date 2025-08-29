@@ -44,17 +44,10 @@ if ($startDate && $endDate) {
 </head>
 <body class="bg-gray-100 text-gray-800 min-h-screen">
 
-<a href="/" class="inline-flex items-center text-indigo-600 hover:text-indigo-800 mb-6">
-      <!-- back icon -->
-      Back to Dashboard
-    </a>
-
-
-    
   <!-- Header -->
   <header class="bg-white shadow border-b">
     <div class="max-w-4xl mx-auto px-6 py-5">
-      <a href="dashboard.html" class="inline-flex items-center text-indigo-600 hover:text-indigo-800 mb-6">
+      <a href="/" class="inline-flex items-center text-indigo-600 hover:text-indigo-800 mb-6">
         <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path>
         </svg>
