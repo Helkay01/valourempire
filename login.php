@@ -81,7 +81,7 @@ if (isset($_POST['sign_in'])) {
       <!-- Register Link -->
       <p class="text-center text-sm text-gray-600 mt-4">
         Don't have an account?
-        <a href="#" class="text-blue-600 hover:underline">Register</a>
+        <a href="/sign-up.php" class="text-blue-600 hover:underline">Register</a>
       </p>
     </form>
   </div>
