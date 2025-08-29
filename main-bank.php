@@ -90,17 +90,15 @@ if (isset($_POST['record'])) {
   <main class="max-w-4xl mx-auto px-6 py-10 space-y-12">
 
      
-      
-        <?php 
+      <?php
             if (isset($_GET['status'])) {
-                echo '
-                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
-                        {$_GET['status']}
-                    </div>
-                ';
-            }
-        ?>
-      
+                echo '<div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">'
+                    . htmlspecialchars($_GET['status']) .
+                     '</div>';
+            }         
+      ?>
+
+        
     
 
     
