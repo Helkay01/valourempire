@@ -56,7 +56,7 @@ if(isset($_POST['saveProfile'])) {
 </head>
 <body class="bg-gray-100 min-h-screen flex items-center justify-center px-4">
   <div class="bg-white shadow-xl rounded-lg p-8 max-w-2xl w-full space-y-10">
-    <a href="dashboard.php" class="inline-flex items-center text-indigo-600 hover:text-indigo-800 mb-6">
+    <a href="/" class="inline-flex items-center text-indigo-600 hover:text-indigo-800 mb-6">
       <!-- back icon -->
       Back to Dashboard
     </a>
