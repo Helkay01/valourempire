@@ -130,13 +130,15 @@ window.onload = function() {
             >
               <option value="" disabled selected>Select method</option>
               <option value="Cash">Cash</option>
+              <option value="Cash">Bank</option>
+                
               <?php
                                        
                     // Fetch existing accounts
-                    $accounts = $pdo->query("SELECT * FROM bank ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC);
-                    foreach ($accounts as $acct) {
-                        echo '<option value="' . $acct['acct_no'] . '">' . $acct['bank_name'] . ' - ' . $acct['acct_no'] . '</option>';
-                    }
+                   // $accounts = $pdo->query("SELECT * FROM bank ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC);
+                   // foreach ($accounts as $acct) {
+                    //    echo '<option value="' . $acct['acct_no'] . '">' . $acct['bank_name'] . ' - ' . $acct['acct_no'] . '</option>';
+                   // }
                     
               ?>
               
