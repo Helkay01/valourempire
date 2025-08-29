@@ -94,7 +94,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         
 
         if ($amount > $balance) {
-            $errorMessage = "Error saving receipt: {$amount} is less than {$balance}";
+            $errorMessage = "Error saving receipt: {$amount} is greater than {$balance}";
         }
 
         
