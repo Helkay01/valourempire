@@ -1,6 +1,16 @@
 <?php
-// Include DB connection
-require_once 'connections.php';
+session_start();
+require 'connections.php'; // Assumes $conn is a PDO instance
+
+// Ensure user is logged in
+if (!isset($_SESSION['user'])) {
+   // die("Unauthorized access.");
+    header("Location: login.php");
+}
+
+$user_id = $_SESSION['user']['user_id'];
+
+
 
 // Default date range if none selected
 if(isset($_GET['start_date']) & isset($_GET['end_date'])) {
@@ -52,7 +62,7 @@ window.onload = function() {
   <!-- Header -->
   <header class="max-w-6xl mx-auto mb-8">
     <div class="max-w-4xl mx-auto px-6 py-5">
-        <a href="dashboard.php" class="inline-flex items-center text-indigo-600 hover:text-indigo-800 mb-6">
+        <a href="/" class="inline-flex items-center text-indigo-600 hover:text-indigo-800 mb-6">
             <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path>
             </svg>
