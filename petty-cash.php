@@ -88,10 +88,9 @@ if (isset($_POST['record'])) {
           <div>
             <label for="bankAccount" class="block text-sm font-medium text-gray-700 mb-1">From Bank Account</label>
             <select id="bankAccount" name="bankAccount" required class="w-full border px-3 py-2 rounded-md">
-              <option value="" disabled selected>Select bank</option>
-              <option value="Zenith Bank - 1234567890">Zenith Bank - 1234567890</option>
-              <option value="GTBank - 0987654321">GTBank - 0987654321</option>
-              <option value="UBA - 1122334455">UBA - 1122334455</option>
+             
+              <option value="Bank">Bank</option>
+          
             </select>
           </div>
 
