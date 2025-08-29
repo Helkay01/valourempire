@@ -39,7 +39,7 @@ try {
 
     <a href="/" class="inline-flex items-center text-indigo-600 hover:text-indigo-800 mb-6">
       <!-- back icon -->
-      Back to Dashboard
+     < Back to Dashboard
     </a>
     
    
