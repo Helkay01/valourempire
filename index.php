@@ -75,7 +75,7 @@ include 'connections.php';
           <button onclick="toggleSubMenu('invoicesSubMenu')" class="w-full text-left py-2.5 px-4 rounded hover:bg-blue-100 hover:text-blue-600">📝 Invoices</button>
           <div id="invoicesSubMenu" class="pl-8 mt-1 hidden text-sm">
             <a href="create-invoice.php" class="block py-1 px-2 rounded hover:bg-gray-100">Create invoice</a>
-            <a href="edit-invoice.php" class="block py-1 px-2 rounded hover:bg-gray-100">Edit invoice</a>
+           
             <a href="outstanding-invoices.php" class="block py-1 px-2 rounded hover:bg-gray-100">Outstanding</a>
             <a href="view-invoices.php" class="block py-1 px-2 rounded hover:bg-gray-100">View invoices</a>
           </div>
