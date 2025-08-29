@@ -59,6 +59,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 $successMessage = "Receipt saved successfully.";
 
+                  if($paymentMethod === "Cash") {
+                    $stmt = $pdo->prepare("INSERT INTO cash (from_bk, amount, note, date)VALUES (:bank_account, :amount, :note, :date)");
+                    $stmt->bindParam(':bank_account', $clientName);
+                    $stmt->bindParam(':amount', $amount);
+                    $stmt->bindParam(':note', $description);
+                    $stmt->bindParam(':date', $paymentDate);
+                    $stmt->execute();
+                    
+                }
+                 
+                
+
             }
             
         }
