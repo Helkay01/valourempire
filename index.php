@@ -44,7 +44,7 @@ include 'connections.php';
             <a href="view-expenses.php" class="block py-1 px-2 rounded hover:bg-gray-100">Expenses report</a>
            <!-- <a href="other-income.php" class="block py-1 px-2 rounded hover:bg-gray-100">Other income</a> -->
             <a href="income-statement.php" class="block py-1 px-2 rounded hover:bg-gray-100">Income statement</a>
-            <a href="payables.php" class="block py-1 px-2 rounded hover:bg-gray-100">Payables</a>
+          <!--  <a href="payables.php" class="block py-1 px-2 rounded hover:bg-gray-100">Payables</a> -->
             <a href="outstanding-invoices.php" class="block py-1 px-2 rounded hover:bg-gray-100">Receivables</a>
             
          <!--   <a href="financial-position.php" class="block py-1 px-2 rounded hover:bg-gray-100">Financial Position</a> -->
