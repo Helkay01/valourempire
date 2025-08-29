@@ -55,7 +55,7 @@ include 'connections.php';
         <div>
           <button onclick="toggleSubMenu('shortTermSubMenu')" class="w-full text-left py-2.5 px-4 rounded hover:bg-blue-100 hover:text-blue-600">💵 Short-Term Assets</button>
           <div id="shortTermSubMenu" class="pl-8 mt-1 hidden text-sm">
-            <a href="register-bank.php" class="block py-1 px-2 rounded hover:bg-gray-100">Bank</a>
+            <!-- <a href="register-bank.php" class="block py-1 px-2 rounded hover:bg-gray-100">Bank</a> -->
             <a href="outstanding-invoices.php" class="block py-1 px-2 rounded hover:bg-gray-100">Receivables</a>
             <a href="petty-cash.php" class="block py-1 px-2 rounded hover:bg-gray-100">Petty cash</a>
             <a href="view-cash.php" class="block py-1 px-2 rounded hover:bg-gray-100">View cash transactions</a>
