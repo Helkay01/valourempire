@@ -17,7 +17,7 @@ $end_date = isset($_GET['end_date']) ? $_GET['end_date'] : date('Y-m-d', strtoti
 // Fetch income details from the database
 $incomeQuery = $pdo->prepare("
     SELECT * FROM invoices 
-    WHERE date BETWEEN :start_date AND :end_date
+    WHERE issue_date BETWEEN :start_date AND :end_date
 ");
 $incomeQuery->execute(['start_date' => $start_date, 'end_date' => $end_date]);
 $incomeDetails = $incomeQuery->fetchAll(PDO::FETCH_ASSOC);
