@@ -10,42 +10,41 @@ if (!isset($_SESSION['user'])) {
 
 $user_id = $_SESSION['user']['user_id'];
 
-// Check if date range is set in URL parameters
-if (!isset($_GET['start_date']) || !isset($_GET['end_date']) || empty($_GET['start_date']) || empty($_GET['end_date'])) {
-    // If the date range is not set, don't display the page content
-    echo "<div class='bg-red-100 text-red-700 border-l-4 border-red-600 p-4 rounded-lg shadow-xl w-full max-w-3xl mx-auto'>
-            <h2 class='text-center font-semibold text-xl'>Please select a valid date range to proceed.</h2>
-            <p class='mt-2 text-center'>You need to specify a start and end date to view the data.</p>
-          </div>";
-    exit;
-}
+// Default start_date and end_date if not set in URL
+$start_date = isset($_GET['start_date']) ? $_GET['start_date'] : '';
+$end_date = isset($_GET['end_date']) ? $_GET['end_date'] : '';
 
 // If date range is set, proceed with fetching data
-$start_date = $_GET['start_date'];
-$end_date = $_GET['end_date'];
+if ($start_date && $end_date) {
+    // Fetch income details from the database
+    $incomeQuery = $pdo->prepare("
+        SELECT * FROM invoices 
+        WHERE issue_date BETWEEN :start_date AND :end_date
+    ");
+    $incomeQuery->execute(['start_date' => $start_date, 'end_date' => $end_date]);
+    $incomeDetails = $incomeQuery->fetchAll(PDO::FETCH_ASSOC);
 
-// Fetch income details from the database
-$incomeQuery = $pdo->prepare("
-    SELECT * FROM invoices 
-    WHERE issue_date BETWEEN :start_date AND :end_date
-");
-$incomeQuery->execute(['start_date' => $start_date, 'end_date' => $end_date]);
-$incomeDetails = $incomeQuery->fetchAll(PDO::FETCH_ASSOC);
+    // Fetch expense details from the database
+    $expenseQuery = $pdo->prepare("
+        SELECT * FROM expenses 
+        WHERE date BETWEEN :start_date AND :end_date
+    ");
+    $expenseQuery->execute(['start_date' => $start_date, 'end_date' => $end_date]);
+    $expenseDetails = $expenseQuery->fetchAll(PDO::FETCH_ASSOC);
 
-// Fetch expense details from the database
-$expenseQuery = $pdo->prepare("
-    SELECT * FROM expenses 
-    WHERE date BETWEEN :start_date AND :end_date
-");
-$expenseQuery->execute(['start_date' => $start_date, 'end_date' => $end_date]);
-$expenseDetails = $expenseQuery->fetchAll(PDO::FETCH_ASSOC);
+    // Calculate total income and total expenses
+    $totalIncome = array_sum(array_column($incomeDetails, 'total'));
+    $totalExpenses = array_sum(array_column($expenseDetails, 'amount'));
 
-// Calculate total income and total expenses
-$totalIncome = array_sum(array_column($incomeDetails, 'total'));
-$totalExpenses = array_sum(array_column($expenseDetails, 'amount'));
+    // Calculate net profit/loss
+    $netProfitLoss = $totalIncome - $totalExpenses;
+} else {
+    // Default to empty values if no date is selected
+    $totalIncome = 0;
+    $totalExpenses = 0;
+    $netProfitLoss = 0;
+}
 
-// Calculate net profit/loss
-$netProfitLoss = $totalIncome - $totalExpenses;
 ?>
 
 <!DOCTYPE html>
@@ -71,61 +70,70 @@ $netProfitLoss = $totalIncome - $totalExpenses;
     <div class="flex justify-between items-center mb-6">
       <div class="flex items-center space-x-4">
         <label for="start_date" class="font-medium text-gray-700">Start Date</label>
-        <input id="start_date" name="start_date" type="date" class="border border-gray-300 rounded p-2" value="<?php echo $start_date; ?>" max="<?php echo date('Y-m-d'); ?>" onchange="updateDateRange()" />
+        <input id="start_date" name="start_date" type="date" class="border border-gray-300 rounded p-2" value="<?php echo htmlspecialchars($start_date); ?>" max="<?php echo date('Y-m-d'); ?>" onchange="updateDateRange()" />
       </div>
       <div class="flex items-center space-x-4">
         <label for="end_date" class="font-medium text-gray-700">End Date</label>
-        <input id="end_date" name="end_date" type="date" class="border border-gray-300 rounded p-2" value="<?php echo $end_date; ?>" onchange="updateDateRange()" />
+        <input id="end_date" name="end_date" type="date" class="border border-gray-300 rounded p-2" value="<?php echo htmlspecialchars($end_date); ?>" onchange="updateDateRange()" />
       </div>
     </div>
 
-    <!-- Header -->
-    <div class="text-center">
-      <h1 class="text-3xl font-bold text-gray-800">Comprehensive Income Statement</h1>
-      <p class="text-gray-600">For the period: <?php echo date('F j, Y', strtotime($start_date)) . ' - ' . date('F j, Y', strtotime($end_date)); ?></p>
-    </div>
-
-    <!-- Income Section -->
-    <div class="border border-gray-200 rounded-lg">
-      <button onclick="toggleSection('incomeDetails')" class="w-full flex justify-between items-center p-4 bg-blue-100 hover:bg-blue-200 rounded-t-md">
-        <span class="text-lg font-semibold text-blue-900">Income</span>
-        <span>▼</span>
-      </button>
-      <div id="incomeDetails" class="hidden p-4 space-y-2">
-        <div class="flex justify-between font-semibold pt-2 border-t">
-          <span>Total Income</span>
-          <span id="totalIncome">₦<?php echo number_format($totalIncome); ?></span>
-        </div>
+    <?php if (!$start_date || !$end_date): ?>
+      <div class="bg-red-100 text-red-700 border-l-4 border-red-600 p-4 rounded-lg shadow-xl w-full max-w-3xl mx-auto">
+        <h2 class="text-center font-semibold text-xl">Please select a valid date range to proceed.</h2>
+        <p class="mt-2 text-center">You need to specify a start and end date to view the data.</p>
       </div>
-    </div>
+    <?php endif; ?>
 
-    <!-- Expenses Section -->
-    <div class="border border-gray-200 rounded-lg">
-      <button onclick="toggleSection('expenseDetails')" class="w-full flex justify-between items-center p-4 bg-red-100 hover:bg-red-200 rounded-t-md">
-        <span class="text-lg font-semibold text-red-900">Expenses</span>
-        <span>▼</span>
-      </button>
-      <div id="expenseDetails" class="hidden p-4 space-y-2">
-        <?php foreach ($expenseDetails as $expense) { ?>
-          <div class="flex justify-between">
-            <span><?php echo htmlspecialchars($expense['category']); ?></span>
-            <span>₦<?php echo number_format($expense['amount']); ?></span>
+    <?php if ($start_date && $end_date): ?>
+      <!-- Header -->
+      <div class="text-center">
+        <h1 class="text-3xl font-bold text-gray-800">Comprehensive Income Statement</h1>
+        <p class="text-gray-600">For the period: <?php echo date('F j, Y', strtotime($start_date)) . ' - ' . date('F j, Y', strtotime($end_date)); ?></p>
+      </div>
+
+      <!-- Income Section -->
+      <div class="border border-gray-200 rounded-lg">
+        <button onclick="toggleSection('incomeDetails')" class="w-full flex justify-between items-center p-4 bg-blue-100 hover:bg-blue-200 rounded-t-md">
+          <span class="text-lg font-semibold text-blue-900">Income</span>
+          <span>▼</span>
+        </button>
+        <div id="incomeDetails" class="hidden p-4 space-y-2">
+          <div class="flex justify-between font-semibold pt-2 border-t">
+            <span>Total Income</span>
+            <span id="totalIncome">₦<?php echo number_format($totalIncome); ?></span>
           </div>
-        <?php } ?>
-        <div class="flex justify-between font-semibold pt-2 border-t">
-          <span>Total Expenses</span>
-          <span id="totalExpenses">₦<?php echo number_format($totalExpenses); ?></span>
         </div>
       </div>
-    </div>
 
-    <!-- Net Profit/Loss -->
-    <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
-      <div class="flex justify-between text-xl font-bold">
-        <span>Net Profit / Loss</span>
-        <span id="netIncome" class="<?php echo $netProfitLoss >= 0 ? 'text-green-600' : 'text-red-600'; ?>">₦<?php echo number_format($netProfitLoss); ?></span>
+      <!-- Expenses Section -->
+      <div class="border border-gray-200 rounded-lg">
+        <button onclick="toggleSection('expenseDetails')" class="w-full flex justify-between items-center p-4 bg-red-100 hover:bg-red-200 rounded-t-md">
+          <span class="text-lg font-semibold text-red-900">Expenses</span>
+          <span>▼</span>
+        </button>
+        <div id="expenseDetails" class="hidden p-4 space-y-2">
+          <?php foreach ($expenseDetails as $expense) { ?>
+            <div class="flex justify-between">
+              <span><?php echo htmlspecialchars($expense['category']); ?></span>
+              <span>₦<?php echo number_format($expense['amount']); ?></span>
+            </div>
+          <?php } ?>
+          <div class="flex justify-between font-semibold pt-2 border-t">
+            <span>Total Expenses</span>
+            <span id="totalExpenses">₦<?php echo number_format($totalExpenses); ?></span>
+          </div>
+        </div>
       </div>
-    </div>
+
+      <!-- Net Profit/Loss -->
+      <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+        <div class="flex justify-between text-xl font-bold">
+          <span>Net Profit / Loss</span>
+          <span id="netIncome" class="<?php echo $netProfitLoss >= 0 ? 'text-green-600' : 'text-red-600'; ?>">₦<?php echo number_format($netProfitLoss); ?></span>
+        </div>
+      </div>
+    <?php endif; ?>
   </div>
 
   <script>
