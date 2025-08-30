@@ -100,7 +100,7 @@ if ($start_date && $end_date) {
         </button>
         <div id="incomeDetails" class="hidden p-4 space-y-2">
           <div class="flex justify-between font-semibold pt-2 border-t">
-            <span>Total Income</span>
+            <span>Total Income (Invoices) </span>
             <span id="totalIncome">₦<?php echo number_format($totalIncome); ?></span>
           </div>
         </div>
