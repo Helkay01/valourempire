@@ -58,7 +58,7 @@ if(isset($_POST['saveProfile'])) {
   <div class="bg-white shadow-xl rounded-lg p-8 max-w-2xl w-full space-y-10">
     <a href="/" class="inline-flex items-center text-indigo-600 hover:text-indigo-800 mb-6">
       <!-- back icon -->
-      Back to Dashboard
+     < Back to Dashboard
     </a>
 
     <h1 class="text-3xl font-bold text-gray-800 text-center">Edit Profile & Business Info</h1>
