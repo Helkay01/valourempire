@@ -21,7 +21,28 @@ $incomeDetails = $selInv->fetchAll(PDO::FETCH_ASSOC);
 
 $totalIncome = array_sum(array_column($incomeDetails, 'total'));
    
+//iNVOICES
+$status = "unpaid";
+$stmt = $pdo->prepare("SELECT * FROM invoices WHERE status = :status ORDER BY id DESC");
+$stmt->bindParam(':status', $status);
+$stmt->execute();
+$count = $stmt->rowCount();
 
+//CUSTOMERS
+$custm = $pdo->prepare("SELECT * FROM customers");
+$custm->bindParam(':status', $status);
+$custm->execute();
+$cust = $stmt->rowCount();
+
+//EXPENSES
+$selExp = $pdo->prepare("SELECT * FROM expenses WHERE date BETWEEN :start_date AND :end_date");
+$selExp->bindParam(':start_date', $start_date);
+$selExp->bindParam(':end_date', $end_date);
+$selExp->execute();
+
+$ExpDetails = $selExp->fetchAll(PDO::FETCH_ASSOC);
+$exp = array_sum(array_column($ExpDetails, 'amount'));
+ 
 
 ?>
 
@@ -158,15 +179,17 @@ $totalIncome = array_sum(array_column($incomeDetails, 'total'));
         </div>
         <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
           <div class="text-gray-500">Invoices (Unpaid)</div>
-          <div class="text-2xl font-semibold mt-2">0</div>
+          <div class="text-2xl font-semibold mt-2"><?php echo $count; ?></div>
         </div>
-        <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
-          <div class="text-gray-500">Revenue (This month)</div>
-          <div class="text-2xl font-semibold mt-2">₦0</div>
+
+         <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+          <div class="text-gray-500">Expenses (This month)</div>
+          <div class="text-2xl font-semibold mt-2">₦<?php echo $exp; ?></div>
         </div>
+         
         <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
           <div class="text-gray-500">Customers</div>
-          <div class="text-2xl font-semibold mt-2">0</div>
+          <div class="text-2xl font-semibold mt-2"><?php echo $cust; ?></div>
         </div>
       </main>
 
