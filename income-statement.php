@@ -1,18 +1,44 @@
 <?php
 session_start();
-require 'connections.php'; // Assumes $conn is a PDO instance
+require 'connections.php';
 
 // Ensure user is logged in
 if (!isset($_SESSION['user'])) {
-   // die("Unauthorized access.");
     header("Location: login.php");
+    exit;
 }
 
 $user_id = $_SESSION['user']['user_id'];
 
+// Get date range from the form or URL params (e.g., start_date and end_date)
+$start_date = isset($_GET['start_date']) ? $_GET['start_date'] : date('Y-m-d', strtotime('first day of this month'));
+$end_date = isset($_GET['end_date']) ? $_GET['end_date'] : date('Y-m-d', strtotime('last day of this month'));
+
+// Fetch income details from the database
+$incomeQuery = $pdo->prepare("
+    SELECT * FROM invoices 
+    WHERE date BETWEEN :start_date AND :end_date
+");
+$incomeQuery->execute(['start_date' => $start_date, 'end_date' => $end_date]);
+$incomeDetails = $incomeQuery->fetchAll(PDO::FETCH_ASSOC);
+
+// Fetch expense details from the database
+$expenseQuery = $pdo->prepare("
+    SELECT * FROM expenses 
+    WHERE date BETWEEN :start_date AND :end_date
+");
+$expenseQuery->execute(['start_date' => $start_date, 'end_date' => $end_date]);
+$expenseDetails = $expenseQuery->fetchAll(PDO::FETCH_ASSOC);
+
+// Calculate total income and total expenses
+$totalIncome = array_sum(array_column($incomeDetails, 'total'));
+$totalExpenses = array_sum(array_column($expenseDetails, 'amount'));
+
+// Calculate net profit/loss
+$netProfitLoss = $totalIncome - $totalExpenses;
+
 
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -33,12 +59,10 @@ $user_id = $_SESSION['user']['user_id'];
       Back to Dashboard
     </a>
 
-
-
     <!-- Header -->
     <div class="text-center">
       <h1 class="text-3xl font-bold text-gray-800">Comprehensive Income Statement</h1>
-      <p class="text-gray-600">For the Year Ended December 31, 2025</p>
+      <p class="text-gray-600">For the period: <?php echo date('F j, Y', strtotime($start_date)) . ' - ' . date('F j, Y', strtotime($end_date)); ?></p>
     </div>
 
     <!-- Income Section -->
@@ -48,17 +72,16 @@ $user_id = $_SESSION['user']['user_id'];
         <span>▼</span>
       </button>
       <div id="incomeDetails" class="hidden p-4 space-y-2">
-        <div class="flex justify-between">
-          <span>Sales Revenue</span>
-          <span>₦120,000</span>
-        </div>
-        <div class="flex justify-between">
-          <span>Service Revenue</span>
-          <span>₦30,000</span>
-        </div>
+        <?php foreach ($incomeDetails as $income) { ?>
+          <div class="flex justify-between">
+            <span><?php echo htmlspecialchars($income['description']); ?></span>
+            <span>₦<?php echo number_format($income['amount']); ?></span>
+          </div>
+        <?php } ?>
+        
         <div class="flex justify-between font-semibold pt-2 border-t">
           <span>Total Income</span>
-          <span id="totalIncome">₦150,000</span>
+          <span id="totalIncome">₦<?php echo number_format($totalIncome); ?></span>
         </div>
       </div>
     </div>
@@ -70,29 +93,15 @@ $user_id = $_SESSION['user']['user_id'];
         <span>▼</span>
       </button>
       <div id="expenseDetails" class="hidden p-4 space-y-2">
-        <div class="flex justify-between">
-          <span>COGS</span>
-          <span>₦50,000</span>
-        </div>
-        <div class="flex justify-between">
-          <span>Salaries</span>
-          <span>₦25,000</span>
-        </div>
-        <div class="flex justify-between">
-          <span>Rent</span>
-          <span>₦10,000</span>
-        </div>
-        <div class="flex justify-between">
-          <span>Utilities</span>
-          <span>₦3,000</span>
-        </div>
-        <div class="flex justify-between">
-          <span>Marketing</span>
-          <span>₦4,000</span>
-        </div>
+        <?php foreach ($expenseDetails as $expense) { ?>
+          <div class="flex justify-between">
+            <span><?php echo htmlspecialchars($expense['category']); ?></span>
+            <span>₦<?php echo number_format($expense['amount']); ?></span>
+          </div>
+        <?php } ?>
         <div class="flex justify-between font-semibold pt-2 border-t">
           <span>Total Expenses</span>
-          <span id="totalExpenses">₦92,000</span>
+          <span id="totalExpenses">₦<?php echo number_format($totalExpenses); ?></span>
         </div>
       </div>
     </div>
@@ -101,7 +110,7 @@ $user_id = $_SESSION['user']['user_id'];
     <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
       <div class="flex justify-between text-xl font-bold">
         <span>Net Profit / Loss</span>
-        <span id="netIncome" class="text-green-600">₦58,000</span>
+        <span id="netIncome" class="<?php echo $netProfitLoss >= 0 ? 'text-green-600' : 'text-red-600'; ?>">₦<?php echo number_format($netProfitLoss); ?></span>
       </div>
     </div>
   </div>
@@ -111,21 +120,6 @@ $user_id = $_SESSION['user']['user_id'];
       const section = document.getElementById(id);
       section.classList.toggle('hidden');
     }
-
-    // Auto-calculate net income (hardcoded values for now)
-    document.addEventListener('DOMContentLoaded', () => {
-      const totalIncome = 120000 + 30000;
-      const totalExpenses = 50000 + 25000 + 10000 + 3000 + 4000;
-      const net = totalIncome - totalExpenses;
-
-      document.getElementById('totalIncome').textContent = `₦${totalIncome.toLocaleString()}`;
-      document.getElementById('totalExpenses').textContent = `₦${totalExpenses.toLocaleString()}`;
-
-      const netIncomeElem = document.getElementById('netIncome');
-      netIncomeElem.textContent = `₦${net.toLocaleString()}`;
-      netIncomeElem.classList.toggle('text-green-600', net >= 0);
-      netIncomeElem.classList.toggle('text-red-600', net < 0);
-    });
   </script>
 
 </body>
