@@ -13,8 +13,9 @@ $user_id = $_SESSION['user']['user_id'];
 // Check if date range is set in URL parameters
 if (!isset($_GET['start_date']) || !isset($_GET['end_date']) || empty($_GET['start_date']) || empty($_GET['end_date'])) {
     // If the date range is not set, don't display the page content
-    echo "<div class='bg-white shadow-xl rounded-lg p-8 w-full max-w-3xl space-y-6'>
-            <h2 class='text-center text-xl text-gray-700'>Please select a valid date range.</h2>
+    echo "<div class='bg-red-100 text-red-700 border-l-4 border-red-600 p-4 rounded-lg shadow-xl w-full max-w-3xl mx-auto'>
+            <h2 class='text-center font-semibold text-xl'>Please select a valid date range to proceed.</h2>
+            <p class='mt-2 text-center'>You need to specify a start and end date to view the data.</p>
           </div>";
     exit;
 }
