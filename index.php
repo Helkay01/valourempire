@@ -9,7 +9,9 @@ if (!isset($_SESSION['user'])) {
 }
 
 $user_id = $_SESSION['user']['user_id'];
+$invAlert = "";
 
+   
 $start_date = date('Y-m-d', strtotime('first day of this month'));
 $end_date = date('Y-m-d');
 
@@ -27,6 +29,9 @@ $stmt = $pdo->prepare("SELECT * FROM invoices WHERE status = :status ORDER BY id
 $stmt->bindParam(':status', $status);
 $stmt->execute();
 $count = $stmt->rowCount();
+if($count > 0) {
+      $invAlert = '<span class="block sm:inline">There are {$count} unpaid invoices. <a style="color: blue" href="outstanding-invoices.php">Write receipt</a></span>';
+}
 
 //CUSTOMERS
 $custm = $pdo->query("SELECT * FROM customers");
@@ -165,8 +170,8 @@ $exp = array_sum(array_column($ExpDetails, 'amount'));
 
       <!-- Alert -->
       <div class="m-6 bg-yellow-100 border border-yellow-400 text-yellow-800 px-4 py-3 rounded relative" role="alert">
-        <strong class="font-bold">Warning!</strong>
-        <span class="block sm:inline"> Please check your inputs carefully.</span>
+        <strong class="font-bold">Info!</strong>
+        <?php echo $invAlert; ?>
       </div>
 
       <!-- Dashboard Cards -->
