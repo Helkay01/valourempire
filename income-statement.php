@@ -72,12 +72,8 @@ $netProfitLoss = $totalIncome - $totalExpenses;
         <span>▼</span>
       </button>
       <div id="incomeDetails" class="hidden p-4 space-y-2">
-        <?php foreach ($incomeDetails as $income) { ?>
-          <div class="flex justify-between">
-            <span><?php echo htmlspecialchars($income['description']); ?></span>
-            <span>₦<?php echo number_format($income['amount']); ?></span>
-          </div>
-        <?php } ?>
+        
+          
         
         <div class="flex justify-between font-semibold pt-2 border-t">
           <span>Total Income</span>
