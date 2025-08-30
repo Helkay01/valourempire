@@ -30,7 +30,7 @@ $stmt->bindParam(':status', $status);
 $stmt->execute();
 $count = $stmt->rowCount();
 if($count > 0) {
-      $invAlert = '<span class="block sm:inline">There are {$count} unpaid invoices. <a style="color: blue" href="outstanding-invoices.php">Write receipt</a></span>';
+      $invAlert = '<span class="block sm:inline">There are '.$count.' unpaid invoices. <a style="color: blue" href="outstanding-invoices.php">Write receipt</a></span>';
 }
 
 //CUSTOMERS
