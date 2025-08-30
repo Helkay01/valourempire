@@ -10,9 +10,18 @@ if (!isset($_SESSION['user'])) {
 
 $user_id = $_SESSION['user']['user_id'];
 
-// Get date range from the form or URL params (e.g., start_date and end_date)
-$start_date = isset($_GET['start_date']) ? $_GET['start_date'] : date('Y-m-d', strtotime('first day of this month'));
-$end_date = isset($_GET['end_date']) ? $_GET['end_date'] : date('Y-m-d', strtotime('last day of this month'));
+// Check if date range is set in URL parameters
+if (!isset($_GET['start_date']) || !isset($_GET['end_date']) || empty($_GET['start_date']) || empty($_GET['end_date'])) {
+    // If the date range is not set, don't display the page content
+    echo "<div class='bg-white shadow-xl rounded-lg p-8 w-full max-w-3xl space-y-6'>
+            <h2 class='text-center text-xl text-gray-700'>Please select a valid date range.</h2>
+          </div>";
+    exit;
+}
+
+// If date range is set, proceed with fetching data
+$start_date = $_GET['start_date'];
+$end_date = $_GET['end_date'];
 
 // Fetch income details from the database
 $incomeQuery = $pdo->prepare("
@@ -36,8 +45,6 @@ $totalExpenses = array_sum(array_column($expenseDetails, 'amount'));
 
 // Calculate net profit/loss
 $netProfitLoss = $totalIncome - $totalExpenses;
-
-
 ?>
 
 <!DOCTYPE html>
@@ -59,6 +66,18 @@ $netProfitLoss = $totalIncome - $totalExpenses;
       Back to Dashboard
     </a>
 
+    <!-- Date Range Selection -->
+    <div class="flex justify-between items-center mb-6">
+      <div class="flex items-center space-x-4">
+        <label for="start_date" class="font-medium text-gray-700">Start Date</label>
+        <input id="start_date" name="start_date" type="date" class="border border-gray-300 rounded p-2" value="<?php echo $start_date; ?>" max="<?php echo date('Y-m-d'); ?>" onchange="updateDateRange()" />
+      </div>
+      <div class="flex items-center space-x-4">
+        <label for="end_date" class="font-medium text-gray-700">End Date</label>
+        <input id="end_date" name="end_date" type="date" class="border border-gray-300 rounded p-2" value="<?php echo $end_date; ?>" onchange="updateDateRange()" />
+      </div>
+    </div>
+
     <!-- Header -->
     <div class="text-center">
       <h1 class="text-3xl font-bold text-gray-800">Comprehensive Income Statement</h1>
@@ -72,9 +91,6 @@ $netProfitLoss = $totalIncome - $totalExpenses;
         <span>▼</span>
       </button>
       <div id="incomeDetails" class="hidden p-4 space-y-2">
-        
-          
-        
         <div class="flex justify-between font-semibold pt-2 border-t">
           <span>Total Income</span>
           <span id="totalIncome">₦<?php echo number_format($totalIncome); ?></span>
@@ -112,9 +128,17 @@ $netProfitLoss = $totalIncome - $totalExpenses;
   </div>
 
   <script>
+    // Function to toggle income and expense sections
     function toggleSection(id) {
       const section = document.getElementById(id);
       section.classList.toggle('hidden');
+    }
+
+    // Function to update the date range when dates change
+    function updateDateRange() {
+      const startDate = document.getElementById('start_date').value;
+      const endDate = document.getElementById('end_date').value;
+      window.location.href = `?start_date=${startDate}&end_date=${endDate}`;
     }
   </script>
 
