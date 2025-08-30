@@ -194,14 +194,18 @@ foreach ($dets as $det) {
 </head>
 <body class="bg-white text-gray-800 p-6">
 
-<a href="/" class="inline-flex items-center text-indigo-600 hover:text-indigo-800 mb-6">
-      <!-- back icon -->
-      Back to Dashboard
-    </a>
+  
     
 <?php if ($invoiceId): ?>
   <div id="receiptContent" class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow border border-gray-200">
 
+    <a href="/" class="inline-flex items-center text-indigo-600 hover:text-indigo-800 mb-6">
+      <!-- back icon -->
+     < Back to Dashboard
+    </a>
+
+
+     
     <?php if ($successMessage): ?>
       <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
         <?= htmlspecialchars($successMessage) ?>
