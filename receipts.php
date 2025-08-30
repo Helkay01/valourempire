@@ -21,10 +21,10 @@ $status = "paid";
 $new_balance = "";
 
 // Check if invoice_id is set
-$invoiceId = $_GET['invoice_id'] ?? null;
-$balance = (float)$_GET['amount'] ?? null;
-$total = (float)$_GET['total'] ?? null;
-$paid = (float)$_GET['paid'] ?? null;
+$invoiceId = $_GET['invoice_id'] ?? "";
+$balance = (float)$_GET['amount'] ?? "";
+$total = (float)$_GET['total'] ?? "";
+$paid = (float)$_GET['paid'] ?? "";
 
 
 // Handle form submission
