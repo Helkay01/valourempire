@@ -9,6 +9,7 @@ if (!isset($_SESSION['user'])) {
 }
 
 $user_id = $_SESSION['user']['user_id'];
+$fn = $_SESSION['user']['fn'];
 $invAlert = "";
 
    
@@ -165,7 +166,7 @@ $exp = array_sum(array_column($ExpDetails, 'amount'));
       <header class="bg-white shadow p-4 flex justify-between items-center sticky top-0 z-30">
         <button class="md:hidden text-gray-700 text-xl" onclick="toggleSidebar()">☰</button>
         <h1 class="text-lg font-semibold">Dashboard</h1>
-        <span class="text-gray-600">Hi, User</span>
+        <span class="text-gray-600">Hi, <?php echo $fn; ?></span>
       </header>
 
       <!-- Alert -->
