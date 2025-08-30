@@ -30,8 +30,7 @@ $count = $stmt->rowCount();
 
 //CUSTOMERS
 $custm = $pdo->query("SELECT * FROM customers");
-$custm->exec();
-$cust = $stmt->rowCount();
+$cust = $custm->rowCount();
 
 //EXPENSES
 $selExp = $pdo->prepare("SELECT * FROM expenses WHERE date BETWEEN :start_date AND :end_date");
