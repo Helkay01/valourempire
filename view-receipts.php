@@ -46,13 +46,16 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["start_date"], $_GET["en
 </head>
 <body class="bg-gray-50 p-8 text-gray-800">
 
-<a href="/" class="inline-flex items-center text-indigo-600 hover:text-indigo-800 mb-6">
-      <!-- back icon -->
-      Back to Dashboard
-    </a>
+
     
   <div class="max-w-5xl mx-auto bg-white p-6 rounded shadow border">
 
+      <a href="/" class="inline-flex items-center text-indigo-600 hover:text-indigo-800 mb-6">
+      <!-- back icon -->
+        < Back to Dashboard
+    </a>
+
+     
     <h1 class="text-2xl font-bold mb-6">Receipt Report</h1>
 
     <?php if ($errorMessage): ?>
