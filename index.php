@@ -13,11 +13,15 @@ $user_id = $_SESSION['user']['user_id'];
 $start_date = date('Y-m-d', strtotime('first day of this month'));
 $end_date = date('Y-m-d');
 
-   $selInv = $pdo->prepare("SELECT * FROM invoices WHERE issue_date BETWEEN :start_date AND :end_date");
+$selInv = $pdo->prepare("SELECT * FROM invoices WHERE issue_date BETWEEN :start_date AND :end_date");
 $selInv->bindParam(':start_date', $start_date);
 $selInv->bindParam(':end_date', $end_date);
 $selInv->execute();
-$Invnumrows = $selInv->rowCount();
+$incomeDetails = $selInv->fetchAll(PDO::FETCH_ASSOC);
+
+$totalIncome = array_sum(array_column($incomeDetails, 'total'));
+   
+
 
 ?>
 
@@ -150,7 +154,7 @@ $Invnumrows = $selInv->rowCount();
       <main class="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
           <div class="text-gray-500">Total sales (This month)</div>
-          <div class="text-2xl font-semibold mt-2"><?php echo $Invnumrows; ?></div>
+          <div class="text-2xl font-semibold mt-2">₦<?php echo $totalIncome; ?></div>
         </div>
         <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
           <div class="text-gray-500">Invoices (Unpaid)</div>
