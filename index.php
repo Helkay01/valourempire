@@ -29,9 +29,8 @@ $stmt->execute();
 $count = $stmt->rowCount();
 
 //CUSTOMERS
-$custm = $pdo->prepare("SELECT * FROM customers");
-$custm->bindParam(':status', $status);
-$custm->execute();
+$custm = $pdo->query("SELECT * FROM customers");
+$custm->exec();
 $cust = $stmt->rowCount();
 
 //EXPENSES
