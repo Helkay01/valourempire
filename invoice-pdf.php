@@ -83,260 +83,239 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
+
+
+
+<!-- Inside your existing PHP code (after handling POST and GET) -->
+
+<?php
+// ... your existing PHP code above remains unchanged
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <title>Edit Invoice</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  
- 
+  <meta charset="UTF-8" />
+  <title>Edit Invoice</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body class="bg-gray-100 min-h-screen p-6">
 
 <div class="max-w-4xl mx-auto bg-white p-6 rounded shadow">
-    <a href="/" class="inline-flex items-center text-indigo-600 hover:text-indigo-800 mb-6">
-        Back to Dashboard
-    </a>
+  <a href="/" class="text-indigo-600 hover:underline mb-6 inline-block">← Back to Dashboard</a>
 
-    <h1 class="text-2xl font-bold mb-4">Edit Invoice</h1>
+  <h1 class="text-2xl font-bold mb-4">Edit Invoice</h1>
 
-    <?php if ($successMessage): ?>
-        <div class="bg-green-100 text-green-800 p-4 rounded mb-4">
-            <?= htmlspecialchars($successMessage) ?>
+  <?php if ($successMessage): ?>
+    <div class="bg-green-100 text-green-800 p-4 rounded mb-4">
+      <?= htmlspecialchars($successMessage) ?>
+    </div>
+  <?php endif; ?>
+
+  <?php if ($invoiceData): ?>
+    <form method="post" id="invoice-form">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="block mb-1">Bill To</label>
+          <input type="text" name="bill_to" readonly value="<?= htmlspecialchars($invoiceData['bill_to']) ?>" class="w-full border px-3 py-2 rounded">
         </div>
-    <?php endif; ?>
-
-    <?php if ($invoiceData): ?>
-        <form method="post" id="invoice-form">
-            <div class="grid grid-cols-2 gap-4 mb-4">
-                <div>
-                    <label class="block mb-1">Bill To</label>
-                    <input type="text" name="bill_to" readonly value="<?= htmlspecialchars($invoiceData['bill_to']) ?>" required class="w-full border px-3 py-2 rounded">
-                </div>
-                <div>
-                    <label class="block mb-1">Invoice Number</label>
-                    <input type="text" name="invoice_number" value="<?= htmlspecialchars($invoiceData['invoice_id']) ?>" readonly class="w-full border px-3 py-2 rounded bg-gray-100">
-                </div>
-                <div>
-                    <label class="block mb-1">Issue Date</label>
-                    <input type="date" name="issue_date" value="<?= $invoiceData['issue_date'] ?>" required class="w-full border px-3 py-2 rounded">
-                </div>
-                <div>
-                    <label class="block mb-1">Discount</label>
-                    <input type="number" name="discount" id="discount-inp" value="<?= $invoiceData['discount'] ?>" step="0.01" oninput="calculateTotals()" class="w-full border px-3 py-2 rounded">
-                </div>
-            </div>
-
-            <table class="min-w-full text-sm mb-4">
-                <thead class="bg-gray-200">
-                <tr>
-                    <th class="px-4 py-2">Item</th>
-                    <th class="px-4 py-2 text-right">Qty</th>
-                    <th class="px-4 py-2 text-right">Unit Price</th>
-                    <th class="px-4 py-2 text-right">Total</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody id="invoice-items"></tbody>
-            </table>
-
-            <button type="button" onclick="addItemRow()" class="bg-blue-600 text-white px-4 py-2 rounded mb-4">+ Add Item</button>
-
-            <div class="text-right text-lg font-bold mb-4">
-                Total: <span id="total">₦0.00</span>
-            </div>
-
-            <input type="hidden" name="items_json" id="items_json">
-            <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded">Save Changes</button>
-        </form>
-
-        <!-- Invoice Preview -->
-        <h2 class="text-xl font-bold mt-12 mb-4">Invoice Preview</h2>
-
-
-
-    
-    <div id="pdf-contents" style="max-width: 900px; margin: 0 auto 40px; padding: 30px; background: #fff; border: 1px solid #ddd; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; box-shadow: 0 0 15px rgba(0,0,0,0.05);">
-          <!-- Header -->
-          <div style="display: flex; justify-content: space-between; border-bottom: 2px solid #ccc; padding-bottom: 20px; margin-bottom: 30px;">
-            <div>
-              <h2 style="margin: 0; font-size: 24px; color: #2c3e50;">Company Name</h2>
-              <p style="margin: 5px 0;">1234 Address St.<br>City, State ZIP<br>email@example.com | (123) 456-7890</p>
-            </div>
-            <div style="text-align: right;">
-              <h1 style="margin: 0; font-size: 28px; color: #27ae60;">INVOICE</h1>
-              <p style="margin: 4px 0;"><strong>Invoice #:</strong> <?= htmlspecialchars($invoiceData['invoice_id']) ?></p>
-              <p style="margin: 4px 0;"><strong>Date:</strong> <?= htmlspecialchars($invoiceData['issue_date']) ?></p>
-             
-          </div>
-
-          <!-- Billing Information -->
-          <div style="display: flex; justify-content: space-between; margin-bottom: 30px;">
-            <div>
-              <h3 style="margin-bottom: 10px; color: #34495e;"><b>Bill To:</b></h3>
-              <p style="margin: 0; white-space: pre-line;"><?= htmlspecialchars($invoiceData['bill_to']) ?></p>
-            </div>
-           
-          </div>
-
-          <!-- Table -->
-          <div>
-            <table style="width: 100%; border-collapse: collapse;">
-              <thead>
-                <tr style="background-color: #27ae60; color: white; text-align: left;">
-                  <th style="padding: 10px; border: 1px solid #ddd;">Item</th>
-                  <th style="padding: 10px; border: 1px solid #ddd; text-align: right;">Qty</th>
-                  <th style="padding: 10px; border: 1px solid #ddd; text-align: right;">Unit Price</th>
-                  <th style="padding: 10px; border: 1px solid #ddd; text-align: right;">Total</th>
-                </tr>
-              </thead>
-              <tbody>
-              <?php
-                foreach ($invoiceItems as $item):
-                    $itemTotal = $item['quantity'] * $item['unit_price'];
-              ?>
-                <tr style="border-bottom: 1px solid #ddd;">
-                  <td style="padding: 10px; border: 1px solid #ddd;"><?= htmlspecialchars($item['item_name']) ?></td>
-                  <td style="padding: 10px; border: 1px solid #ddd; text-align: right;"><?= intval($item['quantity']) ?></td>
-                  <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">₦<?= number_format($item['unit_price'], 2) ?></td>
-                  <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">₦<?= number_format($itemTotal, 2) ?></td>
-                </tr>
-              <?php endforeach; ?>
-              </tbody>
-            </table>
-          </div>
-
-          <!-- Totals -->
-          <div style="margin-top: 20px; max-width: 300px; margin-left: auto; font-size: 16px;">
-            <table style="width: 100%;">
-              <tr>
-                <td style="padding: 8px 0;">Subtotal:</td>
-                <td style="text-align: right; padding: 8px 0;">₦<?= number_format($invoiceData['subtotal'], 2) ?></td>
-              </tr>
-              <tr>
-                <td style="padding: 8px 0;">Discount:</td>
-                <td style="text-align: right; padding: 8px 0;">₦<?= number_format($invoiceData['discount'], 2) ?></td>
-              </tr>
-              <tr style="font-weight: bold; border-top: 2px solid #27ae60;">
-                <td style="padding: 8px 0;">Total:</td>
-                <td style="text-align: right; padding: 8px 0;">₦<?= number_format($invoiceData['total'], 2) ?></td>
-              </tr>
-            </table>
-          </div>
+        <div>
+          <label class="block mb-1">Invoice Number</label>
+          <input type="text" name="invoice_number" value="<?= htmlspecialchars($invoiceData['invoice_id']) ?>" readonly class="w-full border px-3 py-2 rounded bg-gray-100">
         </div>
+        <div>
+          <label class="block mb-1">Issue Date</label>
+          <input type="date" name="issue_date" value="<?= $invoiceData['issue_date'] ?>" class="w-full border px-3 py-2 rounded">
+        </div>
+        <div>
+          <label class="block mb-1">Discount</label>
+          <input type="number" name="discount" id="discount-inp" value="<?= $invoiceData['discount'] ?>" step="0.01" oninput="calculateTotals()" class="w-full border px-3 py-2 rounded">
+        </div>
+      </div>
 
-    <?php else: ?>
-        <p class="text-red-600">Invoice not found.</p>
-    <?php endif; ?>
+      <!-- Items Table -->
+      <table class="min-w-full text-sm mb-4">
+        <thead class="bg-gray-200">
+          <tr>
+            <th class="px-4 py-2">Item</th>
+            <th class="px-4 py-2 text-right">Qty</th>
+            <th class="px-4 py-2 text-right">Unit Price</th>
+            <th class="px-4 py-2 text-right">Total</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="invoice-items"></tbody>
+      </table>
+
+      <button type="button" onclick="addItemRow()" class="bg-blue-600 text-white px-4 py-2 rounded mb-4">+ Add Item</button>
+
+      <div class="text-right text-lg font-bold mb-4">
+        Total: <span id="total">₦0.00</span>
+      </div>
+
+      <input type="hidden" name="items_json" id="items_json">
+      <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded">Save Changes</button>
+    </form>
+
+    <!-- Invoice Preview -->
+    <h2 class="text-xl font-bold mt-12 mb-4">Invoice Preview</h2>
+
+    <div id="pdf-contents" class="w-full max-w-4xl mx-auto p-6 bg-white border border-gray-300 shadow text-gray-800 font-sans text-sm">
+      <!-- Header -->
+      <div class="flex flex-col md:flex-row justify-between border-b-2 border-gray-300 pb-4 mb-6">
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800">Company Name</h2>
+          <p>1234 Address St.<br>City, State ZIP<br>email@example.com | (123) 456-7890</p>
+        </div>
+        <div class="text-right mt-4 md:mt-0">
+          <h1 class="text-3xl font-bold text-green-600">INVOICE</h1>
+          <p><strong>Invoice #:</strong> <?= htmlspecialchars($invoiceData['invoice_id']) ?></p>
+          <p><strong>Date:</strong> <?= htmlspecialchars($invoiceData['issue_date']) ?></p>
+        </div>
+      </div>
+
+      <!-- Billing -->
+      <div class="mb-6">
+        <h3 class="text-lg font-semibold text-gray-700">Bill To:</h3>
+        <p class="whitespace-pre-line"><?= htmlspecialchars($invoiceData['bill_to']) ?></p>
+      </div>
+
+      <!-- Item Table -->
+      <div class="overflow-x-auto">
+        <table class="w-full border-collapse">
+          <thead>
+            <tr class="bg-green-600 text-white">
+              <th class="p-2 border">Item</th>
+              <th class="p-2 border text-right">Qty</th>
+              <th class="p-2 border text-right">Unit Price</th>
+              <th class="p-2 border text-right">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+          <?php foreach ($invoiceItems as $item): ?>
+            <tr class="border-t">
+              <td class="p-2 border"><?= htmlspecialchars($item['item_name']) ?></td>
+              <td class="p-2 border text-right"><?= intval($item['quantity']) ?></td>
+              <td class="p-2 border text-right">₦<?= number_format($item['unit_price'], 2) ?></td>
+              <td class="p-2 border text-right">₦<?= number_format($item['quantity'] * $item['unit_price'], 2) ?></td>
+            </tr>
+          <?php endforeach; ?>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Totals -->
+      <div class="mt-6 w-full md:w-1/2 ml-auto">
+        <table class="w-full">
+          <tr>
+            <td class="py-1">Subtotal:</td>
+            <td class="py-1 text-right">₦<?= number_format($invoiceData['subtotal'], 2) ?></td>
+          </tr>
+          <tr>
+            <td class="py-1">Discount:</td>
+            <td class="py-1 text-right">₦<?= number_format($invoiceData['discount'], 2) ?></td>
+          </tr>
+          <tr class="font-bold border-t-2 border-green-600">
+            <td class="py-2">Total:</td>
+            <td class="py-2 text-right">₦<?= number_format($invoiceData['total'], 2) ?></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="text-center mt-6">
+      <button id="dl" class="bg-indigo-600 text-white px-6 py-2 rounded">Download Invoice as Image</button>
+    </div>
+
+  <?php else: ?>
+    <p class="text-red-600">Invoice not found.</p>
+  <?php endif; ?>
 </div>
 
-
-
+<!-- JS Script -->
 <script>
-    const invoiceItems = <?= json_encode($invoiceItems) ?>;
+const invoiceItems = <?= json_encode($invoiceItems) ?>;
 
-    function addItemRow(name = '', qty = 1, price = 0) {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td class="px-4 py-2"><input type="text" value="${name}" class="item-name border px-2 py-1 w-full" required></td>
-            <td class="px-4 py-2 text-right"><input type="number" value="${qty}" min="1" class="item-qty border px-2 py-1 w-20 text-right" oninput="calculateTotals()" required></td>
-            <td class="px-4 py-2 text-right"><input type="number" value="${price}" min="0" step="0.01" class="item-price border px-2 py-1 w-24 text-right" oninput="calculateTotals()" required></td>
-            <td class="px-4 py-2 text-right item-total">₦0.00</td>
-            <td class="px-4 py-2 text-center"><button type="button" onclick="this.closest('tr').remove(); calculateTotals()" class="text-red-600">Remove</button></td>
-        `;
-        document.getElementById('invoice-items').appendChild(row);
-        calculateTotals();
-    }
-
-    function calculateTotals() {
-        let subtotal = 0;
-        document.querySelectorAll('#invoice-items tr').forEach(row => {
-            const qty = parseFloat(row.querySelector('.item-qty').value) || 0;
-            const price = parseFloat(row.querySelector('.item-price').value) || 0;
-            const total = qty * price;
-            subtotal += total;
-            row.querySelector('.item-total').textContent = `₦${total.toFixed(2)}`;
-        });
-
-        const discount = parseFloat(document.getElementById('discount-inp')?.value || 0);
-        const grandTotal = subtotal - discount;
-        document.getElementById('total').textContent = `₦${(grandTotal > 0 ? grandTotal : 0).toFixed(2)}`;
-    }
-
-    document.getElementById('invoice-form')?.addEventListener('submit', function (e) {
-        const items = [];
-        document.querySelectorAll('#invoice-items tr').forEach(row => {
-            const name = row.querySelector('.item-name').value.trim();
-            const qty = parseInt(row.querySelector('.item-qty').value);
-            const price = parseFloat(row.querySelector('.item-price').value);
-
-            if (!name || qty <= 0 || price < 0) {
-                e.preventDefault();
-                alert('Please enter valid item data.');
-                return false;
-            }
-
-            items.push({ name, quantity: qty, unit_price: price });
-        });
-
-        if (items.length === 0) {
-            e.preventDefault();
-            alert('At least one item is required.');
-            return false;
-        }
-
-        document.getElementById('items_json').value = JSON.stringify(items);
-    });
-
-
-
-function pdf() {
-    
-	//Download PNG Image
-	document.getElementById('dl').addEventListener('click', (m) => {
-		// $("#dl").html("Downloading...");
-		
-		const content = document.getElementById('pdf-contents');
-	
-			// Use html2canvas to render the content into a canvas
-		html2canvas(content).then(canvas => {
-			// Convert canvas to PNG image data URL
-			const imgData = canvas.toDataURL('image/png');
-	
-			// Create a temporary link element
-			const link = document.createElement('a');
-			link.href = imgData; // Set the href to the image data URL
-			link.download = 'image.png'; // Set the download filename
-	
-			// Trigger the download
-			document.body.appendChild(link); // Append the link to the DOM
-			link.click(); // Simulate a click on the link
-			document.body.removeChild(link); // Remove the link from the DOM
-		});
-	});
-
+function addItemRow(name = '', qty = 1, price = 0) {
+  const row = document.createElement('tr');
+  row.innerHTML = `
+    <td class="px-4 py-2"><input type="text" value="${name}" class="item-name border px-2 py-1 w-full" required></td>
+    <td class="px-4 py-2 text-right"><input type="number" value="${qty}" min="1" class="item-qty border px-2 py-1 w-20 text-right" oninput="calculateTotals()" required></td>
+    <td class="px-4 py-2 text-right"><input type="number" value="${price}" min="0" step="0.01" class="item-price border px-2 py-1 w-24 text-right" oninput="calculateTotals()" required></td>
+    <td class="px-4 py-2 text-right item-total">₦0.00</td>
+    <td class="px-4 py-2 text-center"><button type="button" onclick="this.closest('tr').remove(); calculateTotals()" class="text-red-600">Remove</button></td>
+  `;
+  document.getElementById('invoice-items').appendChild(row);
+  calculateTotals();
 }
 
+function calculateTotals() {
+  let subtotal = 0;
+  document.querySelectorAll('#invoice-items tr').forEach(row => {
+    const qty = parseFloat(row.querySelector('.item-qty').value) || 0;
+    const price = parseFloat(row.querySelector('.item-price').value) || 0;
+    const total = qty * price;
+    subtotal += total;
+    row.querySelector('.item-total').textContent = `₦${total.toFixed(2)}`;
+  });
 
+  const discount = parseFloat(document.getElementById('discount-inp')?.value || 0);
+  const grandTotal = subtotal - discount;
+  document.getElementById('total').textContent = `₦${(grandTotal > 0 ? grandTotal : 0).toFixed(2)}`;
+}
 
-    
-    window.onload = () => {
-        if (invoiceItems.length > 0) {
-            invoiceItems.forEach(item => {
-                addItemRow(item.item_name, item.quantity, item.unit_price);
-            });
-        } else {
-            addItemRow();
-        }
-        calculateTotals();
-        pdf();
-    };
+document.getElementById('invoice-form')?.addEventListener('submit', function (e) {
+  const items = [];
+  document.querySelectorAll('#invoice-items tr').forEach(row => {
+    const name = row.querySelector('.item-name').value.trim();
+    const qty = parseInt(row.querySelector('.item-qty').value);
+    const price = parseFloat(row.querySelector('.item-price').value);
+    if (!name || qty <= 0 || price < 0) {
+      e.preventDefault();
+      alert('Please enter valid item data.');
+      return false;
+    }
+    items.push({ name, quantity: qty, unit_price: price });
+  });
+
+  if (items.length === 0) {
+    e.preventDefault();
+    alert('At least one item is required.');
+    return false;
+  }
+
+  document.getElementById('items_json').value = JSON.stringify(items);
+});
+
+document.getElementById('dl')?.addEventListener('click', () => {
+  const content = document.getElementById('pdf-contents');
+  html2canvas(content, {
+    scale: 2,
+    useCORS: true,
+    width: content.scrollWidth
+  }).then(canvas => {
+    const imgData = canvas.toDataURL('image/png');
+    const link = document.createElement('a');
+    link.href = imgData;
+    link.download = 'invoice.png';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  });
+});
+
+window.onload = () => {
+  if (invoiceItems.length > 0) {
+    invoiceItems.forEach(item => addItemRow(item.item_name, item.quantity, item.unit_price));
+  } else {
+    addItemRow();
+  }
+  calculateTotals();
+};
 </script>
 
 </body>
 </html>
+
+
