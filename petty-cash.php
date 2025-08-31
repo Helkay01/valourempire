@@ -68,11 +68,7 @@ if (isset($_POST['record'])) {
 
        
         // Redirect or show success
-         echo '
-            <script>
-                window.location.href = "petty-cash.php?status=success";
-            </script>
-        ';
+         echo 'Cash saved succesfully';
 
 
     } catch (PDOException $e) {
@@ -109,9 +105,8 @@ if (isset($_POST['record'])) {
 
 
       
-      <h1 class="text-3xl font-bold">💵 Petty Cash Register</h1>
-      <p class="text-gray-600 mt-1">Track funds moved from bank to cash and running balances.</p>
-    </div>
+      <h1 class="text-3xl font-bold">💵 Cash Register</h1>
+     </div>
   </header>
 
   <!-- Main Content -->
