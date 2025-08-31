@@ -78,6 +78,12 @@
           Create Account
         </button>
 
+       
+
+        
+      </div>
+    </form>
+
         <br>
         <br>
 
@@ -86,9 +92,8 @@
           Login
         </a>
 
-        
-      </div>
-    </form>
+
+    
   </div>
 
   <!-- Step Logic -->
