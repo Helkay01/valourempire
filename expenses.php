@@ -56,7 +56,20 @@ if (isset($_POST['expenses'])) {
                     $stmt->bindParam(':note', $description);
                     $stmt->bindParam(':date', $date);
                     $stmt->execute();
-                    
+
+                    $selCashBal = $pdo->prepare("SELECT * FROM cash_bal");
+                    $selCashBal->execute();
+                    $assoc = $selCashBal->fetch(PDO::FETCH_ASSOC);
+                    $cash_bal = (int)$assoc['balance'];
+
+                    if($cash_bal > $amount) {
+                        $new_bal = $cash_bal - $amount;
+                       
+                        $updCashBal = $pdo->prepare("UPDATE cash_bal SET balance = :bal");
+                        $updCashBal->bindParam(':bal', $new_bal);
+                        $updCashBal->execute();
+                 
+                    }
                 }
 
                 if($paymentMethod === "Bank") {
@@ -66,6 +79,21 @@ if (isset($_POST['expenses'])) {
                     $stmt->bindParam(':note', $description);
                     $stmt->bindParam(':date', $date);
                     $stmt->execute();
+
+
+                    $selBankBal = $pdo->prepare("SELECT * FROM bank_bal");
+                    $selBankBal->execute();
+                    $bnk_assoc = $selBankBal->fetch(PDO::FETCH_ASSOC);
+                    $bank_bal = (int)$bnk_assoc['balance'];
+
+                    if($bank_bal > $amount) {
+                        $new_bnk_bal = $bank_bal - $amount;
+                       
+                        $updBankBal = $pdo->prepare("UPDATE bank_bal SET balance = :bal");
+                        $updBankBal->bindParam(':bal', $new_bnk_bal);
+                        $updBankBal->execute();
+                 
+                    }
                     
                 }
                  
