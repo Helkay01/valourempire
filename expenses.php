@@ -36,39 +36,45 @@ if (isset($_POST['expenses'])) {
     $amount = floatval($_POST['amount']);
 
     try {
-        $stmt = $pdo->prepare("INSERT INTO expenses (category, payment_method, des, amount, date)
-                               VALUES (:category, :payment_method, :description, :amount, :date)");
-
-        $stmt->execute([
-            ':category' => $category,
-            ':payment_method' => $paymentMethod,
-            ':description' => $description,
-            ':amount' => $amount,
-            ':date' => $date
-        ]);
-
+        
                 if($paymentMethod === "Cash") {
-                    $exp = "Expenses recored ({$category})";
                     
-                    $stmt = $pdo->prepare("INSERT INTO cash (from_bk, amount, note, date)VALUES (:bank_account, :amount, :note, :date)");
-                    $stmt->bindParam(':bank_account', $exp);
-                    $stmt->bindParam(':amount', $amount);
-                    $stmt->bindParam(':note', $description);
-                    $stmt->bindParam(':date', $date);
-                    $stmt->execute();
-
                     $selCashBal = $pdo->prepare("SELECT * FROM cash_bal");
                     $selCashBal->execute();
                     $assoc = $selCashBal->fetch(PDO::FETCH_ASSOC);
                     $cash_bal = (int)$assoc['balance'];
 
                     if($cash_bal > $amount) {
+                       //Update cah bal
                         $new_bal = $cash_bal - $amount;
                        
                         $updCashBal = $pdo->prepare("UPDATE cash_bal SET balance = :bal");
                         $updCashBal->bindParam(':bal', $new_bal);
                         $updCashBal->execute();
-                 
+
+                        //INSERT INTO CASH
+                       $exp = "Expenses recored ({$category})";
+                    
+                       $stmt = $pdo->prepare("INSERT INTO cash (from_bk, amount, note, date)VALUES (:bank_account, :amount, :note, :date)");
+                       $stmt->bindParam(':bank_account', $exp);
+                       $stmt->bindParam(':amount', $amount);
+                       $stmt->bindParam(':note', $description);
+                       $stmt->bindParam(':date', $date);
+                       $stmt->execute();
+
+                       /// INSERT INTO EXPENES
+                       $stmt = $pdo->prepare("INSERT INTO expenses (category, payment_method, des, amount, date)
+                               VALUES (:category, :payment_method, :description, :amount, :date)");
+
+                       $stmt->execute([
+                           ':category' => $category,
+                           ':payment_method' => $paymentMethod,
+                           ':description' => $description,
+                           ':amount' => $amount,
+                           ':date' => $date
+                       ]);
+
+
                     }
                 }
 
