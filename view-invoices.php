@@ -104,7 +104,7 @@ try {
                             <th class="px-4 py-3 border text-right">Discount</th>
                             <th class="px-4 py-3 border text-right">Total</th>
                             <th class="px-4 py-3 border text-center">Action</th>
-                           <th class="px-4 py-3 border text-center">Print invoice</th>
+                           <th class="px-4 py-3 border text-center">Download invoice</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200">
@@ -126,7 +126,7 @@ try {
                                <td class="px-4 py-3 border text-center">
                                     <a href="invoice-pdf.php?invoice_id=<?= urlencode($invoice['invoice_id']) ?>"
                                        class="inline-block bg-blue-600 text-white text-sm px-4 py-2 rounded hover:bg-blue-700">
-                                        Print Invoice
+                                        Download Invoice
                                     </a>
                                 </td>
                             </tr>
