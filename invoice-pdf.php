@@ -300,6 +300,9 @@ document.getElementById('invoice-form')?.addEventListener('submit', function (e)
   document.getElementById('items_json').value = JSON.stringify(items);
 });
 
+
+
+    
 document.getElementById('dl')?.addEventListener('click', () => {
   const content = document.getElementById('pdf-contents');
   html2canvas(content, {
