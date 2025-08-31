@@ -76,23 +76,57 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $successMessage = "Receipt saved successfully.";
 
                 if($paymentMethod === "Cash") {
-                    $stmt = $pdo->prepare("INSERT INTO cash (from_bk, amount, note, date)VALUES (:bank_account, :amount, :note, :date)");
-                    $stmt->bindParam(':bank_account', $clientName);
-                    $stmt->bindParam(':amount', $amount);
-                    $stmt->bindParam(':note', $description);
-                    $stmt->bindParam(':date', $paymentDate);
-                    $stmt->execute();
-                    
+                  
+                   /// UPDATE CASH BAL
+                    $selCashBal = $pdo->prepare("SELECT * FROM cash_bal");
+                    $selCashBal->execute();
+                    $assoc = $selCashBal->fetch(PDO::FETCH_ASSOC);
+                    $cash_bal = (int)$assoc['balance'];
+
+                  
+                   $new_bal = $cash_bal - $amount;
+                       
+                   $updCashBal = $pdo->prepare("UPDATE cash_bal SET balance = :bal");
+                   $updCashBal->bindParam(':bal', $new_bal);
+                   $updCashBal->execute();
+
+
+                   
+                       //INSERT INTO CASH  
+                       $stmt = $pdo->prepare("INSERT INTO cash (from_bk, amount, note, date)VALUES (:bank_account, :amount, :note, :date)");
+                       $stmt->bindParam(':bank_account', $clientName);
+                       $stmt->bindParam(':amount', $amount);
+                       $stmt->bindParam(':note', $description);
+                       $stmt->bindParam(':date', $paymentDate);
+                       $stmt->execute();
+                   
                 }
                  
                 if($paymentMethod === "Bank") {
-                    $stmt = $pdo->prepare("INSERT INTO main_bank (amount, note, date)VALUES (:amount, :note, :date)");
-                
+
+                   /// INSERT INTO BANK
+                    $stmt = $pdo->prepare("INSERT INTO main_bank (amount, note, date)VALUES (:amount, :note, :date)");              
                     $stmt->bindParam(':amount', $amount);
                     $stmt->bindParam(':note', $description);
                     $stmt->bindParam(':date', $paymentDate);
                     $stmt->execute();
+
+
+                   /// UPDATE BANK BALANCE
+                    $selBankBal = $pdo->prepare("SELECT * FROM bank_bal");
+                    $selBankBal->execute();
+                    $bnk_assoc = $selBankBal->fetch(PDO::FETCH_ASSOC);
+                    $bank_bal = (int)$bnk_assoc['balance'];
+                                  
                     
+                     $new_bnk_bal = $bank_bal - $amount;
+                       
+                     $updBankBal = $pdo->prepare("UPDATE bank_bal SET balance = :bal");
+                     $updBankBal->bindParam(':bal', $new_bnk_bal);
+                     $updBankBal->execute();
+
+
+                   
                 }
                  
 
@@ -128,22 +162,58 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 ]);
 
                 if($paymentMethod === "Cash") {
+                   /// INSERT INTO CASH
                     $stmt = $pdo->prepare("INSERT INTO cash (from_bk, amount, note, date)VALUES (:bank_account, :amount, :note, :date)");
                     $stmt->bindParam(':bank_account', $clientName);
                     $stmt->bindParam(':amount', $amount);
                     $stmt->bindParam(':note', $description);
                     $stmt->bindParam(':date', $paymentDate);
                     $stmt->execute();
+
+
+                  
+                  /// UPDATE CASH BAL
+                    $selCashBal = $pdo->prepare("SELECT * FROM cash_bal");
+                    $selCashBal->execute();
+                    $assoc = $selCashBal->fetch(PDO::FETCH_ASSOC);
+                    $cash_bal = (int)$assoc['balance'];
+
+                  
+                   $new_bal = $cash_bal - $amount;
+                       
+                   $updCashBal = $pdo->prepare("UPDATE cash_bal SET balance = :bal");
+                   $updCashBal->bindParam(':bal', $new_bal);
+                   $updCashBal->execute();
+
+                   
                     
                 }
 
                  if($paymentMethod === "Bank") {
-                    $stmt = $pdo->prepare("INSERT INTO main_bank (amount, note, date)VALUES (:amount, :note, :date)");
-                
+
+                    /// INSERT INTO CASH
+                    $stmt = $pdo->prepare("INSERT INTO main_bank (amount, note, date)VALUES (:amount, :note, :date)");                
                     $stmt->bindParam(':amount', $amount);
                     $stmt->bindParam(':note', $description);
                     $stmt->bindParam(':date', $paymentDate);
                     $stmt->execute();
+
+
+                     /// UPDATE BANK BALANCE
+                    $selBankBal = $pdo->prepare("SELECT * FROM bank_bal");
+                    $selBankBal->execute();
+                    $bnk_assoc = $selBankBal->fetch(PDO::FETCH_ASSOC);
+                    $bank_bal = (int)$bnk_assoc['balance'];
+                                  
+                    
+                     $new_bnk_bal = $bank_bal - $amount;
+                       
+                     $updBankBal = $pdo->prepare("UPDATE bank_bal SET balance = :bal");
+                     $updBankBal->bindParam(':bal', $new_bnk_bal);
+                     $updBankBal->execute();
+
+
+                    
                     
                 }
 
