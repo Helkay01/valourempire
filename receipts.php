@@ -200,7 +200,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 
                      /// UPDATE BANK BALANCE
-                    $selBankBal = $pdo->prepare("SELECT * FROM bank_bal");
+                    $selBankBal = $pdo->prepare("SELECT * FROM bank_bal LIMIT 1");
                     $selBankBal->execute();
                     $bnk_assoc = $selBankBal->fetch(PDO::FETCH_ASSOC);
                     $bank_bal = (int)$bnk_assoc['balance'];
