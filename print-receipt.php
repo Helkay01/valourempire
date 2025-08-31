@@ -41,12 +41,14 @@ $biz_name = $assoc['biz_name'];
 
 
             
-            <div style="max-width:700px;margin:20px auto;padding:24px;background:#fff;font-family:'Segoe UI',Tahoma,sans-serif;color:#333;border:1px solid #ddd;box-shadow:0 2px 6px rgba(0,0,0,0.05);">
+        <div id="receipt-content" style="max-width:700px;margin:20px auto;padding:24px;background:#fff;font-family:'Segoe UI',Tahoma,sans-serif;color:#333;border:1px solid #ddd;box-shadow:0 2px 6px rgba(0,0,0,0.05);">
               
               <!-- Header -->
               <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;">
+                  <h2 style="margin:0 0 7px 0;color:#2c3e50;"><b>Receipt</b></h2>
+                  
                 <div>
-                  <h2 style="margin:0 0 6px 0;color:#2c3e50;"><?php echo $biz_name; ?></h2>
+                  <h2 style="margin:0 0 6px 0;color:#2c3e50;"><b><?php echo $biz_name; ?></b></h2>
                   <p style="margin:2px 0;"><?php echo $addr; ?></p>
                   <p style="margin:2px 0;">Ibadan, Oyo State, 200005</p>
                   <p style="margin:2px 0;">Email: <?php echo $em; ?></p>
@@ -59,10 +61,10 @@ $biz_name = $assoc['biz_name'];
             
               <!-- Customer Info -->
               <div style="margin-bottom:20px;border-top:1px solid #eee;padding-top:10px;">
-                <p style="margin:4px 0;"><strong>Customer:</strong><?php echo $_GET['client_name']; ?></p>
-                <p style="margin:4px 0;"><strong>Email:</strong><?php echo $_GET['client_email']; ?></p>
-                <p style="margin:4px 0;"><strong>Payment Date:</strong><?php echo $_GET['date']; ?></p>
-                <p style="margin:4px 0;"><strong>Payment Method:</strong><?php echo $_GET['payment_method']; ?></p>
+                <p style="margin:4px 0;"><strong>Customer:</strong> <?php echo $_GET['client_name']; ?></p>
+                <p style="margin:4px 0;"><strong>Email:</strong> <?php echo $_GET['client_email']; ?></p>
+                <p style="margin:4px 0;"><strong>Payment Date:</strong> <?php echo $_GET['date']; ?></p>
+                <p style="margin:4px 0;"><strong>Payment Method:</strong> <?php echo $_GET['payment_method']; ?></p>
               </div>
             
               <!-- Payment Details -->
@@ -84,8 +86,7 @@ $biz_name = $assoc['biz_name'];
               </div>
             
               <!-- Totals -->
-              <div style="width:100%;max-width:300px;margin-left:auto;">
-               
+              <div style="width:100%;max-width:300px;margin-left:auto;">               
                 <div style="display:flex;justify-content:space-between;padding:6px 0;font-weight:bold;color:#2c3e50;">
                   <span>Total Paid:</span>
                   <span>₦<?php echo $_GET['amount']; ?></span>
@@ -99,7 +100,51 @@ $biz_name = $assoc['biz_name'];
               </div>
             
             </div>
+
+
+
+    <div class="text-center mt-6">
+      <button id="dl" class="bg-indigo-600 text-white px-6 py-2 rounded">Download Invoice as Image</button>
     </div>
+
+    
+
+</div>
+
+    
+    
+    
+
+<script>
+
+window.onload = function() {
+    
+    document.getElementById('dl')?.addEventListener('click', () => {
+          const content = document.getElementById('receipt-content');
+          html2canvas(content, {
+            scale: 2,
+            useCORS: true,
+            width: content.scrollWidth
+          }).then(canvas => {
+            const imgData = canvas.toDataURL('image/png');
+            const link = document.createElement('a');
+            link.href = imgData;
+            link.download = 'invoice.png';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          });
+    });
+
+
+
+
+    
+}
+    
+</script>
+
+
     
 </body>
 </html>
