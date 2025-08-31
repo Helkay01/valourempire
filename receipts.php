@@ -60,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             if($updInv) {
                 $stmt = $pdo->prepare("INSERT INTO receipts (client_id, client_email, payment_date, description, payment_method, amount, client_name, receipt_no) 
-                 VALUES (:client_id, :client_email, :payment_date, :description, :payment_method, :amount, :client_nane, :receipt_no)");
+                 VALUES (:client_id, :client_email, :payment_date, :description, :payment_method, :amount, :client_name, :receipt_no)");
 
                 $stmt->execute([
                     ':client_id' => $clientId,
@@ -114,7 +114,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
              if($updInv) {
                 $stmt = $pdo->prepare("INSERT INTO receipts (client_id, client_email, payment_date, description, payment_method, amount, client_name, receipt_no) 
-                 VALUES (:client_id, :client_email, :payment_date, :description, :payment_method, :amount, :client_nane, :receipt_no)");
+                 VALUES (:client_id, :client_email, :payment_date, :description, :payment_method, :amount, :client_name, :receipt_no)");
 
                 $stmt->execute([
                     ':client_id' => $clientId,
