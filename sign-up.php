@@ -87,11 +87,7 @@
         <br>
         <br>
 
-         <a href="https://valourempire.onrender.com/login.php"
-                class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
-          Login
-        </a>
-
+      <p>Already have account? <a style="color: blue; " href="https://valourempire.onrender.com/login.php">Login</a></p>
 
     
   </div>
