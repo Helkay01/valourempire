@@ -45,7 +45,7 @@ if (isset($_POST['expenses'])) {
                     $cash_bal = (int)$assoc['balance'];
 
                     if($cash_bal > $amount) {
-                       //Update cah bal
+                       //Update cash bal
                         $new_bal = $cash_bal - $amount;
                        
                         $updCashBal = $pdo->prepare("UPDATE cash_bal SET balance = :bal");
@@ -62,11 +62,11 @@ if (isset($_POST['expenses'])) {
                        $stmt->bindParam(':date', $date);
                        $stmt->execute();
 
-                       /// INSERT INTO EXPENES
-                       $stmt = $pdo->prepare("INSERT INTO expenses (category, payment_method, des, amount, date)
+                       /// INSERT INTO EXPENSES
+                       $stmtc = $pdo->prepare("INSERT INTO expenses (category, payment_method, des, amount, date)
                                VALUES (:category, :payment_method, :description, :amount, :date)");
 
-                       $stmt->execute([
+                       $stmtc->execute([
                            ':category' => $category,
                            ':payment_method' => $paymentMethod,
                            ':description' => $description,
@@ -74,37 +74,54 @@ if (isset($_POST['expenses'])) {
                            ':date' => $date
                        ]);
 
-
+                        echo 'Expense saved successfully';
                     }
                 }
 
                 if($paymentMethod === "Bank") {
-                    $stmt = $pdo->prepare("INSERT INTO main_bank (amount, note, date)VALUES (:amount, :note, :date)");
-                
-                    $stmt->bindParam(':amount', $amount);
-                    $stmt->bindParam(':note', $description);
-                    $stmt->bindParam(':date', $date);
-                    $stmt->execute();
-
 
                     $selBankBal = $pdo->prepare("SELECT * FROM bank_bal");
                     $selBankBal->execute();
                     $bnk_assoc = $selBankBal->fetch(PDO::FETCH_ASSOC);
                     $bank_bal = (int)$bnk_assoc['balance'];
+                                  
 
                     if($bank_bal > $amount) {
+                       //UPDATE BANK BALANCE
                         $new_bnk_bal = $bank_bal - $amount;
                        
                         $updBankBal = $pdo->prepare("UPDATE bank_bal SET balance = :bal");
                         $updBankBal->bindParam(':bal', $new_bnk_bal);
                         $updBankBal->execute();
-                 
-                    }
-                    
+
+
+                       ///INSERT INTO BANK
+                       $stmt = $pdo->prepare("INSERT INTO main_bank (amount, note, date)VALUES (:amount, :note, :date)");               
+                       $stmt->bindParam(':amount', $amount);
+                       $stmt->bindParam(':note', $description);
+                       $stmt->bindParam(':date', $date);
+                       $stmt->execute();
+
+                        
+                       /// INSERT INTO EXPENSES
+                       $stmtb = $pdo->prepare("INSERT INTO expenses (category, payment_method, des, amount, date)
+                               VALUES (:category, :payment_method, :description, :amount, :date)");
+
+                       $stmtb->execute([
+                           ':category' => $category,
+                           ':payment_method' => $paymentMethod,
+                           ':description' => $description,
+                           ':amount' => $amount,
+                           ':date' => $date
+                       ]);
+
+                        echo 'Expense saved successfully';
+                       
+                    }                  
                 }
                  
 
-        echo 'Expense saved successfully';
+
       
     } catch (PDOException $e) {
         http_response_code(500);
