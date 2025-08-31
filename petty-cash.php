@@ -50,7 +50,7 @@ if (isset($_POST['record'])) {
 
            $new_bal = $cash_bal + $amount;
            // Prepare and execute query
-           $save = $pdo->prepare("INSERT INTO cash_bal (balance) VALUES (:bal)");
+           $save = $pdo->prepare("UPDATE cash_bal SET balance = :bal");
            $save->execute([
             ':bal' => $new_bal         
            ]);
