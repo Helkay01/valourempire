@@ -75,7 +75,7 @@ $exp = array_sum(array_column($ExpDetails, 'amount'));
       <nav class="mt-6 space-y-2">
         <a href="#" class="block py-2.5 px-4 rounded transition hover:bg-blue-100 hover:text-blue-600">🏠 Dashboard</a>
 
-        <!-- Service Items -->
+        <!-- Service Items 
         <div>
           <button onclick="toggleSubMenu('productsSubMenu')" class="w-full text-left py-2.5 px-4 rounded hover:bg-blue-100 hover:text-blue-600">📦 Service Items</button>
           <div id="productsSubMenu" class="pl-8 mt-1 hidden text-sm">
@@ -83,7 +83,9 @@ $exp = array_sum(array_column($ExpDetails, 'amount'));
             <a href="manage-service-item.php" class="block py-1 px-2 rounded hover:bg-gray-100">Manage service item</a>
           </div>
         </div>
+       -->
 
+         
         <!-- Financial Reports -->
         <div>
           <button onclick="toggleSubMenu('reportsSubMenu')" class="w-full text-left py-2.5 px-4 rounded hover:bg-blue-100 hover:text-blue-600">📈 Financial Reports</button>
@@ -110,14 +112,16 @@ $exp = array_sum(array_column($ExpDetails, 'amount'));
           </div>
         </div>
 
-        <!-- Customers -->
+        <!-- Customers 
         <div>
           <button onclick="toggleSubMenu('customersSubMenu')" class="w-full text-left py-2.5 px-4 rounded hover:bg-blue-100 hover:text-blue-600">👤 Customers</button>
           <div id="customersSubMenu" class="pl-8 mt-1 hidden text-sm">
             <a href="new-customer.php" class="block py-1 px-2 rounded hover:bg-gray-100">Manage customers</a>
           </div>
         </div>
+       -->
 
+         
         <!-- Invoices -->
         <div>
           <button onclick="toggleSubMenu('invoicesSubMenu')" class="w-full text-left py-2.5 px-4 rounded hover:bg-blue-100 hover:text-blue-600">📝 Invoices</button>
