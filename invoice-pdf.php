@@ -16,6 +16,7 @@ $chk->execute();
 $assoc = $chk->fetch(PDO::FETCH_ASSOC);
 $em = $assoc['email'];
 $addr = $assoc['biz_address'];
+$biz_name = $assoc['biz_name'];
 
 
 $invoiceData = null;
@@ -175,7 +176,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <!-- Header -->
       <div class="flex flex-col md:flex-row justify-between border-b-2 border-gray-300 pb-4 mb-6">
         <div>
-          <h2 class="text-2xl font-bold text-gray-800">3-in-1 VALOUR EMPIRE Fashion Services</h2>
+          <h2 class="text-2xl font-bold text-gray-800"><?php echo $biz_name; ?></h2>
           <p>Laundry, Cleaning, Fashion service</p>
           <p><?php echo $addr; ?><br>Ibadan, Oyo State, 200005<br><?php echo $em; ?> | 08103711753</p>
         </div>
