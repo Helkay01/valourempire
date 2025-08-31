@@ -61,7 +61,7 @@ $biz_name = $assoc['biz_name'];
               <div style="margin-bottom:20px;border-top:1px solid #eee;padding-top:10px;">
                 <p style="margin:4px 0;"><strong>Customer:</strong><?php echo $_GET['client_name']; ?></p>
                 <p style="margin:4px 0;"><strong>Email:</strong><?php echo $_GET['client_email']; ?></p>
-                <p style="margin:4px 0;"><strong>Payment Date:</strong><?php echo $_GET['payment_date']; ?></p>
+                <p style="margin:4px 0;"><strong>Payment Date:</strong><?php echo $_GET['date']; ?></p>
                 <p style="margin:4px 0;"><strong>Payment Method:</strong><?php echo $_GET['payment_method']; ?></p>
               </div>
             
