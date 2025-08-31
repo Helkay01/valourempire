@@ -106,7 +106,7 @@ $exp = array_sum(array_column($ExpDetails, 'amount'));
           <div id="shortTermSubMenu" class="pl-8 mt-1 hidden text-sm">
             <a href="main-bank.php" class="block py-1 px-2 rounded hover:bg-gray-100">Bank</a>
             <a href="outstanding-invoices.php" class="block py-1 px-2 rounded hover:bg-gray-100">Receivables</a>
-            <a href="petty-cash.php" class="block py-1 px-2 rounded hover:bg-gray-100">Petty cash</a>
+            <a href="petty-cash.php" class="block py-1 px-2 rounded hover:bg-gray-100">Cash</a>
             <a href="view-cash.php" class="block py-1 px-2 rounded hover:bg-gray-100">View cash transactions</a>
             <a href="view-bank.php" class="block py-1 px-2 rounded hover:bg-gray-100">View bank transactions</a>
           </div>
