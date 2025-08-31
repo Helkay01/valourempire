@@ -42,10 +42,11 @@ $biz_name = $assoc['biz_name'];
 
             
         <div id="receipt-content" style="max-width:700px;margin:20px auto;padding:24px;background:#fff;font-family:'Segoe UI',Tahoma,sans-serif;color:#333;border:1px solid #ddd;box-shadow:0 2px 6px rgba(0,0,0,0.05);">
-              
+
+              <h1 style="color:#2c3e50;"><b>Receipt</b></h1>
+                  
               <!-- Header -->
               <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;">
-                  <h2 style="margin:0 0 7px 0;color:#2c3e50;"><b>Receipt</b></h2>
                   
                 <div>
                   <h2 style="margin:0 0 6px 0;color:#2c3e50;"><b><?php echo $biz_name; ?></b></h2>
@@ -129,7 +130,7 @@ window.onload = function() {
             const imgData = canvas.toDataURL('image/png');
             const link = document.createElement('a');
             link.href = imgData;
-            link.download = 'invoice.png';
+            link.download = 'receipt.png';
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
