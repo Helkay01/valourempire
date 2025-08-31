@@ -44,7 +44,7 @@ if (isset($_POST['record'])) {
        $selCashBal = $pdo->prepare("SELECT * FROM cash_bal");
        $selCashBal->execute();
       
-       if($selCashBal->rowCount > 0) {
+       if($selCashBal->rowCount() > 0) {
            $assoc = $selCashBal->fetch(PDO::FETCH_ASSOC);
            $cash_bal = (int)$assoc['balance'];
 
