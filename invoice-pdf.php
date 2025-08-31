@@ -114,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <?php endif; ?>
 
   <?php if ($invoiceData): ?>
-    <form method="post" id="invoice-form">
+    <form hidden method="post" id="invoice-form">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
         <div>
           <label class="block mb-1">Bill To</label>
