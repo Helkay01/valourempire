@@ -84,7 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     $cash_bal = (int)$assoc['balance'];
 
                   
-                   $new_bal = $cash_bal - $amount;
+                   $new_bal = $cash_bal + $amount;
                        
                    $updCashBal = $pdo->prepare("UPDATE cash_bal SET balance = :bal");
                    $updCashBal->bindParam(':bal', $new_bal);
@@ -119,7 +119,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     $bank_bal = (int)$bnk_assoc['balance'];
                                   
                     
-                     $new_bnk_bal = $bank_bal - $amount;
+                     $new_bnk_bal = $bank_bal + $amount;
                        
                      $updBankBal = $pdo->prepare("UPDATE bank_bal SET balance = :bal");
                      $updBankBal->bindParam(':bal', $new_bnk_bal);
@@ -179,7 +179,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     $cash_bal = (int)$assoc['balance'];
 
                   
-                   $new_bal = $cash_bal - $amount;
+                   $new_bal = $cash_bal + $amount;
                        
                    $updCashBal = $pdo->prepare("UPDATE cash_bal SET balance = :bal");
                    $updCashBal->bindParam(':bal', $new_bal);
@@ -206,7 +206,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     $bank_bal = (int)$bnk_assoc['balance'];
                                   
                     
-                     $new_bnk_bal = $bank_bal - $amount;
+                     $new_bnk_bal = $bank_bal + $amount;
                        
                      $updBankBal = $pdo->prepare("UPDATE bank_bal SET balance = :bal");
                      $updBankBal->bindParam(':bal', $new_bnk_bal);
