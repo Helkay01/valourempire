@@ -39,6 +39,34 @@ if (isset($_POST['record'])) {
             ':date' => $date,            
         ]);
 
+
+
+       $selCashBal = $pdo->prepare("SELECT * FROM cash_bal");
+       $selCashBal->execute();
+      
+       if($selCashBal->rowCount > 0) {
+           $assoc = $selCashBal->fetch(PDO::FETCH_ASSOC);
+           $cash_bal = (int)$assoc['balance'];
+
+           $new_bal = $cash_bal + $amount;
+           // Prepare and execute query
+           $save = $pdo->prepare("INSERT INTO cash_bal (balance) VALUES (:bal)");
+           $save->execute([
+            ':bal' => $new_bal         
+           ]);
+
+       }
+       else {
+          // Prepare and execute query
+           $save = $pdo->prepare("INSERT INTO cash_bal (balance) VALUES (:bal)");
+           $save->execute([
+            ':bal' => $amount       
+           ]);
+       }
+       
+       
+
+       
         // Redirect or show success
          echo '
             <script>
