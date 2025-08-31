@@ -13,7 +13,7 @@ $user_id = $_SESSION['user']['user_id'];
 $chk = $pdo->prepare("SELECT * FROM login WHERE user_id = :id");
 $chk->bindParam(':id', $user_id);
 $chk->execute();
-$assoc = fetch(PDO::FETCH_ASSOC);
+$assoc = $chk->fetch(PDO::FETCH_ASSOC);
 $em = $assoc['email'];
 $addr = $assoc['biz_address'];
 
