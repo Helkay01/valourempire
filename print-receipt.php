@@ -105,7 +105,7 @@ $biz_name = $assoc['biz_name'];
 
 
     <div class="text-center mt-6">
-      <button id="dl" class="bg-indigo-600 text-white px-6 py-2 rounded">Download Invoice as Image</button>
+      <button id="dl" class="bg-indigo-600 text-white px-6 py-2 rounded">Download receipt as Image</button>
     </div>
 
     
