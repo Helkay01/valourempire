@@ -39,12 +39,18 @@ if (isset($_POST['record'])) {
             ':date' => $date,            
         ]);
 
+
+        // Prepare and execute query
+           $save = $pdo->prepare("INSERT INTO bank_bal (balance) VALUES (:bal)");
+           $save->execute([
+            ':bal' => $amount       
+           ]);
+
+
+
+       
         // Redirect or show success
-         echo '
-            <script>
-                window.location.href = "main-bank.php?status=success";
-            </script>
-        ';
+         echo 'Added to bank successfully';
 
 
     } catch (PDOException $e) {
