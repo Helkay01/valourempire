@@ -6,16 +6,21 @@ require 'connections.php'; // Assumes $conn is a PDO instance
 /// CASH BALANCE
 $selCashBal = $pdo->prepare("SELECT * FROM cash_bal");
 $selCashBal->execute();
-$assoc = $selCashBal->fetch(PDO::FETCH_ASSOC);
-$cash_bal = (int)$assoc['balance'];
+
+if($selCashBal->rowCount() > 0) {
+  $assoc = $selCashBal->fetch(PDO::FETCH_ASSOC);
+  $cash_bal = (int)$assoc['balance'];
+}
+
 
 
 /// BANK BALANCE
 $selBankBal = $pdo->prepare("SELECT * FROM bank_bal");
 $selBankBal->execute();
-$bnk_assoc = $selBankBal->fetch(PDO::FETCH_ASSOC);
-$bank_bal = (int)$bnk_assoc['balance'];
-                                  
+if($selBankBal->rowCount() > 0) {
+  $bnk_assoc = $selBankBal->fetch(PDO::FETCH_ASSOC);
+  $bank_bal = (int)$bnk_assoc['balance'];
+}                                  
                     
 
 
