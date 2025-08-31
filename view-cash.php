@@ -18,7 +18,7 @@ $endDate = $_GET['endDate'] ?? '';
 $transactions = [];
 
 if ($startDate && $endDate) {
-    $sql = "SELECT * FROM cash WHERE date BETWEEN :start AND :end ORDER BY date DESC";
+    $sql = "SELECT * FROM cash WHERE date BETWEEN :start AND :end ORDER BY id DESC";
     $params = [
         ':start' => $startDate,
         ':end' => $endDate,
