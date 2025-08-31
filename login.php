@@ -67,7 +67,7 @@ if (isset($_POST['sign_in'])) {
                class="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
       </div>
 
-      <!-- Remember Me -->
+      <!-- Remember Me 
       <div class="flex items-center justify-between">
         <label class="inline-flex items-center">
           <input type="checkbox" class="form-checkbox text-blue-500" />
@@ -75,7 +75,8 @@ if (isset($_POST['sign_in'])) {
         </label>
         <a href="#" class="text-sm text-blue-600 hover:underline">Forgot password?</a>
       </div>
-
+    -->
+        
       <!-- Submit Button -->
       <button type="submit" name="sign_in"
               class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-200">
