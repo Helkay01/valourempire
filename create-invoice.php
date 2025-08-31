@@ -232,10 +232,8 @@ try {
                 class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition">
           Save Invoice
         </button>
-        <button type="button" onclick="downloadPDF()"
-                class="bg-gray-200 text-gray-800 px-6 py-2 rounded hover:bg-gray-300 transition">
-              Download PDF
-        </button>
+         
+       
 
       </div>
 
@@ -246,7 +244,8 @@ try {
   </div>
 
   <!-- JS Logic -->
-  <script>
+<script>
+   
 document.getElementById('bill_to').addEventListener('input', function () {
   const input = this.value;
   const options = document.querySelectorAll('#clientName option');
@@ -260,75 +259,6 @@ document.getElementById('bill_to').addEventListener('input', function () {
 
   document.getElementById('bill_to_id').value = matchedId;
 });
-
-async function downloadPDF() {
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ unit: 'mm', format: 'a4' });
-  const margin = 15;
-  let y = margin;
-
-  // Header: Logo & Title
-  const logoImg = ''; // Optional: Base64 or URL
-  if (logoImg) {
-    doc.addImage(logoImg, 'PNG', margin, y, 40, 20);
-  }
-  doc.setFontSize(18);
-  doc.text("INVOICE", 105, y + 10, { align: 'center' });
-  y += 25;
-
-  doc.setFontSize(11);
-  const invoiceNumber = 'INV-' + new Date().toISOString().replace(/[-:.TZ]/g, '').slice(0,14);
-  const issueDate = document.querySelector('input[name="issue_date"]').value;
-  const billTo = document.getElementById("bill_to").value;
-
-  doc.text(`Invoice No: ${invoiceNumber}`, margin, y);
-  doc.text(`Issue Date: ${issueDate}`, 200 - margin, y, { align: 'right' });
-  y += 7;
-  doc.text(`Bill To: ${billTo}`, margin, y);
-  y += 10;
-
-  // Table
-  const rows = [...document.querySelectorAll('#invoice-items tr')];
-  const tableBody = rows.map((row, idx) => {
-    const name = row.querySelector('.item-name').value;
-    const qty = row.querySelector('.item-qty').value;
-    const price = parseFloat(row.querySelector('.item-price').value).toFixed(2);
-    const total = (qty * price).toFixed(2);
-    return [idx + 1, name, qty, `₦${price}`, `₦${total}`];
-  });
-
-  doc.autoTable({
-    startY: y,
-    head: [['#', 'Item', 'Qty', 'Unit Price', 'Total']],
-    body: tableBody,
-    styles: { fontSize: 10 },
-    headStyles: { fillColor: [41, 128, 185], textColor: 255 },
-    margin: { left: margin, right: margin }
-  });
-
-  y = doc.lastAutoTable.finalY + 10;
-
-  // Totals
-  const subtotal = parseFloat(rows.reduce((sum, row) => sum + (row.querySelector('.item-qty').valueAsNumber * row.querySelector('.item-price').valueAsNumber), 0));
-  const discount = parseFloat(document.getElementById('discount-inp').value) || 0;
-  const total = Math.max(0, subtotal - discount);
-
-  doc.setFontSize(12);
-  doc.text('Subtotal:', 160, y);
-  doc.text(`₦${subtotal.toFixed(2)}`, 200 - margin, y, { align: 'right' }); y += 6;
-  doc.text('Discount:', 160, y);
-  doc.text(`₦${discount.toFixed(2)}`, 200 - margin, y, { align: 'right' }); y += 6;
-  doc.setFontSize(14);
-  doc.text('Total:', 160, y);
-  doc.text(`₦${total.toFixed(2)}`, 200 - margin, y, { align: 'right' });
-
-  y += 15;
-  doc.setFontSize(10);
-  doc.setFont('helvetica', 'italic');
-  doc.text('Thank you for your business!', margin, y);
-
-  doc.save(`${invoiceNumber}.pdf`);
-}
 
 
 
@@ -424,5 +354,7 @@ async function downloadPDF() {
     // Add first row by default on load
     window.onload = () => addItemRow();
   </script>
+
+
 </body>
 </html>
