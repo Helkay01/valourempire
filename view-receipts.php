@@ -112,13 +112,13 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["start_date"], $_GET["en
                    <td class="py-2 px-4 border-b"><?= number_format($receipt['amount'], 2) ?></td>
                    <td class="px-4 py-3 border text-center">
                         <a href="print-receipt.php?
-                            receipt_id=<?= urlencode($receipt['receipt_id'] ?? '') ?>
-                            &description=<?= urlencode($receipt['description'] ?? '') ?>
-                            &client_name=<?= urlencode($receipt['client_name'] ?? '') ?>
-                            &client_email=<?= urlencode($receipt['client_email'] ?? '') ?>
-                            &amount=<?= urlencode($receipt['amount'] ?? '') ?>
-                            &date=<?= urlencode($receipt['payment_date'] ?? '') ?>
-                            &payment_method=<?= urlencode($receipt['payment_method'] ?? '') ?>"
+                            receipt_id=<?= $receipt['receipt_id'] ?>
+                            &description=<?= $receipt['description'] ?>
+                            &client_name=<?= $receipt['client_name'] ?>
+                            &client_email=<?= $receipt['client_email'] ?>
+                            &amount=<?= $receipt['amount'] ?>
+                            &date=<?= $receipt['payment_date'] ?>
+                            &payment_method=<?= $receipt['payment_method'] ?>"
                             class="inline-block bg-blue-600 text-white text-sm px-4 py-2 rounded hover:bg-blue-700">
                             Download Receipt
                         </a>
