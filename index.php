@@ -2,7 +2,9 @@
 session_start();
 require 'connections.php'; // Assumes $conn is a PDO instance
 
-
+$cash_bal = "";
+$bank_bal = "";
+  
 /// CASH BALANCE
 $selCashBal = $pdo->prepare("SELECT * FROM cash_bal");
 $selCashBal->execute();
