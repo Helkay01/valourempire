@@ -77,6 +77,16 @@
                 class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
           Create Account
         </button>
+
+        <br>
+        <br>
+
+         <a href="https://valourempire.onrender.com/login.php"
+                class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+          Login
+        </a>
+
+        
       </div>
     </form>
   </div>
