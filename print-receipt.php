@@ -43,8 +43,10 @@ $biz_name = $assoc['biz_name'];
             
         <div id="receipt-content" style="max-width:700px;margin:20px auto;padding:24px;background:#fff;font-family:'Segoe UI',Tahoma,sans-serif;color:#333;border:1px solid #ddd;box-shadow:0 2px 6px rgba(0,0,0,0.05);">
 
-              <h1 style="color:#2c3e50;"><b>Receipt</b></h1>
-                  
+              <h1 style="font-size: 20px; color:#2c3e50;"><b>Receipt</b></h1>
+                  <br>
+                    <br>
+            
               <!-- Header -->
               <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;">
                   
