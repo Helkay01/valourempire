@@ -6,7 +6,17 @@ if (!isset($_SESSION['user'])) {
     header("Location: login.php");
 }
 
+
 $user_id = $_SESSION['user']['user_id'];
+
+
+$chk = $pdo->prepare("SELECT * FROM login WHERE user_id = :id");
+$chk->bindParam(':id', $user_id);
+$chk->execute();
+$assoc = fetch(PDO::FETCH_ASSOC);
+$em = $assoc['email'];
+$addr = $assoc['biz_address'];
+
 
 $invoiceData = null;
 $invoiceItems = [];
@@ -95,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Edit Invoice</title>
+  <title>Print Invoice</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -105,7 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div class="max-w-4xl mx-auto bg-white p-6 rounded shadow">
   <a href="/" class="text-indigo-600 hover:underline mb-6 inline-block">← Back to Dashboard</a>
 
-  <h1 class="text-2xl font-bold mb-4">Edit Invoice</h1>
+  <h1 class="text-2xl font-bold mb-4">Download Invoice</h1>
 
   <?php if ($successMessage): ?>
     <div class="bg-green-100 text-green-800 p-4 rounded mb-4">
@@ -165,8 +175,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <!-- Header -->
       <div class="flex flex-col md:flex-row justify-between border-b-2 border-gray-300 pb-4 mb-6">
         <div>
-          <h2 class="text-2xl font-bold text-gray-800">Company Name</h2>
-          <p>1234 Address St.<br>City, State ZIP<br>email@example.com | (123) 456-7890</p>
+          <h2 class="text-2xl font-bold text-gray-800">3-in-1 VALOUR EMPIRE Fashion Services</h2>
+          <p>Laundry, Cleaning, Fashion service</p>
+          <p><?php echo $addr; ?><br>Ibadan, Oyo State, 200005<br><?php echo $em; ?> | 08103711753</p>
         </div>
         <div class="text-right mt-4 md:mt-0">
           <h1 class="text-3xl font-bold text-green-600">INVOICE</h1>
