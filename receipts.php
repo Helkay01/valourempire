@@ -229,7 +229,7 @@ foreach ($dets as $det) {
       <div class="grid md:grid-cols-2 gap-6 mb-6">
         <div>
           <label for="searchClient" class="block text-sm font-medium text-gray-700">Client Name</label>
-          <input name="clientName" list="clientName" required id="searchClient" 
+          <input name="clientName" list="clientName" required id="searchClient" readonly
               value="<?php $cName = $_GET['client_name'] ?? "";  echo $cName; ?>"
               placeholder="Select or type client name..." class="px-4 py-2 border border-gray-300 rounded-md w-full focus:ring-2 focus:ring-blue-500 outline-none" />
           <input type="hidden" id="clientId" name="clientId" />
@@ -275,9 +275,8 @@ foreach ($dets as $det) {
         <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition">
           Save Receipt
         </button>
-        <button type="button" onclick="downloadPDF()" class="ml-4 bg-gray-200 text-gray-800 px-6 py-2 rounded hover:bg-gray-300 transition">
-          Download PDF
-        </button>
+
+         
       </div>
     </form>
   </div> <!-- End of #receiptContent -->
@@ -304,17 +303,7 @@ foreach ($dets as $det) {
     paymentDateInput.valueAsDate = new Date();
   }
 
-  async function downloadPDF() {
-    const { jsPDF } = window.jspdf;
-    const element = document.getElementById("receiptContent");
-    const canvas = await html2canvas(element, { scale: 2, backgroundColor: "#ffffff" });
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF("p", "mm", "a4");
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-    pdf.save("receipt.pdf");
-  }
+
 </script>
 </body>
 </html>
