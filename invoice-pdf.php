@@ -237,9 +237,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 
-<button id="dl">DLLLLL</button>
-
-
 <script>
     const invoiceItems = <?= json_encode($invoiceItems) ?>;
 
