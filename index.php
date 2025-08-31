@@ -201,7 +201,7 @@ $exp = array_sum(array_column($ExpDetails, 'amount'));
       <main class="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
           <div class="text-gray-500">Total sales (This month)</div>
-          <div class="text-2xl font-semibold mt-2">₦<?php echo $totalIncome; ?></div>
+          <div class="text-2xl font-semibold mt-2">₦<?php echo number_format($totalIncome); ?></div>
         </div>
         <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
           <div class="text-gray-500">Invoices (Unpaid)</div>
@@ -210,17 +210,17 @@ $exp = array_sum(array_column($ExpDetails, 'amount'));
 
          <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
           <div class="text-gray-500">Expenses (This month)</div>
-          <div class="text-2xl font-semibold mt-2">₦<?php echo $exp; ?></div>
+          <div class="text-2xl font-semibold mt-2">₦<?php echo number_format($exp); ?></div>
         </div>
 
          <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
           <div class="text-gray-500">Cash Balance</div>
-          <div class="text-2xl font-semibold mt-2">₦<?php echo $cash_bal; ?></div>
+          <div class="text-2xl font-semibold mt-2">₦<?php echo number_format($cash_bal); ?></div>
         </div>
 
          <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
           <div class="text-gray-500">Bank Balance</div>
-          <div class="text-2xl font-semibold mt-2">₦<?php echo $bank_bal; ?></div>
+          <div class="text-2xl font-semibold mt-2">₦<?php echo number_format($bank_bal); ?></div>
         </div>
          
         <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
