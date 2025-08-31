@@ -122,7 +122,7 @@
                 success: function (data) {
                     if(data == "Registration successful") {
                         alert(data);
-                        window.location.href = "https://valourempire.onrender.com/login.php?status=success";
+                        window.open("https://valourempire.onrender.com/login.php?status=success");
                     }
                     else {
                         alert(data)
