@@ -11,7 +11,7 @@ if (!isset($_SESSION['user'])) {
 $user_id = $_SESSION['user']['user_id'];
 
 
-
+$receipt_no = 'REC-' . date('YmdHis');
 
 
 
@@ -59,8 +59,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $updInv->execute();
 
             if($updInv) {
-                 $stmt = $pdo->prepare("INSERT INTO receipts (client_id, client_email, payment_date, description, payment_method, amount, client_name) 
-                               VALUES (:client_id, :client_email, :payment_date, :description, :payment_method, :amount, :client_nane)");
+                $stmt = $pdo->prepare("INSERT INTO receipts (client_id, client_email, payment_date, description, payment_method, amount, client_name, receipt_no) 
+                 VALUES (:client_id, :client_email, :payment_date, :description, :payment_method, :amount, :client_nane, :receipt_no)");
 
                 $stmt->execute([
                     ':client_id' => $clientId,
@@ -69,7 +69,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     ':description' => $description,
                     ':payment_method' => $paymentMethod,
                     ':amount' => $amount,
-                    ':client_name' => $clientName
+                    ':client_name' => $clientName,
+                    ':receipt_no' => $receipt_no
                 ]);
 
                 $successMessage = "Receipt saved successfully.";
@@ -112,8 +113,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $updInv->execute();
 
              if($updInv) {
-                 $stmt = $pdo->prepare("INSERT INTO receipts (client_id, client_email, payment_date, description, payment_method, amount, client_name) 
-                               VALUES (:client_id, :client_email, :payment_date, :description, :payment_method, :amount, :client_name)");
+                $stmt = $pdo->prepare("INSERT INTO receipts (client_id, client_email, payment_date, description, payment_method, amount, client_name, receipt_no) 
+                 VALUES (:client_id, :client_email, :payment_date, :description, :payment_method, :amount, :client_nane, :receipt_no)");
 
                 $stmt->execute([
                     ':client_id' => $clientId,
@@ -122,7 +123,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     ':description' => $description,
                     ':payment_method' => $paymentMethod,
                     ':amount' => $amount,
-                    ':client_name' => $clientName
+                    ':client_name' => $clientName,
+                    ':receipt_no' => $receipt_no
                 ]);
 
                 if($paymentMethod === "Cash") {
