@@ -111,7 +111,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["start_date"], $_GET["en
                    <td class="py-2 px-4 border-b"><?= htmlspecialchars($receipt['payment_method']) ?></td>
                    <td class="py-2 px-4 border-b"><?= number_format($receipt['amount'], 2) ?></td>
                    <td class="px-4 py-3 border text-center">
-                       <a href="print-receipt.php?receipt_id=<?= htmlspecialchars(urlencode($receipt['receipt_id'] ?? '')) ?>&description=<?= htmlspecialchars(urlencode($receipt['description'] ?? '')) ?>&client_name=<?= htmlspecialchars(urlencode($receipt['client_name'] ?? '')) ?>&client_email=<?= htmlspecialchars(urlencode($receipt['client_email'] ?? '')) ?>&amount=<?= htmlspecialchars(urlencode($receipt['amount'] ?? '')) ?>&date=<?= htmlspecialchars(urlencode($receipt['payment_date'] ?? '')) ?>&payment_method=<?= htmlspecialchars(urlencode($receipt['payment_method'] ?? '')) ?>"
+                       <a href="print-receipt.php?receipt_id=<?= htmlspecialchars(urlencode($receipt['receipt_no'] ?? '')) ?>&description=<?= htmlspecialchars(urlencode($receipt['description'] ?? '')) ?>&client_name=<?= htmlspecialchars(urlencode($receipt['client_name'] ?? '')) ?>&client_email=<?= htmlspecialchars(urlencode($receipt['client_email'] ?? '')) ?>&amount=<?= htmlspecialchars(urlencode($receipt['amount'] ?? '')) ?>&date=<?= htmlspecialchars(urlencode($receipt['payment_date'] ?? '')) ?>&payment_method=<?= htmlspecialchars(urlencode($receipt['payment_method'] ?? '')) ?>"
                          class="inline-block bg-blue-600 text-white text-sm px-4 py-2 rounded hover:bg-blue-700">
                          Download Receipt
                        </a>
