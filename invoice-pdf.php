@@ -89,6 +89,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8" />
     <title>Edit Invoice</title>
     <script src="https://cdn.tailwindcss.com"></script>
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  
+ 
 </head>
 <body class="bg-gray-100 min-h-screen p-6">
 
@@ -152,7 +158,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <!-- Invoice Preview -->
         <h2 class="text-xl font-bold mt-12 mb-4">Invoice Preview</h2>
 
-        <div style="max-width: 900px; margin: 0 auto 40px; padding: 30px; background: #fff; border: 1px solid #ddd; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; box-shadow: 0 0 15px rgba(0,0,0,0.05);">
+
+
+    
+    <div id="pdf-contents" style="max-width: 900px; margin: 0 auto 40px; padding: 30px; background: #fff; border: 1px solid #ddd; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; box-shadow: 0 0 15px rgba(0,0,0,0.05);">
           <!-- Header -->
           <div style="display: flex; justify-content: space-between; border-bottom: 2px solid #ccc; padding-bottom: 20px; margin-bottom: 30px;">
             <div>
@@ -163,20 +172,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <h1 style="margin: 0; font-size: 28px; color: #27ae60;">INVOICE</h1>
               <p style="margin: 4px 0;"><strong>Invoice #:</strong> <?= htmlspecialchars($invoiceData['invoice_id']) ?></p>
               <p style="margin: 4px 0;"><strong>Date:</strong> <?= htmlspecialchars($invoiceData['issue_date']) ?></p>
-              <p style="margin: 4px 0;"><strong>Due Date:</strong> <!-- You can add due date field if you have --> </p>
-            </div>
+             
           </div>
 
           <!-- Billing Information -->
           <div style="display: flex; justify-content: space-between; margin-bottom: 30px;">
             <div>
-              <h3 style="margin-bottom: 10px; color: #34495e;">Bill To:</h3>
+              <h3 style="margin-bottom: 10px; color: #34495e;"><b>Bill To:</b></h3>
               <p style="margin: 0; white-space: pre-line;"><?= htmlspecialchars($invoiceData['bill_to']) ?></p>
             </div>
-            <div>
-              <h3 style="margin-bottom: 10px; color: #34495e;">From:</h3>
-              <p style="margin: 0;">Sales Department<br>sales@company.com<br>(987) 654-3210</p>
-            </div>
+           
           </div>
 
           <!-- Table -->
@@ -229,6 +234,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <p class="text-red-600">Invoice not found.</p>
     <?php endif; ?>
 </div>
+
+
+
+<button id="dl">DLLLLL</button>
+
 
 <script>
     const invoiceItems = <?= json_encode($invoiceItems) ?>;
@@ -286,6 +296,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         document.getElementById('items_json').value = JSON.stringify(items);
     });
 
+
+
+function pdf() {
+    
+	//Download PNG Image
+	document.getElementById('dl').addEventListener('click', (m) => {
+		// $("#dl").html("Downloading...");
+		
+		const content = document.getElementById('pdf-contents');
+	
+			// Use html2canvas to render the content into a canvas
+		html2canvas(content).then(canvas => {
+			// Convert canvas to PNG image data URL
+			const imgData = canvas.toDataURL('image/png');
+	
+			// Create a temporary link element
+			const link = document.createElement('a');
+			link.href = imgData; // Set the href to the image data URL
+			link.download = 'image.png'; // Set the download filename
+	
+			// Trigger the download
+			document.body.appendChild(link); // Append the link to the DOM
+			link.click(); // Simulate a click on the link
+			document.body.removeChild(link); // Remove the link from the DOM
+		});
+	});
+
+}
+
+
+
+    
     window.onload = () => {
         if (invoiceItems.length > 0) {
             invoiceItems.forEach(item => {
@@ -295,6 +337,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             addItemRow();
         }
         calculateTotals();
+        pdf();
     };
 </script>
 
