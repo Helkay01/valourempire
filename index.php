@@ -2,6 +2,24 @@
 session_start();
 require 'connections.php'; // Assumes $conn is a PDO instance
 
+
+/// CASH BALANCE
+$selCashBal = $pdo->prepare("SELECT * FROM cash_bal");
+$selCashBal->execute();
+$assoc = $selCashBal->fetch(PDO::FETCH_ASSOC);
+$cash_bal = (int)$assoc['balance'];
+
+
+/// BANK BALANCE
+$selBankBal = $pdo->prepare("SELECT * FROM bank_bal");
+$selBankBal->execute();
+$bnk_assoc = $selBankBal->fetch(PDO::FETCH_ASSOC);
+$bank_bal = (int)$bnk_assoc['balance'];
+                                  
+                    
+
+
+
 // Ensure user is logged in
 if (!isset($_SESSION['user'])) {
    // die("Unauthorized access.");
@@ -193,6 +211,16 @@ $exp = array_sum(array_column($ExpDetails, 'amount'));
          <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
           <div class="text-gray-500">Expenses (This month)</div>
           <div class="text-2xl font-semibold mt-2">₦<?php echo $exp; ?></div>
+        </div>
+
+         <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+          <div class="text-gray-500">Cash Balance</div>
+          <div class="text-2xl font-semibold mt-2">₦<?php echo $cash_bal; ?></div>
+        </div>
+
+         <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+          <div class="text-gray-500">Bank Balance</div>
+          <div class="text-2xl font-semibold mt-2">₦<?php echo $bank_bal; ?></div>
         </div>
          
         <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
