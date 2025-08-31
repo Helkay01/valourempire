@@ -10,6 +10,17 @@ if (!isset($_SESSION['user'])) {
 $user_id = $_SESSION['user']['user_id'];
 
 
+$chk = $pdo->prepare("SELECT * FROM login WHERE user_id = :id");
+$chk->bindParam(':id', $user_id);
+$chk->execute();
+$assoc = $chk->fetch(PDO::FETCH_ASSOC);
+$em = $assoc['email'];
+$addr = $assoc['biz_address'];
+$biz_name = $assoc['biz_name'];
+
+
+
+
 ?>
 
 
@@ -35,23 +46,23 @@ $user_id = $_SESSION['user']['user_id'];
               <!-- Header -->
               <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;">
                 <div>
-                  <h2 style="margin:0 0 6px 0;color:#2c3e50;">Acme ERP Solutions</h2>
-                  <p style="margin:2px 0;">123 Business Rd, Suite 500</p>
-                  <p style="margin:2px 0;">Cityville, CA 90210</p>
-                  <p style="margin:2px 0;">Email: info@acmeerp.com</p>
+                  <h2 style="margin:0 0 6px 0;color:#2c3e50;"><?php echo $biz_name; ?></h2>
+                  <p style="margin:2px 0;"><?php echo $addr; ?></p>
+                  <p style="margin:2px 0;">Ibadan, Oyo State, 200005</p>
+                  <p style="margin:2px 0;">Email: <?php echo $em; ?></p>
                 </div>
                 <div style="text-align:right;font-size:0.9em;color:#666;">
-                  <p style="margin:2px 0;"><strong>Receipt #: </strong>RCPT-001234</p>
-                  <p style="margin:2px 0;"><strong>Date: </strong>2025-08-31</p>
+                  <p style="margin:2px 0;"><strong>Receipt #: </strong><?php echo $_GET['receipt_id']; ?></p>
+                  <p style="margin:2px 0;"><strong>Date: </strong><?php echo  $_GET['date']; ?></p>
                 </div>
               </div>
             
               <!-- Customer Info -->
               <div style="margin-bottom:20px;border-top:1px solid #eee;padding-top:10px;">
-                <p style="margin:4px 0;"><strong>Customer:</strong> John Doe</p>
-                <p style="margin:4px 0;"><strong>Email:</strong> john.doe@example.com</p>
-                <p style="margin:4px 0;"><strong>Payment Date:</strong> 2025-08-30</p>
-                <p style="margin:4px 0;"><strong>Payment Method:</strong> Credit Card (Visa)</p>
+                <p style="margin:4px 0;"><strong>Customer:</strong><?php echo $_GET['client_name']; ?></p>
+                <p style="margin:4px 0;"><strong>Email:</strong><?php echo $_GET['client_email']; ?></p>
+                <p style="margin:4px 0;"><strong>Payment Date:</strong><?php echo $_GET['payment_date']; ?></p>
+                <p style="margin:4px 0;"><strong>Payment Method:</strong><?php echo $_GET['payment_method']; ?></p>
               </div>
             
               <!-- Payment Details -->
@@ -65,8 +76,8 @@ $user_id = $_SESSION['user']['user_id'];
                   </thead>
                   <tbody>
                     <tr>
-                      <td style="padding:10px 12px;border:1px solid #ddd;">ERP Subscription - Pro Plan (Aug 2025)</td>
-                      <td style="padding:10px 12px;border:1px solid #ddd;text-align:right;">$209.00</td>
+                      <td style="padding:10px 12px;border:1px solid #ddd;"><?php echo $_GET['description']; ?></td>
+                      <td style="padding:10px 12px;border:1px solid #ddd;text-align:right;"><?php echo $_GET['amount']; ?></td>
                     </tr>
                   </tbody>
                 </table>
@@ -74,24 +85,17 @@ $user_id = $_SESSION['user']['user_id'];
             
               <!-- Totals -->
               <div style="width:100%;max-width:300px;margin-left:auto;">
-                <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #eee;">
-                  <span>Subtotal:</span>
-                  <span>$190.00</span>
-                </div>
-                <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #eee;">
-                  <span>Tax (10%):</span>
-                  <span>$19.00</span>
-                </div>
+               
                 <div style="display:flex;justify-content:space-between;padding:6px 0;font-weight:bold;color:#2c3e50;">
                   <span>Total Paid:</span>
-                  <span>$209.00</span>
+                  <span>₦<?php echo $_GET['amount']; ?></span>
                 </div>
               </div>
             
               <!-- Footer -->
               <div style="text-align:center;margin-top:30px;font-size:0.85em;color:#888;">
                 <p style="margin:4px 0;">Thank you for your business!</p>
-                <p style="margin:4px 0;"><small>This receipt was generated automatically by Acme ERP.</small></p>
+              
               </div>
             
             </div>
