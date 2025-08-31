@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     function generateUniqueId($pdo) {
         do {
             $uid = str_pad(rand(0, 99999999), 8, '0', STR_PAD_LEFT);
-            $stmt = $pdo->prepare("SELECT 1 FROM login WHERE user_id = :uid");
+            $stmt = $pdo->prepare("SELECT * FROM login WHERE user_id = :uid");
             $stmt->execute([':uid' => $uid]);
         } while ($stmt->fetch());
         return $uid;
@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
       //  $pdo = $userdata; // or replace with your actual PDO instance
 
         // 4. Check if email already exists
-        $checkStmt = $pdo->prepare("SELECT 1 FROM login WHERE email = :email");
+        $checkStmt = $pdo->prepare("SELECT * FROM login WHERE email = :email");
         $checkStmt->execute([':email' => $email]);
 
         if ($checkStmt->fetch()) {
