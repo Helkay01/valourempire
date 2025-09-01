@@ -21,7 +21,7 @@ $selBankBal = $pdo->prepare("SELECT * FROM bank_bal");
 $selBankBal->execute();
 if($selBankBal->rowCount() > 0) {
   $bnk_assoc = $selBankBal->fetch(PDO::FETCH_ASSOC);
-  $bank_bal = (int)$bnk_assoc['balance'];
+  $bank_bal = $bnk_assoc['balance'];
 }                                  
                     
 
