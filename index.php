@@ -21,7 +21,7 @@ $selBankBal = $pdo->prepare("SELECT * FROM bank_bal");
 $selBankBal->execute();
 if($selBankBal->rowCount() > 0) {
   $bnk_assoc = $selBankBal->fetch(PDO::FETCH_ASSOC);
-  $bank_bal = $bnk_assoc['balance'];
+  $bank_bal = (int)$bnk_assoc['balance'];
 }                                  
                     
 
@@ -227,7 +227,7 @@ $exp = array_sum(array_column($ExpDetails, 'amount'));
 
          <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
           <div class="text-gray-500">Bank Balance</div>
-          <div class="text-2xl font-semibold mt-2">₦<?php echo $bank_bal; ?></div>
+          <div class="text-2xl font-semibold mt-2">₦<?php echo number_format($bank_bal); ?></div>
         </div>
          
         <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
