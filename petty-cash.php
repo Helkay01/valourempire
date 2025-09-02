@@ -1,6 +1,6 @@
 <?php
 session_start();
-require 'connections.php'; // Assumes $conn is a PDO instance
+require 'connections.php';
 
 // Ensure user is logged in
 if (!isset($_SESSION['user'])) {
@@ -9,7 +9,7 @@ if (!isset($_SESSION['user'])) {
 }
 
 $user_id = $_SESSION['user']['user_id'];
-
+$saved = "";
 
 
 
@@ -26,54 +26,121 @@ if (isset($_POST['record'])) {
     }
 
     try {
-        // Prepare and execute query
-        $stmt = $pdo->prepare("
-            INSERT INTO cash (from_bk, amount, note, date)
-            VALUES (:bank_account, :amount, :note, :date)
-        ");
 
-        $stmt->execute([
-            ':bank_account' => $bank_account,
-            ':amount' => $amount,
-            ':note' => $note,
-            ':date' => $date,            
-        ]);
+       if($bank_account === "pa" !! $bank_account === "cih") {
+                // Prepare and execute query
+                 $stmt = $pdo->prepare("
+                     INSERT INTO cash (from_bk, amount, note, date)
+                     VALUES (:bank_account, :amount, :note, :date)
+                 ");
+         
+                 $stmt->execute([
+                     ':bank_account' => $bank_account,
+                     ':amount' => $amount,
+                     ':note' => $note,
+                     ':date' => $date,            
+                 ]);
+         
+         
+         
+                $selCashBal = $pdo->prepare("SELECT * FROM cash_bal");
+                $selCashBal->execute();
+               
+                if($selCashBal->rowCount() > 0) {
+                    $assoc = $selCashBal->fetch(PDO::FETCH_ASSOC);
+                    $cash_bal = (int)$assoc['balance'];
+         
+                    $new_bal = $cash_bal + $amount;
+                    // Prepare and execute query
+                    $save = $pdo->prepare("UPDATE cash_bal SET balance = :bal");
+                    $save->execute([
+                     ':bal' => $new_bal         
+                    ]);
+         
+                }
+                else {
+                   // Prepare and execute query
+                    $save = $pdo->prepare("INSERT INTO cash_bal (balance) VALUES (:bal)");
+                    $save->execute([
+                     ':bal' => $amount       
+                    ]);
+                }
+                
+                                
+                 // Redirect or show success
+                  $saved = 'Cash saved succesfully';
+          }
+
+               /// IF TRANSFER FROM BIZ ACCT - START
+               if($bank_account === "Bank") {
+                    /// INSERT INTO BANK
+                    $stmt = $pdo->prepare("INSERT INTO main_bank (amount, note, date)VALUES (:amount, :note, :date)");                
+                    $stmt->bindParam(':amount', $amount);
+                    $stmt->bindParam(':note', $note);
+                    $stmt->bindParam(':date', $date);
+                    $stmt->execute();
 
 
+                    /// UPDATE BANK BALANCE
+                    $selBankBal = $pdo->prepare("SELECT * FROM bank_bal LIMIT 1");
+                    $selBankBal->execute();
+                    $bnk_assoc = $selBankBal->fetch(PDO::FETCH_ASSOC);
+                    $bank_bal = (int)$bnk_assoc['balance'];
+                                  
+                    
+                     $new_bnk_bal = $bank_bal - $amount;
+                       
+                     $updBankBal = $pdo->prepare("UPDATE bank_bal SET balance = :bal");
+                     $updBankBal->bindParam(':bal', $new_bnk_bal);
+                     $updBankBal->execute();
 
-       $selCashBal = $pdo->prepare("SELECT * FROM cash_bal");
-       $selCashBal->execute();
-      
-       if($selCashBal->rowCount() > 0) {
-           $assoc = $selCashBal->fetch(PDO::FETCH_ASSOC);
-           $cash_bal = (int)$assoc['balance'];
 
-           $new_bal = $cash_bal + $amount;
-           // Prepare and execute query
-           $save = $pdo->prepare("UPDATE cash_bal SET balance = :bal");
-           $save->execute([
-            ':bal' => $new_bal         
-           ]);
-
-       }
-       else {
-          // Prepare and execute query
-           $save = $pdo->prepare("INSERT INTO cash_bal (balance) VALUES (:bal)");
-           $save->execute([
-            ':bal' => $amount       
-           ]);
-       }
+                  /// UPDATE CASH
+                 $stmt = $pdo->prepare("
+                     INSERT INTO cash (from_bk, amount, note, date)
+                     VALUES (:bank_account, :amount, :note, :date)
+                 ");
+         
+                 $stmt->execute([
+                     ':bank_account' => $bank_account,
+                     ':amount' => $amount,
+                     ':note' => $note,
+                     ':date' => $date,            
+                 ]);
+         
+         
+         
+                $selCashBal = $pdo->prepare("SELECT * FROM cash_bal");
+                $selCashBal->execute();
+               
+                if($selCashBal->rowCount() > 0) {
+                    $assoc = $selCashBal->fetch(PDO::FETCH_ASSOC);
+                    $cash_bal = (int)$assoc['balance'];
+         
+                    $new_bal = $cash_bal + $amount;
+                    // Prepare and execute query
+                    $save = $pdo->prepare("UPDATE cash_bal SET balance = :bal");
+                    $save->execute([
+                     ':bal' => $new_bal         
+                    ]);
+         
+                }
+                else {
+                   // Prepare and execute query
+                    $save = $pdo->prepare("INSERT INTO cash_bal (balance) VALUES (:bal)");
+                    $save->execute([
+                     ':bal' => $amount       
+                    ]);
+                }
+                
+                    $saved = 'Cash saved succesfully';  
+            }
+            /// IF TRANSFER FROM BIZ ACCT - END
        
-       
-
-       
-        // Redirect or show success
-         echo 'Cash saved succesfully';
-
-
-    } catch (PDOException $e) {
-        echo "❌ Database error: " . $e->getMessage();
-    }
+         
+      } catch (PDOException $e) {
+         echo "❌ Database error: " . $e->getMessage();
+      }
 } 
 
 ?>
@@ -114,21 +181,23 @@ if (isset($_POST['record'])) {
 
     <!-- Form Section -->
     <section class="bg-white p-6 rounded-lg shadow-md">
-      <h2 class="text-xl font-semibold mb-4">📝 New Entry</h2>
+      <h2 class="text-xl font-semibold mb-4">📝 Tranfer to cash</h2>
       <form id="cashForm" class="space-y-6" method="POST">
 
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+           
+           <div class="mb-4 px-4 py-3 rounded text-green-700 bg-green-100"><?php echo $saved; ?></div>
+
+           
           <div>
-            <label for="bankAccount" class="block text-sm font-medium text-gray-700 mb-1">From Bank Account</label>
+            <label for="bankAccount" class="block text-sm font-medium text-gray-700 mb-1">From Account</label>
             <select id="bankAccount" name="bankAccount" required class="w-full border px-3 py-2 rounded-md">
 
-               <option value="Cash in hand">Cash in hand</option>
-          <!--
-              <option value="Bank">Bank</option>
-          -->
-
-
+               <option value="cih">Cash in hand</option>
+               <option value="pa">Personal Account</option>
+               <option value="Bank">Bank</option>
+               
             </select>
           </div>
 
