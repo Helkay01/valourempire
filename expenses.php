@@ -10,9 +10,11 @@ if (!isset($_SESSION['user'])) {
 
 $user_id = $_SESSION['user']['user_id'];
 
+$cash_error = "";
+$bank_error = "";
 
-
-
+$cash_saved = "";
+$bank_saved = "";
 
 // Only accept POST requests
 if (isset($_POST['expenses'])) {
@@ -74,7 +76,11 @@ if (isset($_POST['expenses'])) {
                            ':date' => $date
                        ]);
 
-                        echo 'Expense saved successfully';
+                           $cash_saved = ' <div class="mb-4 px-4 py-3 rounded text-green-700 bg-green-100">Expenses saved succesfully</div>';  
+            
+                    }
+                    else {
+                       $cash_error = "<div class="mt-4 bg-red-100 text-red-700 p-3 rounded">Insufficient balance in cash account. <a style="color: blue; " href="petty-cash.php">Transfer to cash account</a></div>";
                     }
                 }
 
@@ -115,9 +121,13 @@ if (isset($_POST['expenses'])) {
                            ':date' => $date
                        ]);
 
-                        echo 'Expense saved successfully';
+                        $bank_saved = ' <div class="mb-4 px-4 py-3 rounded text-green-700 bg-green-100">Expenses saved succesfully</div>';  
+            
                        
-                    }                  
+                    }
+                    else {
+                       $bank_error = "<div class="mt-4 bg-red-100 text-red-700 p-3 rounded">Insufficient balance in bank account. <a style="color: blue; " href="main-bank.php">Transfer to bank account</a></div>";
+                    }
                 }
                  
 
@@ -174,6 +184,12 @@ window.onload = function() {
 
   <!-- Main Content -->
   <main class="flex-grow flex items-center justify-center px-4 py-12">
+   <?php echo $cash_error ?>
+   <?php echo $bank_error ?>
+   
+   <br>
+   <br>
+   
     <div class="bg-white max-w-3xl w-full rounded-lg shadow-md border border-gray-300 p-8">
       <form id="expenseForm" method="POST" class="space-y-6">
 
