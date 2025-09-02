@@ -33,7 +33,7 @@ if (isset($_POST['record'])) {
          $ckBank->execute();
         $bnk_assoc = $ckBank->fetch(PDO::FETCH_ASSOC);
          $bank_bal = (int)$bnk_assoc['balance'];
-         $new_bank_bal = $bank_bal = $amount;
+         $new_bank_bal = $bank_bal + $amount;
           
        if($fromAccount === "cb") {
            
