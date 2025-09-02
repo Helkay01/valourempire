@@ -68,7 +68,8 @@ if (isset($_POST['record'])) {
                 
                                 
                  // Redirect or show success
-                  $saved = 'Cash saved succesfully';
+                   $saved = ' <div class="mb-4 px-4 py-3 rounded text-green-700 bg-green-100">Cash saved succesfully</div>';  
+            
           }
 
                /// IF TRANSFER FROM BIZ ACCT - START
@@ -133,7 +134,8 @@ if (isset($_POST['record'])) {
                     ]);
                 }
                 
-                    $saved = 'Cash saved succesfully';  
+                    $saved = ' <div class="mb-4 px-4 py-3 rounded text-green-700 bg-green-100">Cash saved succesfully</div>';  
+            
             }
             /// IF TRANSFER FROM BIZ ACCT - END
        
@@ -187,7 +189,7 @@ if (isset($_POST['record'])) {
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
            
-           <div class="mb-4 px-4 py-3 rounded text-green-700 bg-green-100"><?php echo $saved; ?></div>
+           <?php echo $saved; ?>
 
            
           <div>
