@@ -17,7 +17,7 @@ $cash_error = "";
 if (isset($_POST['record'])) {
   
   
-    $amount = $_POST['amount'] ?? '';
+    $amount = floatval($_POST['amount'] ?? 0);
     $date = $_POST['date'] ?? '';
     $note = $_POST['note'] ?? '';
     $fromAccount = $_POST['fromAccount'] ?? '';
@@ -48,7 +48,7 @@ if (isset($_POST['record'])) {
                     $assoc = $selCashBal->fetch(PDO::FETCH_ASSOC);
                     $cash_bal = (int)$assoc['balance'];
 
-                    if($cash_bal > $amount) {
+                    if($cash_bal >= $amount) {
                           $new_bal = $cash_bal - $amount;
                           // Prepare and execute query
                           $save = $pdo->prepare("UPDATE cash_bal SET balance = :bal");
@@ -77,7 +77,7 @@ if (isset($_POST['record'])) {
                                  ':bal' => $new_bank_bal       
                               ]);
                        }
-                       else if($ckBank->rowCount() < 1) {{
+                       else if($ckBank->rowCount() < 1) {
                           // Prepare and execute query
                            $save = $pdo->prepare("INSERT INTO bank_bal (balance) VALUES (:bal)");
                            $save->execute([
