@@ -79,7 +79,7 @@ if (isset($_POST['expenses'])) {
                            $cash_saved = '<div class="mb-4 px-4 py-3 rounded text-green-700 bg-green-100">Expenses saved succesfully</div>';  
             
                     }
-                    else {
+                    else if($cash_bal < $amount) {
                        $cash_error = '<div class="mt-4 bg-red-100 text-red-700 p-3 rounded">Insufficient balance in cash account. <a style="color: blue; " href="petty-cash.php">Transfer to cash account</a></div>';
                     }
                 }
@@ -125,7 +125,7 @@ if (isset($_POST['expenses'])) {
             
                        
                     }
-                    else {
+                    else if($bank_bal < $amount) {
                        $bank_error = '<div class="mt-4 bg-red-100 text-red-700 p-3 rounded">Insufficient balance in bank account. <a style="color: blue; " href="main-bank.php">Transfer to bank account</a></div>';
                     }
                 }
