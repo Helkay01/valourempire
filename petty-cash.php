@@ -172,7 +172,7 @@ if (isset($_POST['record'])) {
       Back to Dashboard
     </a>
 
-
+      
       
       <h1 class="text-3xl font-bold">💵 Cash Register</h1>
      </div>
@@ -183,14 +183,16 @@ if (isset($_POST['record'])) {
 
     <!-- Form Section -->
     <section class="bg-white p-6 rounded-lg shadow-md">
+         <?php echo $saved; ?>
+         <br>
+          <br>
       <h2 class="text-xl font-semibold mb-4">📝 Tranfer to cash</h2>
       <form id="cashForm" class="space-y-6" method="POST">
 
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
            
-           <?php echo $saved; ?>
-
+         
            
           <div>
             <label for="bankAccount" class="block text-sm font-medium text-gray-700 mb-1">From Account</label>
