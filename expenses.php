@@ -80,7 +80,7 @@ if (isset($_POST['expenses'])) {
             
                     }
                     else {
-                       $cash_error = "<div class="mt-4 bg-red-100 text-red-700 p-3 rounded">Insufficient balance in cash account. <a style="color: blue; " href="petty-cash.php">Transfer to cash account</a></div>";
+                       $cash_error = '<div class="mt-4 bg-red-100 text-red-700 p-3 rounded">Insufficient balance in cash account. <a style="color: blue; " href="petty-cash.php">Transfer to cash account</a></div>';
                     }
                 }
 
@@ -126,7 +126,7 @@ if (isset($_POST['expenses'])) {
                        
                     }
                     else {
-                       $bank_error = "<div class="mt-4 bg-red-100 text-red-700 p-3 rounded">Insufficient balance in bank account. <a style="color: blue; " href="main-bank.php">Transfer to bank account</a></div>";
+                       $bank_error = '<div class="mt-4 bg-red-100 text-red-700 p-3 rounded">Insufficient balance in bank account. <a style="color: blue; " href="main-bank.php">Transfer to bank account</a></div>';
                     }
                 }
                  
