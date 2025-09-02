@@ -28,8 +28,18 @@ if (isset($_POST['record'])) {
     }
 
     try {
+        /// CHECK BANK BAL
+        $ckBank = $pdo->prepare("SELECT * FROM bank_bal LIMIT 1");
+         $ckBank->execute();
+        $bnk_assoc = $ckBank->fetch(PDO::FETCH_ASSOC);
+         $bank_bal = (int)$bnk_assoc['balance'];
+         $new_bank_bal = $bank_bal = $amount;
+          
        if($fromAccount === "cb") {
-            
+           
+               
+
+                   
                /// UPDATE CASH ACCOUNT
                 $selCashBal = $pdo->prepare("SELECT * FROM cash_bal");
                 $selCashBal->execute();
@@ -60,12 +70,24 @@ if (isset($_POST['record'])) {
                              ]);
       
       
+                        if($ckBank->rowCount() === 1) {
                              // Prepare and execute query
-                                $save = $pdo->prepare("INSERT INTO bank_bal (balance) VALUES (:bal)");
-                                $save->execute([
-                                 ':bal' => $amount       
-                                ]);
+                              $save = $pdo->prepare("UPDATE bank_bal SET balance = :bal");
+                              $save->execute([
+                                 ':bal' => $new_bank_bal       
+                              ]);
+                       }
+                       else if($ckBank->rowCount() < 1) {{
+                          // Prepare and execute query
+                           $save = $pdo->prepare("INSERT INTO bank_bal (balance) VALUES (:bal)");
+                           $save->execute([
+                              ':bal' => $new_bank_bal       
+                           ]);
+                       }
+      
 
+
+                       
                            // Redirect or show success
                            $saved = '<div class="mb-4 px-4 py-3 rounded text-green-700 bg-green-100">Added to bank account succesfully</div>';
                                             
@@ -93,13 +115,21 @@ if (isset($_POST['record'])) {
                   ':date' => $date,            
               ]);
       
-      
-              // Prepare and execute query
-                 $save = $pdo->prepare("INSERT INTO bank_bal (balance) VALUES (:bal)");
-                 $save->execute([
-                  ':bal' => $amount       
-                 ]);
-      
+
+              if($ckBank->rowCount() === 1) {
+                 // Prepare and execute query
+                  $save = $pdo->prepare("UPDATE bank_bal SET balance = :bal");
+                  $save->execute([
+                     ':bal' => $new_bank_bal       
+                  ]);
+              }
+              else if($ckBank->rowCount() < 1) {{
+                 // Prepare and execute query
+                  $save = $pdo->prepare("INSERT INTO bank_bal (balance) VALUES (:bal)");
+                  $save->execute([
+                     ':bal' => $new_bank_bal       
+                  ]);
+              }
       
                
               // Redirect or show success
