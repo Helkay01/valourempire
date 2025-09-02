@@ -27,7 +27,7 @@ if (isset($_POST['record'])) {
 
     try {
 
-       if($bank_account === "pa" !! $bank_account === "cih") {
+       if($bank_account === "pa" || $bank_account === "cih") {
                 // Prepare and execute query
                  $stmt = $pdo->prepare("
                      INSERT INTO cash (from_bk, amount, note, date)
