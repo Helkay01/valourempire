@@ -115,7 +115,16 @@ if (isset($_POST['record'])) {
 
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          
+          <div>
+            <label for="fromAccount" class="block text-sm font-medium text-gray-700 mb-1">From Account</label>
+            <select id="fromAccount" name="fromAccount" required class="w-full border px-3 py-2 rounded-md">
+
+               <option value="cih">Cash in hand</option>
+               <option value="pa">Personal Account</option>
+               <option value="Bank">Bank Balance</option>
+               
+            </select>
+          </div>
 
           <div>
             <label for="amount" class="block text-sm font-medium text-gray-700 mb-1">Amount (₦)</label>
