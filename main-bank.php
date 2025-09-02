@@ -9,8 +9,8 @@ if (!isset($_SESSION['user'])) {
 }
 
 $user_id = $_SESSION['user']['user_id'];
-
-
+$saved = "";
+$cash_error = "";
 
 
 
@@ -20,6 +20,7 @@ if (isset($_POST['record'])) {
     $amount = $_POST['amount'] ?? '';
     $date = $_POST['date'] ?? '';
     $note = $_POST['note'] ?? '';
+    $fromAccount = $_POST['fromAccount'] ?? '';
 
     // Basic validation
     if (empty($amount) || empty($date)) {
@@ -27,32 +28,86 @@ if (isset($_POST['record'])) {
     }
 
     try {
-        // Prepare and execute query
-        $stmt = $pdo->prepare("
-            INSERT INTO main_bank (amount, note, date)
-            VALUES (:amount, :note, :date)
-        ");
+       if($fromAccount === "cb") {
+            
+               /// UPDATE CASH ACCOUNT
+                $selCashBal = $pdo->prepare("SELECT * FROM cash_bal");
+                $selCashBal->execute();
+               
+                if($selCashBal->rowCount() > 0) {
+                    $assoc = $selCashBal->fetch(PDO::FETCH_ASSOC);
+                    $cash_bal = (int)$assoc['balance'];
 
-        $stmt->execute([
-            ':amount' => $amount,
-            ':note' => $note,
-            ':date' => $date,            
-        ]);
+                    if($cash_bal > $amount) {
+                          $new_bal = $cash_bal - $amount;
+                          // Prepare and execute query
+                          $save = $pdo->prepare("UPDATE cash_bal SET balance = :bal");
+                          $save->execute([
+                           ':bal' => $new_bal         
+                          ]);
 
 
-        // Prepare and execute query
-           $save = $pdo->prepare("INSERT INTO bank_bal (balance) VALUES (:bal)");
-           $save->execute([
-            ':bal' => $amount       
-           ]);
+                            // Prepare and execute query
+                             $stmt = $pdo->prepare("
+                                 INSERT INTO main_bank (amount, note, date)
+                                 VALUES (:amount, :note, :date)
+                             ");
+      
+                             $stmt->execute([
+                                 ':amount' => $amount,
+                                 ':note' => $note,
+                                 ':date' => $date,            
+                             ]);
+      
+      
+                             // Prepare and execute query
+                                $save = $pdo->prepare("INSERT INTO bank_bal (balance) VALUES (:bal)");
+                                $save->execute([
+                                 ':bal' => $amount       
+                                ]);
+
+                           // Redirect or show success
+                           $saved = '<div class="mb-4 px-4 py-3 rounded text-green-700 bg-green-100">Added to bank account succesfully</div>';
+                                            
+                    }
+                    else if($cash_bal < $amount) {
+                        $cash_error = '<div class="mt-4 bg-red-100 text-red-700 p-3 rounded">Insufficient balance in cash account. <a style="color: blue; " href="petty-cash.php">Update cash account first.</a></div>';
+                    }
+                }
+             
+             
+       }
 
 
+       /// FROM PERSONAL ACCT
+        if($fromAccount === "pa" || $fromAccount === "Bank") {
+              // Prepare and execute query
+              $stmt = $pdo->prepare("
+                  INSERT INTO main_bank (amount, note, date)
+                  VALUES (:amount, :note, :date)
+              ");
+      
+              $stmt->execute([
+                  ':amount' => $amount,
+                  ':note' => $note,
+                  ':date' => $date,            
+              ]);
+      
+      
+              // Prepare and execute query
+                 $save = $pdo->prepare("INSERT INTO bank_bal (balance) VALUES (:bal)");
+                 $save->execute([
+                  ':bal' => $amount       
+                 ]);
+      
+      
+               
+              // Redirect or show success
+               $saved = '<div class="mb-4 px-4 py-3 rounded text-green-700 bg-green-100">Added to bank account succesfully</div>';
+       }
 
        
-        // Redirect or show success
-         echo 'Added to bank successfully';
-
-
+       
     } catch (PDOException $e) {
         echo "❌ Database error: " . $e->getMessage();
     }
@@ -112,14 +167,19 @@ if (isset($_POST['record'])) {
     <section class="bg-white p-6 rounded-lg shadow-md">
       <h2 class="text-xl font-semibold mb-4">📝 New Entry</h2>
       <form id="cashForm" class="space-y-6" method="POST">
+        
+         <?php echo $saved; ?>
+         <?php echo $cash_error; ?>
 
-
+         <br>
+         <br>
+         
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label for="fromAccount" class="block text-sm font-medium text-gray-700 mb-1">From Account</label>
             <select id="fromAccount" name="fromAccount" required class="w-full border px-3 py-2 rounded-md">
 
-               <option value="cih">Cash in hand</option>
+               <option value="cb">Cash Balance</option>
                <option value="pa">Personal Account</option>
                <option value="Bank">Bank Balance</option>
                
