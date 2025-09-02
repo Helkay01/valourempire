@@ -76,7 +76,7 @@ if (isset($_POST['expenses'])) {
                            ':date' => $date
                        ]);
 
-                           $cash_saved = ' <div class="mb-4 px-4 py-3 rounded text-green-700 bg-green-100">Expenses saved succesfully</div>';  
+                           $cash_saved = '<div class="mb-4 px-4 py-3 rounded text-green-700 bg-green-100">Expenses saved succesfully</div>';  
             
                     }
                     else {
@@ -184,13 +184,18 @@ window.onload = function() {
 
   <!-- Main Content -->
   <main class="flex-grow flex items-center justify-center px-4 py-12">
-   <?php echo $cash_error ?>
-   <?php echo $bank_error ?>
-   
-   <br>
-   <br>
-   
+
     <div class="bg-white max-w-3xl w-full rounded-lg shadow-md border border-gray-300 p-8">
+         <?php echo $cash_error; ?>
+         <?php echo $bank_error; ?>
+
+         <?php echo $cash_saved; ?>
+         <?php echo $bank_saved; ?>
+
+         <br>
+         <br>
+   
+       
       <form id="expenseForm" method="POST" class="space-y-6">
 
         <!-- Date & Category in one row -->
