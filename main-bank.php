@@ -106,12 +106,16 @@ skip_processing:
   </header>
 
   <main class="max-w-4xl mx-auto px-6 py-10 space-y-12">
-    <?php if (!empty($saved)) echo $saved; ?>
-    <?php if (!empty($cash_error)) echo $cash_error; ?>
-
+   
     <section class="bg-white p-6 rounded-lg shadow-md">
       <h2 class="text-xl font-semibold mb-4">📝 New Entry</h2>
       <form method="POST" class="space-y-6">
+         <?php if (!empty($saved)) echo $saved; ?>
+         <?php if (!empty($cash_error)) echo $cash_error; ?>
+
+          <br>
+          <br>
+          
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label for="fromAccount" class="block text-sm font-medium text-gray-700 mb-1">From Account</label>
