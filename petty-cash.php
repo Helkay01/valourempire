@@ -95,50 +95,53 @@ if (isset($_POST['record'])) {
                      $updBankBal->bindParam(':bal', $new_bnk_bal);
                      $updBankBal->execute();
 
-
-                  /// UPDATE CASH
-                 $stmt = $pdo->prepare("
-                     INSERT INTO cash (from_bk, amount, note, date)
-                     VALUES (:bank_account, :amount, :note, :date)
-                 ");
-         
-                 $stmt->execute([
-                     ':bank_account' => $bank_account,
-                     ':amount' => $amount,
-                     ':note' => $note,
-                     ':date' => $date,            
-                 ]);
-         
-         
-         
-                $selCashBal = $pdo->prepare("SELECT * FROM cash_bal");
-                $selCashBal->execute();
-               
-                if($selCashBal->rowCount() > 0) {
-                    $assoc = $selCashBal->fetch(PDO::FETCH_ASSOC);
-                    $cash_bal = (int)$assoc['balance'];
-         
-                    $new_bal = $cash_bal + $amount;
-                    // Prepare and execute query
-                    $save = $pdo->prepare("UPDATE cash_bal SET balance = :bal");
-                    $save->execute([
-                     ':bal' => $new_bal         
-                    ]);
-         
-                }
-                else {
-                   // Prepare and execute query
-                    $save = $pdo->prepare("INSERT INTO cash_bal (balance) VALUES (:bal)");
-                    $save->execute([
-                     ':bal' => $amount       
-                    ]);
-                }
+                  if($bank_bal >= $amount) {
+                           /// UPDATE CASH
+                          $stmt = $pdo->prepare("
+                              INSERT INTO cash (from_bk, amount, note, date)
+                              VALUES (:bank_account, :amount, :note, :date)
+                          ");
+                  
+                          $stmt->execute([
+                              ':bank_account' => $bank_account,
+                              ':amount' => $amount,
+                              ':note' => $note,
+                              ':date' => $date,            
+                          ]);
+                  
+                  
+                  
+                         $selCashBal = $pdo->prepare("SELECT * FROM cash_bal");
+                         $selCashBal->execute();
+                        
+                         if($selCashBal->rowCount() === 1) {
+                             $assoc = $selCashBal->fetch(PDO::FETCH_ASSOC);
+                             $cash_bal = (int)$assoc['balance'];
+                  
+                             $new_bal = $cash_bal + $amount;
+                             // Prepare and execute query
+                             $save = $pdo->prepare("UPDATE cash_bal SET balance = :bal");
+                             $save->execute([
+                              ':bal' => $new_bal         
+                             ]);
+                  
+                         }
+                         else {
+                            // Prepare and execute query
+                             $save = $pdo->prepare("INSERT INTO cash_bal (balance) VALUES (:bal)");
+                             $save->execute([
+                              ':bal' => $amount       
+                             ]);
+                         }
+                         
+                             $saved = ' <div class="mb-4 px-4 py-3 rounded text-green-700 bg-green-100">Cash saved succesfully</div>';  
+                  }  
+                  else if($bank_bal < $amount) {
+                     $cash_error = '<div class="mt-4 bg-red-100 text-red-700 p-3 rounded">Insufficient balance in bank account. <a style="color: blue;" href="main-bank.php">Update bank account first.</a></div>';
+                  }
+               }
+               /// IF TRANSFER FROM BIZ ACCT - END
                 
-                    $saved = ' <div class="mb-4 px-4 py-3 rounded text-green-700 bg-green-100">Cash saved succesfully</div>';  
-            
-            }
-            /// IF TRANSFER FROM BIZ ACCT - END
-       
          
       } catch (PDOException $e) {
          echo "❌ Database error: " . $e->getMessage();
