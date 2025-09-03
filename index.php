@@ -11,7 +11,7 @@ $selCashBal->execute();
 
 if($selCashBal->rowCount() > 0) {
   $assoc = $selCashBal->fetch(PDO::FETCH_ASSOC);
-  $cash_bal = (int)$assoc['balance'];
+  $cash_bal = (float)$assoc['balance'];
 }
 
 
@@ -21,7 +21,7 @@ $selBankBal = $pdo->prepare("SELECT * FROM bank_bal");
 $selBankBal->execute();
 if($selBankBal->rowCount() > 0) {
   $bnk_assoc = $selBankBal->fetch(PDO::FETCH_ASSOC);
-  $bank_bal = (int)$bnk_assoc['balance'];
+  $bank_bal = (float)$bnk_assoc['balance'];
 }                                  
                     
 
@@ -208,7 +208,7 @@ $exp = array_sum(array_column($ExpDetails, 'amount'));
       <main class="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
           <div class="text-gray-500">Total sales (This month)</div>
-          <div class="text-2xl font-semibold mt-2">₦<?php echo number_format($totalIncome); ?></div>
+          <div class="text-2xl font-semibold mt-2">₦<?php echo number_format($totalIncome, 2); ?></div>
         </div>
         <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
           <div class="text-gray-500">Invoices (Unpaid)</div>
@@ -217,17 +217,17 @@ $exp = array_sum(array_column($ExpDetails, 'amount'));
 
          <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
           <div class="text-gray-500">Expenses (This month)</div>
-          <div class="text-2xl font-semibold mt-2">₦<?php echo number_format($exp); ?></div>
+          <div class="text-2xl font-semibold mt-2">₦<?php echo number_format($exp, 2); ?></div>
         </div>
 
          <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
           <div class="text-gray-500">Cash Balance</div>
-          <div class="text-2xl font-semibold mt-2">₦<?php echo number_format($cash_bal); ?></div>
+          <div class="text-2xl font-semibold mt-2">₦<?php echo number_format($cash_bal, 2); ?></div>
         </div>
 
          <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
           <div class="text-gray-500">Bank Balance</div>
-          <div class="text-2xl font-semibold mt-2">₦<?php echo number_format($bank_bal); ?></div>
+          <div class="text-2xl font-semibold mt-2">₦<?php echo number_format($bank_bal, 2); ?></div>
         </div>
          
         <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
