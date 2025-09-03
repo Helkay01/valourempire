@@ -59,9 +59,12 @@ if($count > 0) {
       $invAlert = '<span class="block sm:inline">There are '.$count.' unpaid invoices. <a style="color: blue" href="outstanding-invoices.php">Write receipt</a></span>';
 }
 
-//CUSTOMERS
-$custm = $pdo->query("SELECT * FROM customers");
-$cust = $custm->rowCount();
+/// JOBS
+$job_status = "undelivered";
+$jobs = $pdo->query("SELECT * FROM invoices WHERE jobs_status = :jobs_status");
+$jobs->bindParam(':jobs_status', $jobs_status);
+$und_jobs = $jobs->rowCount();
+
 
 //EXPENSES
 $selExp = $pdo->prepare("SELECT * FROM expenses WHERE date BETWEEN :start_date AND :end_date");
@@ -243,8 +246,8 @@ $exp = array_sum(array_column($ExpDetails, 'amount'));
         </div>
          
         <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
-          <div class="text-gray-500">Customers</div>
-          <div class="text-2xl font-semibold mt-2"><?php echo $cust; ?></div>
+          <div class="text-gray-500">Undelivered jobs</div>
+          <div class="text-2xl font-semibold mt-2"><?php echo $und_jobs; ?></div>
         </div>
       </main>
 
