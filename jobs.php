@@ -10,10 +10,12 @@ if (!isset($_SESSION['user'])) {
 
 $user_id = $_SESSION['user']['user_id'];
 
-$query = "SELECT invoice_id, bill_to, issue_date, subtotal, discount, total FROM invoices ORDER BY issue_date DESC";
+$query = "SELECT invoice_id, bill_to, issue_date, subtotal, discount, total FROM invoices WHERE status = :un ORDER BY issue_date DESC";
 
 try {
+    $status = "undelivered";
     $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':un', $status);
     $stmt->execute();
     $invoices = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (Exception $e) {
@@ -35,10 +37,10 @@ try {
         &lt; Back to Dashboard
     </a>
 
-    <h1 class="text-2xl font-bold mb-6 text-gray-800">All Invoices</h1>
+    <h1 class="text-2xl font-bold mb-6 text-gray-800">Undelivered jobs</h1>
 
     <?php if (empty($invoices)): ?>
-        <div class="text-gray-600">No invoices found.</div>
+        <div class="text-gray-600">No undelivered jobs..</div>
     <?php else: ?>
         <div class="overflow-x-auto">
             <table class="min-w-full text-sm text-left border border-gray-300">
@@ -77,9 +79,7 @@ try {
         </div>
     <?php endif; ?>
 
-    <div class="mt-6">
-        <a href="create-invoice.php" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700">+ Create New Invoice</a>
-    </div>
+   
 </div>
 
 </body>
