@@ -44,7 +44,7 @@ if (isset($_POST['expenses'])) {
                     $selCashBal = $pdo->prepare("SELECT * FROM cash_bal");
                     $selCashBal->execute();
                     $assoc = $selCashBal->fetch(PDO::FETCH_ASSOC);
-                    $cash_bal = (int)$assoc['balance'];
+                    $cash_bal = (float)$assoc['balance'];
 
                     if($cash_bal > $amount) {
                        //Update cash bal
@@ -89,7 +89,7 @@ if (isset($_POST['expenses'])) {
                     $selBankBal = $pdo->prepare("SELECT * FROM bank_bal");
                     $selBankBal->execute();
                     $bnk_assoc = $selBankBal->fetch(PDO::FETCH_ASSOC);
-                    $bank_bal = (int)$bnk_assoc['balance'];
+                    $bank_bal = (float)$bnk_assoc['balance'];
                                   
 
                     if($bank_bal > $amount) {
