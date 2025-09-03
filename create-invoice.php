@@ -77,6 +77,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pdo->commit();
         $successMessage = "Invoice saved successfully with Invoice Number: $invoiceNumber";
 
+       /// SAVE INTO JOBS
+      $jobs_status = "undelivered";
+      $jobs = $pdo->prepare("INSERT INTO jobs (invoice_id, status) VALUES (:invoice_id, :status)");
+      $jobs->bindParam(':invoice_id', $invoiceNumber);
+      $jobs->bindParam(':status', $jobs_status);
+      $jobs->execute();
+       
+
+       
     } catch (Exception $e) {
         $pdo->rollBack();
         die("Error saving invoice: " . $e->getMessage());
