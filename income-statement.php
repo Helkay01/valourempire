@@ -101,7 +101,7 @@ if ($start_date && $end_date) {
         <div id="incomeDetails" class="hidden p-4 space-y-2">
           <div class="flex justify-between font-semibold pt-2 border-t">
             <span>Total Income (Invoices) </span>
-            <span id="totalIncome">₦<?php echo number_format($totalIncome); ?></span>
+            <span id="totalIncome">₦<?php echo number_format($totalIncome, 2); ?></span>
           </div>
         </div>
       </div>
@@ -116,12 +116,12 @@ if ($start_date && $end_date) {
           <?php foreach ($expenseDetails as $expense) { ?>
             <div class="flex justify-between">
               <span><?php echo htmlspecialchars($expense['category']); ?></span>
-              <span>₦<?php echo number_format($expense['amount']); ?></span>
+              <span>₦<?php echo number_format($expense['amount'], 2); ?></span>
             </div>
           <?php } ?>
           <div class="flex justify-between font-semibold pt-2 border-t">
             <span>Total Expenses</span>
-            <span id="totalExpenses">₦<?php echo number_format($totalExpenses); ?></span>
+            <span id="totalExpenses">₦<?php echo number_format($totalExpenses, 2); ?></span>
           </div>
         </div>
       </div>
@@ -130,7 +130,7 @@ if ($start_date && $end_date) {
       <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
         <div class="flex justify-between text-xl font-bold">
           <span>Net Profit / Loss</span>
-          <span id="netIncome" class="<?php echo $netProfitLoss >= 0 ? 'text-green-600' : 'text-red-600'; ?>">₦<?php echo number_format($netProfitLoss); ?></span>
+          <span id="netIncome" class="<?php echo $netProfitLoss >= 0 ? 'text-green-600' : 'text-red-600'; ?>">₦<?php echo number_format($netProfitLoss, 2); ?></span>
         </div>
       </div>
     <?php endif; ?>
