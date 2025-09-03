@@ -31,7 +31,7 @@ if (isset($_POST['record'])) {
          $selBankBal = $pdo->prepare("SELECT * FROM bank_bal LIMIT 1");
          $selBankBal->execute();
          $bnk_assoc = $selBankBal->fetch(PDO::FETCH_ASSOC);
-         $bank_bal = (int)$bnk_assoc['balance'];
+         $bank_bal = (float)$bnk_assoc['balance'];
                                      
          $new_bnk_bal = $bank_bal - $amount;
                           
@@ -60,7 +60,7 @@ if (isset($_POST['record'])) {
                
                 if($selCashBal->rowCount() > 0) {
                     $assoc = $selCashBal->fetch(PDO::FETCH_ASSOC);
-                    $cash_bal = (int)$assoc['balance'];
+                    $cash_bal = (float)$assoc['balance'];
          
                     $new_bal = $cash_bal + $amount;
                     // Prepare and execute query
@@ -122,7 +122,7 @@ if (isset($_POST['record'])) {
                         
                          if($selCashBal->rowCount() === 1) {
                              $assoc = $selCashBal->fetch(PDO::FETCH_ASSOC);
-                             $cash_bal = (int)$assoc['balance'];
+                             $cash_bal = (float)$assoc['balance'];
                   
                              $new_bal = $cash_bal + $amount;
                              // Prepare and execute query
