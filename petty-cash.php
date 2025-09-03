@@ -11,7 +11,7 @@ if (!isset($_SESSION['user'])) {
 $user_id = $_SESSION['user']['user_id'];
 $saved = "";
 $bank_error = "";
-
+$bank_bal = "";
 
 if (isset($_POST['record'])) {
   
@@ -27,6 +27,18 @@ if (isset($_POST['record'])) {
 
     try {
 
+       /// UPDATE BANK BALANCE
+         $selBankBal = $pdo->prepare("SELECT * FROM bank_bal LIMIT 1");
+         $selBankBal->execute();
+         $bnk_assoc = $selBankBal->fetch(PDO::FETCH_ASSOC);
+         $bank_bal = (int)$bnk_assoc['balance'];
+                                     
+         $new_bnk_bal = $bank_bal - $amount;
+                          
+
+
+
+       
        if($bank_account === "pa" || $bank_account === "cih") {
                 // Prepare and execute query
                  $stmt = $pdo->prepare("
@@ -84,15 +96,7 @@ if (isset($_POST['record'])) {
 
                   
                   if($bank_bal >= $amount) {
-                       /// UPDATE BANK BALANCE
-                       $selBankBal = $pdo->prepare("SELECT * FROM bank_bal LIMIT 1");
-                       $selBankBal->execute();
-                       $bnk_assoc = $selBankBal->fetch(PDO::FETCH_ASSOC);
-                       $bank_bal = (int)$bnk_assoc['balance'];
-                                     
-                    
-                        $new_bnk_bal = $bank_bal - $amount;
-                          
+                      
                         $updBankBal = $pdo->prepare("UPDATE bank_bal SET balance = :bal");
                         $updBankBal->bindParam(':bal', $new_bnk_bal);
                         $updBankBal->execute();
