@@ -58,9 +58,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $status = "unpaid";
         $paid = "0";
         $balance = "0";
-        
-        $stmt = $pdo->prepare("INSERT INTO invoices (bill_to, issue_date, subtotal, discount, total, invoice_id, status, client_id, paid, balance) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$billTo, $issueDate, $subtotal, $discount, $total, $invoiceNumber, $status, $clientId, $paid, $total]);
+        $job_status = "undelivered";
+       
+        $stmt = $pdo->prepare("INSERT INTO invoices (bill_to, issue_date, subtotal, discount, total, invoice_id, status, client_id, paid, balance, job_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$billTo, $issueDate, $subtotal, $discount, $total, $invoiceNumber, $status, $clientId, $paid, $total, $job_status]);
 
         // Get last inserted ID (optional if you want to use auto-incremented ID for relational FK)
         // $invoiceId = $pdo->lastInsertId(); 
@@ -77,13 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pdo->commit();
         $successMessage = "Invoice saved successfully with Invoice Number: $invoiceNumber";
 
-       /// SAVE INTO JOBS
-      $jobs_status = "undelivered";
-      $jobs = $pdo->prepare("INSERT INTO jobs (invoice_id, status) VALUES (:invoice_id, :status)");
-      $jobs->bindParam(':invoice_id', $invoiceNumber);
-      $jobs->bindParam(':status', $jobs_status);
-      $jobs->execute();
-       
+     
 
        
     } catch (Exception $e) {
