@@ -10,7 +10,7 @@ if (!isset($_SESSION['user'])) {
 
 $user_id = $_SESSION['user']['user_id'];
 
-$query = "SELECT invoice_id, bill_to, issue_date, subtotal, discount, total FROM invoices WHERE status = :un ORDER BY issue_date DESC";
+$query = "SELECT * FROM invoices WHERE job_status = :un ORDER BY issue_date DESC";
 
 try {
     $status = "undelivered";
