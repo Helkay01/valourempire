@@ -81,7 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     $selCashBal = $pdo->prepare("SELECT * FROM cash_bal");
                     $selCashBal->execute();
                     $assoc = $selCashBal->fetch(PDO::FETCH_ASSOC);
-                    $cash_bal = (int)$assoc['balance'];
+                    $cash_bal = (float)$assoc['balance'];
 
                   
                    $new_bal = $cash_bal + $amount;
@@ -116,7 +116,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     $selBankBal = $pdo->prepare("SELECT * FROM bank_bal");
                     $selBankBal->execute();
                     $bnk_assoc = $selBankBal->fetch(PDO::FETCH_ASSOC);
-                    $bank_bal = (int)$bnk_assoc['balance'];
+                    $bank_bal = (float)$bnk_assoc['balance'];
                                   
                     
                      $new_bnk_bal = $bank_bal + $amount;
@@ -176,7 +176,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     $selCashBal = $pdo->prepare("SELECT * FROM cash_bal");
                     $selCashBal->execute();
                     $assoc = $selCashBal->fetch(PDO::FETCH_ASSOC);
-                    $cash_bal = (int)$assoc['balance'];
+                    $cash_bal = (float)$assoc['balance'];
 
                   
                    $new_bal = $cash_bal + $amount;
@@ -203,7 +203,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     $selBankBal = $pdo->prepare("SELECT * FROM bank_bal LIMIT 1");
                     $selBankBal->execute();
                     $bnk_assoc = $selBankBal->fetch(PDO::FETCH_ASSOC);
-                    $bank_bal = (int)$bnk_assoc['balance'];
+                    $bank_bal = (float)$bnk_assoc['balance'];
                                   
                     
                      $new_bnk_bal = $bank_bal + $amount;
