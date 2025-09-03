@@ -61,7 +61,7 @@ if($count > 0) {
 
 /// JOBS
 $job_status = "undelivered";
-$jobs = $pdo->query("SELECT * FROM invoices WHERE job_status = :job_status");
+$jobs = $pdo->prepare("SELECT * FROM invoices WHERE job_status = :job_status");
 $jobs->bindParam(':job_status', $job_status);
 $jobs->execute();
 $und_jobs = $jobs->rowCount();
