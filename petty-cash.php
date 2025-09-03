@@ -10,7 +10,7 @@ if (!isset($_SESSION['user'])) {
 
 $user_id = $_SESSION['user']['user_id'];
 $saved = "";
-
+$bank_error = "";
 
 
 if (isset($_POST['record'])) {
@@ -82,20 +82,22 @@ if (isset($_POST['record'])) {
                     $stmt->execute();
 
 
-                    /// UPDATE BANK BALANCE
-                    $selBankBal = $pdo->prepare("SELECT * FROM bank_bal LIMIT 1");
-                    $selBankBal->execute();
-                    $bnk_assoc = $selBankBal->fetch(PDO::FETCH_ASSOC);
-                    $bank_bal = (int)$bnk_assoc['balance'];
-                                  
-                    
-                     $new_bnk_bal = $bank_bal - $amount;
-                       
-                     $updBankBal = $pdo->prepare("UPDATE bank_bal SET balance = :bal");
-                     $updBankBal->bindParam(':bal', $new_bnk_bal);
-                     $updBankBal->execute();
-
+                  
                   if($bank_bal >= $amount) {
+                       /// UPDATE BANK BALANCE
+                       $selBankBal = $pdo->prepare("SELECT * FROM bank_bal LIMIT 1");
+                       $selBankBal->execute();
+                       $bnk_assoc = $selBankBal->fetch(PDO::FETCH_ASSOC);
+                       $bank_bal = (int)$bnk_assoc['balance'];
+                                     
+                    
+                        $new_bnk_bal = $bank_bal - $amount;
+                          
+                        $updBankBal = $pdo->prepare("UPDATE bank_bal SET balance = :bal");
+                        $updBankBal->bindParam(':bal', $new_bnk_bal);
+                        $updBankBal->execute();
+
+                     
                            /// UPDATE CASH
                           $stmt = $pdo->prepare("
                               INSERT INTO cash (from_bk, amount, note, date)
@@ -137,7 +139,7 @@ if (isset($_POST['record'])) {
                              $saved = ' <div class="mb-4 px-4 py-3 rounded text-green-700 bg-green-100">Cash saved succesfully</div>';  
                   }  
                   else if($bank_bal < $amount) {
-                     $cash_error = '<div class="mt-4 bg-red-100 text-red-700 p-3 rounded">Insufficient balance in bank account. <a style="color: blue;" href="main-bank.php">Update bank account first.</a></div>';
+                     $bank_error = '<div class="mt-4 bg-red-100 text-red-700 p-3 rounded">Insufficient balance in bank account. <a style="color: blue;" href="main-bank.php">Update bank account first.</a></div>';
                   }
                }
                /// IF TRANSFER FROM BIZ ACCT - END
@@ -187,6 +189,7 @@ if (isset($_POST['record'])) {
     <!-- Form Section -->
     <section class="bg-white p-6 rounded-lg shadow-md">
          <?php echo $saved; ?>
+          <?php echo $bank_error; ?>
          <br>
           <br>
       <h2 class="text-xl font-semibold mb-4">📝 Tranfer to cash</h2>
