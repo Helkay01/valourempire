@@ -91,33 +91,33 @@ if (isset($_POST['record'])) {
             $pdo->commit();
             $saved = '<div class="mb-4 px-4 py-3 rounded text-green-700 bg-green-100">✅ Added to bank account successfully.</div>';
         } else {
-            $pdo->rollBack();
-            die('❌ Invalid account type.');
+
+                // Insert into main bank table
+                $bank_trans_type = "";
+                $insert = $pdo->prepare("INSERT INTO main_bank (amount, note, date, type) VALUES (:amount, :note, :date, :type)");
+                $insert->execute([
+                    ':amount' => $amount,
+                    ':note' => $note,
+                    ':date' => $date,
+                    ':type' => $bank_trans_type,
+                ]);
+    
+                // Update or insert bank balance
+                if ($bankRow) {
+                    $updateBank = $pdo->prepare("UPDATE bank_bal SET balance = :bal");
+                    $updateBank->execute([':bal' => $newBankBal]);
+                } else {
+                    $insertBank = $pdo->prepare("INSERT INTO bank_bal (balance) VALUES (:bal)");
+                    $insertBank->execute([':bal' => $newBankBal]);
+                }
+
+            
+           // $pdo->rollBack();
+           // die('❌ Invalid account type.');
         }
 
 
-        // If source is cash
-        if ($fromAccount === "pa") {
-             // Insert into main bank table
-            $bank_trans_type = "";
-            $insert = $pdo->prepare("INSERT INTO main_bank (amount, note, date, type) VALUES (:amount, :note, :date, :type)");
-            $insert->execute([
-                ':amount' => $amount,
-                ':note' => $note,
-                ':date' => $date,
-                ':type' => $bank_trans_type,
-            ]);
-
-            // Update or insert bank balance
-            if ($bankRow) {
-                $updateBank = $pdo->prepare("UPDATE bank_bal SET balance = :bal");
-                $updateBank->execute([':bal' => $newBankBal]);
-            } else {
-                $insertBank = $pdo->prepare("INSERT INTO bank_bal (balance) VALUES (:bal)");
-                $insertBank->execute([':bal' => $newBankBal]);
-            }
-
-        }
+     
 
 
         
