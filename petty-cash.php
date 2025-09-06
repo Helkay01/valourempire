@@ -181,7 +181,7 @@ if (isset($_POST['record'])) {
                      
                            /// UPDATE CASH
 
-                          $type = "Contra (Transfer to Bank Account)";
+                          $type = "Contra (Transfer from Bank Account)";
                      
                           $cash_stmt = $pdo->prepare("INSERT INTO cash (from_bk, amount, note, date, type)
                               VALUES (:bank_account, :amount, :note, :date, :type)
