@@ -91,7 +91,7 @@ if (isset($_POST['record'])) {
             $pdo->commit();
             $saved = '<div class="mb-4 px-4 py-3 rounded text-green-700 bg-green-100">✅ Added to bank account successfully.</div>';
         
-        } else if($fromAccount === "pa") {
+        } else if (in_array($fromAccount, ["pa"])) {
 
                 // Insert into main bank table
                 $bank_trans_type = "";
@@ -112,7 +112,7 @@ if (isset($_POST['record'])) {
                     $insertBank->execute([':bal' => $newBankBal]);
                 }
 
-            
+        } else {     
            // $pdo->rollBack();
            // die('❌ Invalid account type.');
         }
