@@ -76,7 +76,7 @@ if (isset($_POST['record'])) {
                 ':amount' => $amount,
                 ':note' => $note,
                 ':date' => $date,
-                ':type' => $bank_trans_type,
+                ':type' => $bank_trans_type
             ]);
 
             // Update or insert bank balance
@@ -90,6 +90,7 @@ if (isset($_POST['record'])) {
 
             $pdo->commit();
             $saved = '<div class="mb-4 px-4 py-3 rounded text-green-700 bg-green-100">✅ Added to bank account successfully.</div>';
+        
         } else if($fromAccount === "pa") {
 
                 // Insert into main bank table
@@ -99,7 +100,7 @@ if (isset($_POST['record'])) {
                     ':amount' => $amount,
                     ':note' => $note,
                     ':date' => $date,
-                    ':type' => $bank_trans_type,
+                    ':type' => $bank_trans_type
                 ]);
     
                 // Update or insert bank balance
