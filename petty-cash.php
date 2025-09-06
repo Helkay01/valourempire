@@ -51,7 +51,7 @@ if (isset($_POST['record'])) {
 
 
 
-       
+       /// PERSONAL ACCOUNT
        if($bank_account === "pa" || $bank_account === "cih") {
           $Ttype = ($bank_account === "pa") ? "From Personal Account" : "Cash balance";
 
@@ -99,6 +99,63 @@ if (isset($_POST['record'])) {
                    $saved = ' <div class="mb-4 px-4 py-3 rounded text-green-700 bg-green-100">Cash saved succesfully</div>';  
             
           }
+
+
+
+       //// CASH ACCOUNT
+       
+       if($bank_account === "pa" || $bank_account === "cih") {
+          $Ttype = ($bank_account === "pa") ? "From Personal Account" : "Cash balance";
+
+                // Prepare and execute query
+                 $stmt = $pdo->prepare("
+                     INSERT INTO cash (from_bk, amount, note, date, type)
+                     VALUES (:bank_account, :amount, :note, :date, :type)
+                 ");
+         
+                 $stmt->execute([
+                     ':bank_account' => $bank_account,
+                     ':amount' => $amount,
+                     ':note' => $note,
+                     ':date' => $date, 
+                     ':type' => $Ttype
+                 ]);
+         
+         
+         
+                $selCashBal = $pdo->prepare("SELECT * FROM cash_bal");
+                $selCashBal->execute();
+               
+                if($selCashBal->rowCount() > 0) {
+                    $assoc = $selCashBal->fetch(PDO::FETCH_ASSOC);
+                    $cash_bal = (float)$assoc['balance'];
+         
+                    $new_bal = $cash_bal + $amount;
+                    // Prepare and execute query
+                    $save = $pdo->prepare("UPDATE cash_bal SET balance = :bal");
+                    $save->execute([
+                     ':bal' => $new_bal         
+                    ]);
+         
+                }
+                else {
+                   // Prepare and execute query
+                    $save = $pdo->prepare("INSERT INTO cash_bal (balance) VALUES (:bal)");
+                    $save->execute([
+                     ':bal' => $amount       
+                    ]);
+                }
+                
+                                
+                 // Redirect or show success
+                   $saved = ' <div class="mb-4 px-4 py-3 rounded text-green-700 bg-green-100">Cash saved succesfully</div>';  
+            
+          }
+
+
+
+       
+       
 
                /// IF TRANSFER FROM BIZ ACCT - START
                if($bank_account === "Bank") {
