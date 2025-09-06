@@ -58,6 +58,8 @@ if (isset($_POST['record'])) {
                      ':date' => $date, 
                      ':type' => $trans_type, 
                  ]);
+
+                 
             } else {
                 $pdo->rollBack();
                 $cash_error = '<div class="mt-4 bg-red-100 text-red-700 p-3 rounded">Insufficient balance in cash account. <a style="color: blue;" href="petty-cash.php">Update cash account first.</a></div>';
@@ -66,9 +68,9 @@ if (isset($_POST['record'])) {
         }
 
         // Process transaction (for all account types)
-        if (in_array($fromAccount, ["cb", "pa", "Bank"])) {
+        if (in_array($fromAccount, ["cb", "Bank"])) {
             // Insert into main bank table
-            $bank_trans_type = "";
+            $bank_trans_type = "Contra";
             $insert = $pdo->prepare("INSERT INTO main_bank (amount, note, date, type) VALUES (:amount, :note, :date, :type)");
             $insert->execute([
                 ':amount' => $amount,
@@ -93,6 +95,32 @@ if (isset($_POST['record'])) {
             die('❌ Invalid account type.');
         }
 
+
+        // If source is cash
+        if ($fromAccount === "pa") {
+             // Insert into main bank table
+            $bank_trans_type = "";
+            $insert = $pdo->prepare("INSERT INTO main_bank (amount, note, date, type) VALUES (:amount, :note, :date, :type)");
+            $insert->execute([
+                ':amount' => $amount,
+                ':note' => $note,
+                ':date' => $date,
+                ':type' => $bank_trans_type,
+            ]);
+
+            // Update or insert bank balance
+            if ($bankRow) {
+                $updateBank = $pdo->prepare("UPDATE bank_bal SET balance = :bal");
+                $updateBank->execute([':bal' => $newBankBal]);
+            } else {
+                $insertBank = $pdo->prepare("INSERT INTO bank_bal (balance) VALUES (:bal)");
+                $insertBank->execute([':bal' => $newBankBal]);
+            }
+
+        }
+
+
+        
     } catch (PDOException $e) {
         $pdo->rollBack();
         echo "❌ Database error: " . $e->getMessage();
