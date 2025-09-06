@@ -1,6 +1,6 @@
 <?php
 session_start();
-require 'connections.php'; // Ensure this defines $pdo as a PDO instance
+require 'connections.php'; // $pdo must be defined here
 
 if (!isset($_SESSION['user'])) {
     header("Location: login.php");
@@ -17,127 +17,106 @@ if (isset($_POST['record'])) {
     $note = trim($_POST['note'] ?? '');
     $fromAccount = $_POST['fromAccount'] ?? '';
 
-    if ($amount <= 0 || empty($date) || empty($fromAccount)) {
-        die('❌ Please fill all required fields correctly.');
-    }
+    // Validate inputs
+    if (!is_numeric($amount) || $amount <= 0 || empty($date) || empty($fromAccount)) {
+        $cash_error = '<div class="mt-4 bg-red-100 text-red-700 p-3 rounded">❌ Please fill all required fields correctly.</div>';
+    } else {
+        try {
+            $pdo->beginTransaction();
 
-    try {
-        $pdo->beginTransaction();
+            // Fetch current bank balance
+            $stmt = $pdo->prepare("SELECT * FROM bank_bal LIMIT 1");
+            $stmt->execute();
+            $bankRow = $stmt->fetch(PDO::FETCH_ASSOC);
+            $bankBal = $bankRow ? (float)$bankRow['balance'] : 0;
+            $newBankBal = $bankBal + $amount;
 
-        // Get current bank balance
-        $stmt = $pdo->prepare("SELECT * FROM bank_bal LIMIT 1");
-        $stmt->execute();
-        $bankRow = $stmt->fetch(PDO::FETCH_ASSOC);
-        $bankBal = $bankRow ? (float)$bankRow['balance'] : 0;
-        $newBankBal = $bankBal + $amount;
+            if ($fromAccount === "cb") {
+                // Get cash balance
+                $cashStmt = $pdo->prepare("SELECT * FROM cash_bal LIMIT 1");
+                $cashStmt->execute();
+                $cashRow = $cashStmt->fetch(PDO::FETCH_ASSOC);
+                $cashBal = $cashRow ? (float)$cashRow['balance'] : 0;
 
-        // If source is cash
-        if ($fromAccount === "cb") {
-            $cashStmt = $pdo->prepare("SELECT * FROM cash_bal LIMIT 1");
-            $cashStmt->execute();
-            $cashRow = $cashStmt->fetch(PDO::FETCH_ASSOC);
-            $cashBal = $cashRow ? (float)$cashRow['balance'] : 0;
+                if ($cashBal >= $amount) {
+                    // Deduct from cash
+                    $updateCash = $pdo->prepare("UPDATE cash_bal SET balance = :bal");
+                    $updateCash->execute([':bal' => $cashBal - $amount]);
 
-            if ($cashBal >= $amount) {
-                // Deduct from cash
-                $updateCash = $pdo->prepare("UPDATE cash_bal SET balance = :bal");
-                $updateCash->execute([':bal' => $cashBal - $amount]);
+                    // Insert into cash transaction
+                    $cash_stmt = $pdo->prepare("
+                        INSERT INTO cash (from_bk, amount, note, date, type)
+                        VALUES (:bank_account, :amount, :note, :date, :type)
+                    ");
 
-                 $cash_stmt = $pdo->prepare("
-                     INSERT INTO cash (from_bk, amount, note, date, type)
-                     VALUES (:bank_account, :amount, :note, :date, :type)
-                 ");
+                    $trans_type = "Contra (From Cash Account)";
+                    $cash_stmt->execute([
+                        ':bank_account' => "Cash Account",
+                        ':amount' => $amount,
+                        ':note' => $note,
+                        ':date' => $date,
+                        ':type' => $trans_type
+                    ]);
 
-                 $cashAccount = "Cash Account";
-                 $trans_type = "Contra (From Cash Account)";
-                
-                 $cash_stmt->execute([
-                     ':bank_account' => $cashAccount,
-                     ':amount' => $amount,
-                     ':note' => $note,
-                     ':date' => $date, 
-                     ':type' => $trans_type 
-                 ]);
+                    // Insert into main_bank (optional but recommended for full tracking)
+                    $insertMainBank = $pdo->prepare("INSERT INTO main_bank (amount, note, date, type) VALUES (:amount, :note, :date, :type)");
+                    $insertMainBank->execute([
+                        ':amount' => $amount,
+                        ':note' => $note,
+                        ':date' => $date,
+                        ':type' => "From Cash Account"
+                    ]);
 
-                  $saved = '<div class="mb-4 px-4 py-3 rounded text-green-700 bg-green-100">✅ Added to bank account successfully.</div>';
-        
+                    // Update or insert bank balance
+                    if ($bankRow) {
+                        $updateBank = $pdo->prepare("UPDATE bank_bal SET balance = :bal");
+                        $updateBank->execute([':bal' => $newBankBal]);
+                    } else {
+                        $insertBank = $pdo->prepare("INSERT INTO bank_bal (balance) VALUES (:bal)");
+                        $insertBank->execute([':bal' => $newBankBal]);
+                    }
+
+                    $pdo->commit();
+                    $saved = '<div class="mb-4 px-4 py-3 rounded text-green-700 bg-green-100">✅ Added to bank account successfully.</div>';
+                } else {
+                    $pdo->rollBack();
+                    $cash_error = '<div class="mt-4 bg-red-100 text-red-700 p-3 rounded">Insufficient balance in cash account. <a style="color: blue;" href="petty-cash.php">Update cash account first.</a></div>';
+                }
+
+            } elseif ($fromAccount === "pa" || $fromAccount === "Bank") {
+                $type = ($fromAccount === "pa") ? "From Personal Account" : "From Bank Account";
+
+                // Insert into main bank
+                $insert = $pdo->prepare("INSERT INTO main_bank (amount, note, date, type) VALUES (:amount, :note, :date, :type)");
+                $insert->execute([
+                    ':amount' => $amount,
+                    ':note' => $note,
+                    ':date' => $date,
+                    ':type' => $type
+                ]);
+
+                // Update or insert bank balance
+                if ($bankRow) {
+                    $updateBank = $pdo->prepare("UPDATE bank_bal SET balance = :bal");
+                    $updateBank->execute([':bal' => $newBankBal]);
+                } else {
+                    $insertBank = $pdo->prepare("INSERT INTO bank_bal (balance) VALUES (:bal)");
+                    $insertBank->execute([':bal' => $newBankBal]);
+                }
+
+                $pdo->commit();
+                $saved = '<div class="mb-4 px-4 py-3 rounded text-green-700 bg-green-100">✅ Added to bank account successfully.</div>';
             } else {
                 $pdo->rollBack();
-                $cash_error = '<div class="mt-4 bg-red-100 text-red-700 p-3 rounded">Insufficient balance in cash account. <a style="color: blue;" href="petty-cash.php">Update cash account first.</a></div>';
-                goto skip_processing;
-            }
-        }
-
-        else if ($fromAccount === "pa") {
-            $bank_trans_type = "From Personal Account";
-            $insert = $pdo->prepare("INSERT INTO main_bank (amount, note, date, type) VALUES (:amount, :note, :date, :type)");
-            $insert->execute([
-                ':amount' => $amount,
-                ':note' => $note,
-                ':date' => $date,
-                ':type' => $bank_trans_type
-            ]);
-
-            // Update or insert bank balance
-            if ($bankRow) {
-                $updateBank = $pdo->prepare("UPDATE bank_bal SET balance = :bal");
-                $updateBank->execute([':bal' => $newBankBal]);
-            } else {
-                $insertBank = $pdo->prepare("INSERT INTO bank_bal (balance) VALUES (:bal)");
-                $insertBank->execute([':bal' => $newBankBal]);
+                $cash_error = '<div class="mt-4 bg-red-100 text-red-700 p-3 rounded">❌ Invalid source account selected.</div>';
             }
 
-            $pdo->commit();
-            $saved = '<div class="mb-4 px-4 py-3 rounded text-green-700 bg-green-100">✅ Added to bank account successfully.</div>';
-        
-
+        } catch (PDOException $e) {
+            $pdo->rollBack();
+            $cash_error = '<div class="mt-4 bg-red-100 text-red-700 p-3 rounded">❌ Database error: ' . htmlspecialchars($e->getMessage()) . '</div>';
         }
-         else if ($fromAccount === "Bank") {
-            $bank_trans_type = "From Bank Account";
-            $insert = $pdo->prepare("INSERT INTO main_bank (amount, note, date, type) VALUES (:amount, :note, :date, :type)");
-            $insert->execute([
-                ':amount' => $amount,
-                ':note' => $note,
-                ':date' => $date,
-                ':type' => $bank_trans_type
-            ]);
-
-            // Update or insert bank balance
-            if ($bankRow) {
-                $updateBank = $pdo->prepare("UPDATE bank_bal SET balance = :bal");
-                $updateBank->execute([':bal' => $newBankBal]);
-            } else {
-                $insertBank = $pdo->prepare("INSERT INTO bank_bal (balance) VALUES (:bal)");
-                $insertBank->execute([':bal' => $newBankBal]);
-            }
-
-            $pdo->commit();
-            $saved = '<div class="mb-4 px-4 py-3 rounded text-green-700 bg-green-100">✅ Added to bank account successfully.</div>';
-        
-
-        }
-
-
-
-
-
-
-
-
-  
-       
-
-     
-
-
-        
-    } catch (PDOException $e) {
-        $pdo->rollBack();
-        echo "❌ Database error: " . $e->getMessage();
     }
 }
-
-skip_processing:
 ?>
 
 <!DOCTYPE html>
@@ -162,16 +141,12 @@ skip_processing:
   </header>
 
   <main class="max-w-4xl mx-auto px-6 py-10 space-y-12">
-   
     <section class="bg-white p-6 rounded-lg shadow-md">
       <h2 class="text-xl font-semibold mb-4">📝 New Entry</h2>
       <form method="POST" class="space-y-6">
-         <?php if (!empty($saved)) echo $saved; ?>
-         <?php if (!empty($cash_error)) echo $cash_error; ?>
+        <?php if (!empty($saved)) echo $saved; ?>
+        <?php if (!empty($cash_error)) echo $cash_error; ?>
 
-          <br>
-          <br>
-          
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label for="fromAccount" class="block text-sm font-medium text-gray-700 mb-1">From Account</label>
