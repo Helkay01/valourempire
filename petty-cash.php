@@ -53,17 +53,20 @@ if (isset($_POST['record'])) {
 
        
        if($bank_account === "pa" || $bank_account === "cih") {
+          $Ttype = ($bankAccount === "pa") ? "From Personal Account" : "Cash balance";
+
                 // Prepare and execute query
                  $stmt = $pdo->prepare("
                      INSERT INTO cash (from_bk, amount, note, date)
-                     VALUES (:bank_account, :amount, :note, :date)
+                     VALUES (:bank_account, :amount, :note, :date, :type)
                  ");
          
                  $stmt->execute([
                      ':bank_account' => $bank_account,
                      ':amount' => $amount,
                      ':note' => $note,
-                     ':date' => $date,            
+                     ':date' => $date, 
+                     ':date' => $Ttype
                  ]);
          
          
@@ -100,10 +103,13 @@ if (isset($_POST['record'])) {
                /// IF TRANSFER FROM BIZ ACCT - START
                if($bank_account === "Bank") {
                     /// INSERT INTO BANK
-                    $stmt = $pdo->prepare("INSERT INTO main_bank (amount, note, date)VALUES (:amount, :note, :date)");                
+
+                    $bnkTy = "Contra (Transfer to Cash Account)";
+                    $stmt = $pdo->prepare("INSERT INTO main_bank (amount, note, date, type) VALUES (:amount, :note, :date, :type)");                
                     $stmt->bindParam(':amount', $amount);
                     $stmt->bindParam(':note', $note);
                     $stmt->bindParam(':date', $date);
+                    $stmt->bindParam(':type', $bnkTy);
                     $stmt->execute();
 
 
