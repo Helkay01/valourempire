@@ -124,11 +124,7 @@ if (isset($_POST['record'])) {
 
 
   
-        } else {     
-           // $pdo->rollBack();
-           // die('❌ Invalid account type.');
-        }
-
+       
 
      
 
