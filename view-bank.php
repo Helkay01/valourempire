@@ -18,7 +18,7 @@ $endDate = $_GET['endDate'] ?? '';
 $transactions = [];
 
 if ($startDate && $endDate) {
-    $sql = "SELECT * FROM main_bank WHERE date BETWEEN :start AND :end ORDER BY date DESC";
+    $sql = "SELECT * FROM main_bank WHERE date BETWEEN :start AND :end ORDER BY id DESC";
     $params = [
         ':start' => $startDate,
         ':end' => $endDate,
@@ -32,6 +32,9 @@ if ($startDate && $endDate) {
         die("Database error: " . $e->getMessage());
     }
 }
+
+
+   
 ?>
 
 <!DOCTYPE html>
