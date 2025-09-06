@@ -66,7 +66,7 @@ if (isset($_POST['record'])) {
                      ':amount' => $amount,
                      ':note' => $note,
                      ':date' => $date, 
-                     ':date' => $Ttype
+                     ':type' => $Ttype
                  ]);
          
          
