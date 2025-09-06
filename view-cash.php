@@ -108,7 +108,7 @@ if ($startDate && $endDate) {
                     <td class="px-4 py-2"><?= htmlspecialchars(date("d M Y", strtotime($txn['date']))) ?></td>
                     <td class="px-4 py-2"><?= htmlspecialchars($txn['note']) ?></td>
                     <td class="px-4 py-2">₦<?= $txn['amount'] ?></td>
-                    <td class="px-4 py-2">₦<?= $txn['type'] ?></td>
+                    <td class="px-4 py-2"><?= $txn['type'] ?></td>
                   </tr>
                 <?php endforeach; ?>
               <?php endif; ?>
