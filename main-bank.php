@@ -49,7 +49,7 @@ if (isset($_POST['record'])) {
                  ");
 
                  $cashAccount = "Cash Account";
-                 $trans_type = "Contra";
+                 $trans_type = "Contra (From Cash Account)";
                 
                  $cash_stmt->execute([
                      ':bank_account' => $cashAccount,
@@ -91,11 +91,8 @@ if (isset($_POST['record'])) {
         
 
         }
-        
-        // Process transaction (for all account types)
-        if (in_array($fromAccount, ["cb", "Bank"])) {
-            // Insert into main bank table
-            $bank_trans_type = "Contra";
+         else if ($fromAccount === "Bank") {
+            $bank_trans_type = "From Bank Account";
             $insert = $pdo->prepare("INSERT INTO main_bank (amount, note, date, type) VALUES (:amount, :note, :date, :type)");
             $insert->execute([
                 ':amount' => $amount,
@@ -116,7 +113,17 @@ if (isset($_POST['record'])) {
             $pdo->commit();
             $saved = '<div class="mb-4 px-4 py-3 rounded text-green-700 bg-green-100">✅ Added to bank account successfully.</div>';
         
-        
+
+        }
+
+
+
+
+
+
+
+
+  
         } else {     
            // $pdo->rollBack();
            // die('❌ Invalid account type.');
