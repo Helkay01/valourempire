@@ -56,10 +56,11 @@ if (isset($_POST['record'])) {
                      ':amount' => $amount,
                      ':note' => $note,
                      ':date' => $date, 
-                     ':type' => $trans_type, 
+                     ':type' => $trans_type 
                  ]);
 
-                 
+                  $saved = '<div class="mb-4 px-4 py-3 rounded text-green-700 bg-green-100">✅ Added to bank account successfully.</div>';
+        
             } else {
                 $pdo->rollBack();
                 $cash_error = '<div class="mt-4 bg-red-100 text-red-700 p-3 rounded">Insufficient balance in cash account. <a style="color: blue;" href="petty-cash.php">Update cash account first.</a></div>';
