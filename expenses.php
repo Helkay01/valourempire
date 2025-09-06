@@ -57,11 +57,12 @@ if (isset($_POST['expenses'])) {
                         //INSERT INTO CASH
                        $exp = "Expenses recored ({$category})";
                     
-                       $stmt = $pdo->prepare("INSERT INTO cash (from_bk, amount, note, date)VALUES (:bank_account, :amount, :note, :date)");
+                       $stmt = $pdo->prepare("INSERT INTO cash (from_bk, amount, note, date, type) VALUES (:bank_account, :amount, :note, :date, :type)");
                        $stmt->bindParam(':bank_account', $exp);
                        $stmt->bindParam(':amount', $amount);
                        $stmt->bindParam(':note', $description);
                        $stmt->bindParam(':date', $date);
+                       $stmt->bindParam(':type', "Expenses (Money Out)");
                        $stmt->execute();
 
                        /// INSERT INTO EXPENSES
@@ -102,10 +103,11 @@ if (isset($_POST['expenses'])) {
 
 
                        ///INSERT INTO BANK
-                       $stmt = $pdo->prepare("INSERT INTO main_bank (amount, note, date)VALUES (:amount, :note, :date)");               
+                       $stmt = $pdo->prepare("INSERT INTO main_bank (amount, note, date, type) VALUES (:amount, :note, :date, :type)");               
                        $stmt->bindParam(':amount', $amount);
                        $stmt->bindParam(':note', $description);
                        $stmt->bindParam(':date', $date);
+                       $stmt->bindParam(':type', "Expenses (Money Out)");
                        $stmt->execute();
 
                         
