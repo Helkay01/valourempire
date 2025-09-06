@@ -57,7 +57,7 @@ if (isset($_POST['record'])) {
 
                 // Prepare and execute query
                  $stmt = $pdo->prepare("
-                     INSERT INTO cash (from_bk, amount, note, date)
+                     INSERT INTO cash (from_bk, amount, note, date, type)
                      VALUES (:bank_account, :amount, :note, :date, :type)
                  ");
          
