@@ -28,7 +28,7 @@ if (isset($_POST['record'])) {
     try {
 
        /// UPDATE BANK BALANCE
-         $selBankBal = $pdo->prepare("SELECT * FROM bank_bal LIMIT 1");
+         $selBankBal = $pdo->query("SELECT * FROM bank_bal LIMIT 1");
          $selBankBal->execute();
          $bnk_assoc = $selBankBal->fetch(PDO::FETCH_ASSOC);
          $bank_bal = (float)$bnk_assoc['balance'];
