@@ -162,6 +162,7 @@ if (isset($_POST['record'])) {
                     /// INSERT INTO BANK
 
                     $bnkTy = "Contra (Transfer to Cash Account)";
+                  
                     $stmt = $pdo->prepare("INSERT INTO main_bank (amount, note, date, type) VALUES (:amount, :note, :date, :type)");                
                     $stmt->bindParam(':amount', $amount);
                     $stmt->bindParam(':note', $note);
@@ -179,16 +180,20 @@ if (isset($_POST['record'])) {
 
                      
                            /// UPDATE CASH
+
+                          $type = "Contra (Transfer to Bank Account)"
+                     
                           $stmt = $pdo->prepare("
-                              INSERT INTO cash (from_bk, amount, note, date)
-                              VALUES (:bank_account, :amount, :note, :date)
+                              INSERT INTO cash (from_bk, amount, note, date, type)
+                              VALUES (:bank_account, :amount, :note, :date, :type)
                           ");
                   
                           $stmt->execute([
                               ':bank_account' => $bank_account,
                               ':amount' => $amount,
                               ':note' => $note,
-                              ':date' => $date,            
+                              ':date' => $date,  
+                              ':type' => $type
                           ]);
                   
                   
