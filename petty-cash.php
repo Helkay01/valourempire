@@ -28,12 +28,25 @@ if (isset($_POST['record'])) {
     try {
 
        /// UPDATE BANK BALANCE
-         $selBankBal = $pdo->query("SELECT * FROM bank_bal LIMIT 1");
-         $selBankBal->execute();
-         $bnk_assoc = $selBankBal->fetch(PDO::FETCH_ASSOC);
-         $bank_bal = (float)$bnk_assoc['balance'];
+       $selBankBal = $pdo->query("SELECT * FROM bank_bal LIMIT 1");
+
+      if ($selBankBal) {
+          $bnk_assoc = $selBankBal->fetch(PDO::FETCH_ASSOC);
+      
+          if ($bnk_assoc && isset($bnk_assoc['balance'])) {
+              $bank_bal = (float)$bnk_assoc['balance'];
+              $new_bnk_bal = $bank_bal - $amount;
+          } else {
+              $bank_bal = 0.0; // or handle as needed if no balance found
+          }
+      } else {
+          // Query failed — handle the error
+          $bank_bal = 0.0;
+          error_log("Failed to fetch bank balance from DB.");
+      }
+
                                      
-         $new_bnk_bal = $bank_bal - $amount;
+        
                           
 
 
