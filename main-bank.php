@@ -42,6 +42,22 @@ if (isset($_POST['record'])) {
                 // Deduct from cash
                 $updateCash = $pdo->prepare("UPDATE cash_bal SET balance = :bal");
                 $updateCash->execute([':bal' => $cashBal - $amount]);
+
+                 $cash_stmt = $pdo->prepare("
+                     INSERT INTO cash (from_bk, amount, note, date, type)
+                     VALUES (:bank_account, :amount, :note, :date, :type)
+                 ");
+
+                 $cashAccount = "Cash Account";
+                 $trans_type = "Contra";
+                
+                 $cash_stmt->execute([
+                     ':bank_account' => $cashAccount,
+                     ':amount' => $amount,
+                     ':note' => $note,
+                     ':date' => $date, 
+                     ':type' => $trans_type, 
+                 ]);
             } else {
                 $pdo->rollBack();
                 $cash_error = '<div class="mt-4 bg-red-100 text-red-700 p-3 rounded">Insufficient balance in cash account. <a style="color: blue;" href="petty-cash.php">Update cash account first.</a></div>';
@@ -52,11 +68,13 @@ if (isset($_POST['record'])) {
         // Process transaction (for all account types)
         if (in_array($fromAccount, ["cb", "pa", "Bank"])) {
             // Insert into main bank table
-            $insert = $pdo->prepare("INSERT INTO main_bank (amount, note, date) VALUES (:amount, :note, :date)");
+            $bank_trans_type = "";
+            $insert = $pdo->prepare("INSERT INTO main_bank (amount, note, date, type) VALUES (:amount, :note, :date, :type)");
             $insert->execute([
                 ':amount' => $amount,
                 ':note' => $note,
-                ':date' => $date
+                ':date' => $date,
+                ':type' => $bank_trans_type,
             ]);
 
             // Update or insert bank balance
