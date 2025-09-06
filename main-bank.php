@@ -67,8 +67,33 @@ if (isset($_POST['record'])) {
             }
         }
 
+        else if ($fromAccount === "pa") {
+            $bank_trans_type = "From Personal Account";
+            $insert = $pdo->prepare("INSERT INTO main_bank (amount, note, date, type) VALUES (:amount, :note, :date, :type)");
+            $insert->execute([
+                ':amount' => $amount,
+                ':note' => $note,
+                ':date' => $date,
+                ':type' => $bank_trans_type
+            ]);
+
+            // Update or insert bank balance
+            if ($bankRow) {
+                $updateBank = $pdo->prepare("UPDATE bank_bal SET balance = :bal");
+                $updateBank->execute([':bal' => $newBankBal]);
+            } else {
+                $insertBank = $pdo->prepare("INSERT INTO bank_bal (balance) VALUES (:bal)");
+                $insertBank->execute([':bal' => $newBankBal]);
+            }
+
+            $pdo->commit();
+            $saved = '<div class="mb-4 px-4 py-3 rounded text-green-700 bg-green-100">✅ Added to bank account successfully.</div>';
+        
+
+        }
+        
         // Process transaction (for all account types)
-        if (in_array($fromAccount, ["cb", "pa", "Bank"])) {
+        if (in_array($fromAccount, ["cb", "Bank"])) {
             // Insert into main bank table
             $bank_trans_type = "Contra";
             $insert = $pdo->prepare("INSERT INTO main_bank (amount, note, date, type) VALUES (:amount, :note, :date, :type)");
