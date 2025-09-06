@@ -64,7 +64,7 @@ if (isset($_POST['record'])) {
                         ':amount' => $amount,
                         ':note' => $note,
                         ':date' => $date,
-                        ':type' => "From Cash Account"
+                        ':type' => "Contra (Transfer to Bank Account)"
                     ]);
 
                     // Update or insert bank balance
@@ -84,7 +84,7 @@ if (isset($_POST['record'])) {
                 }
 
             } elseif ($fromAccount === "pa" || $fromAccount === "Bank") {
-                $type = ($fromAccount === "pa") ? "From Personal Account" : "From Bank Account";
+                $type = ($fromAccount === "pa") ? "From Personal Account" : "Balance balance";
 
                 // Insert into main bank
                 $insert = $pdo->prepare("INSERT INTO main_bank (amount, note, date, type) VALUES (:amount, :note, :date, :type)");
