@@ -169,12 +169,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 if($paymentMethod === "Cash") {
                    /// INSERT INTO CASH
-                    $stmt = $pdo->prepare("INSERT INTO cash (from_bk, amount, note, date)VALUES (:bank_account, :amount, :note, :date)");
-                    $stmt->bindParam(':bank_account', $clientName);
-                    $stmt->bindParam(':amount', $amount);
-                    $stmt->bindParam(':note', $description);
-                    $stmt->bindParam(':date', $paymentDate);
-                    $stmt->execute();
+                       $cashTy = "(Income) Money received from ".$clientName;
+                   
+                       $stmt = $pdo->prepare("INSERT INTO cash (from_bk, amount, note, date, type) VALUES (:bank_account, :amount, :note, :date, :type)");
+                       $stmt->bindParam(':bank_account', $clientName);
+                       $stmt->bindParam(':amount', $amount);
+                       $stmt->bindParam(':note', $description);
+                       $stmt->bindParam(':date', $paymentDate);
+                       $stmt->bindParam(':type', $cashTy);
+                       $stmt->execute();
 
 
                   
@@ -197,11 +200,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                  if($paymentMethod === "Bank") {
 
-                    /// INSERT INTO CASH
-                    $stmt = $pdo->prepare("INSERT INTO main_bank (amount, note, date)VALUES (:amount, :note, :date)");                
+                    /// INSERT INTO BANK
+                    $bankTy = "(Income) Money received from ".$clientName;
+                   
+                    $stmt = $pdo->prepare("INSERT INTO main_bank (amount, note, date, type) VALUES (:amount, :note, :date, :type)");              
                     $stmt->bindParam(':amount', $amount);
                     $stmt->bindParam(':note', $description);
                     $stmt->bindParam(':date', $paymentDate);
+                    $stmt->bindParam(':type', $bankTy);
                     $stmt->execute();
 
 
