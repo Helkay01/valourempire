@@ -53,7 +53,7 @@ if (isset($_POST['record'])) {
 
        
        if($bank_account === "pa" || $bank_account === "cih") {
-          $Ttype = ($bankAccount === "pa") ? "From Personal Account" : "Cash balance";
+          $Ttype = ($bank_account === "pa") ? "From Personal Account" : "Cash balance";
 
                 // Prepare and execute query
                  $stmt = $pdo->prepare("
