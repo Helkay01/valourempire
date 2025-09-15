@@ -10,42 +10,28 @@ if (!isset($_SESSION['user'])) {
 
 $user_id = $_SESSION['user']['user_id'];
 
-$query = "SELECT * FROM invoices WHERE job_status = :un ORDER BY issue_date DESC";
-
+// Fetch undelivered invoices
 try {
-    $status = "undelivered";
-    $stmt = $pdo->prepare($query);
-    $stmt->bindParam(':un', $status);
-    $stmt->execute();
-    $invoices = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (Exception $e) {
-    die("Failed to load invoices: " . $e->getMessage());
-}
-
-
-
-
-//undelivered
-$dlquery = "SELECT * FROM invoices WHERE job_status = :un ORDER BY issue_date DESC";
-
-try {
-    $dlstatus = "delivered";
-    $dlstmt = $pdo->prepare($dlquery);
-    $dlstmt->bindParam(':un', $dlstatus);
-    $dlstmt->execute();
-    $dlinvoices = $dlstmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (Exception $e) {
-    die("Failed to load invoices: " . $e->getMessage());
-}
-
-
+    $stmt = $pdo->prepare("SELECT * FROM invoices WHERE job_status = :status ORDER BY issue_date DESC");
     
+    $status = "undelivered";
+    $stmt->execute(['status' => $status]);
+    $invoices = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Fetch delivered invoices
+    $status = "delivered";
+    $stmt->execute(['status' => $status]);
+    $dlinvoices = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+} catch (Exception $e) {
+    die("Failed to load invoices: " . $e->getMessage());
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>All Invoices</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -72,7 +58,6 @@ try {
                         <th class="px-4 py-3 border text-right">Discount</th>
                         <th class="px-4 py-3 border text-right">Total</th>
                         <th class="px-4 py-3 border text-center">Action</th>
-                       
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
@@ -90,7 +75,6 @@ try {
                                     Mark as delivered
                                 </a>
                             </td>
-                            
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -98,18 +82,15 @@ try {
         </div>
     <?php endif; ?>
 
+    <br><br><br>
 
-<br>
-<br>
-<br>
-    
-<! --- DELIVERED JOBS -->
+    <!-- DELIVERED JOBS -->
 
-<h1 class="text-2xl font-bold mb-6 text-gray-800">Delivered jobs</h1>
+    <h1 class="text-2xl font-bold mb-6 text-gray-800">Delivered jobs</h1>
 
     <?php if (empty($dlinvoices)): ?>
-        <div class="text-gray-600">Delivered jobs..</div>
-   
+        <div class="text-gray-600">No delivered jobs..</div>
+    <?php else: ?>
         <div class="overflow-x-auto">
             <table class="min-w-full text-sm text-left border border-gray-300">
                 <thead class="bg-gray-200 text-gray-700 uppercase text-xs">
@@ -121,7 +102,6 @@ try {
                         <th class="px-4 py-3 border text-right">Discount</th>
                         <th class="px-4 py-3 border text-right">Total</th>
                         <th class="px-4 py-3 border text-center">Action</th>
-                       
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
@@ -139,7 +119,6 @@ try {
                                     Mark as undelivered
                                 </a>
                             </td>
-                            
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -147,12 +126,6 @@ try {
         </div>
     <?php endif; ?>
 
-   
-
-
-
-
-    
 </div>
 
 </body>
