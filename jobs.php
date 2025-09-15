@@ -79,7 +79,57 @@ try {
         </div>
     <?php endif; ?>
 
+
+
+
+<h1 class="text-2xl font-bold mb-6 text-gray-800">Delivered jobs</h1>
+
+    <?php if (!empty($invoices)): ?>
+        <div class="text-gray-600">Delivered jobs..</div>
    
+        <div class="overflow-x-auto">
+            <table class="min-w-full text-sm text-left border border-gray-300">
+                <thead class="bg-gray-200 text-gray-700 uppercase text-xs">
+                    <tr>
+                        <th class="px-4 py-3 border">Invoice ID</th>
+                        <th class="px-4 py-3 border">Bill To</th>
+                        <th class="px-4 py-3 border">Issue Date</th>
+                        <th class="px-4 py-3 border text-right">Subtotal</th>
+                        <th class="px-4 py-3 border text-right">Discount</th>
+                        <th class="px-4 py-3 border text-right">Total</th>
+                        <th class="px-4 py-3 border text-center">Action</th>
+                       
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    <?php foreach ($invoices as $invoice): ?>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-3 border"><?= htmlspecialchars($invoice['invoice_id']) ?></td>
+                            <td class="px-4 py-3 border"><?= htmlspecialchars($invoice['bill_to']) ?></td>
+                            <td class="px-4 py-3 border"><?= htmlspecialchars($invoice['issue_date']) ?></td>
+                            <td class="px-4 py-3 border text-right">₦<?= number_format($invoice['subtotal'], 2) ?></td>
+                            <td class="px-4 py-3 border text-right">₦<?= number_format($invoice['discount'], 2) ?></td>
+                            <td class="px-4 py-3 border text-right font-semibold">₦<?= number_format($invoice['total'], 2) ?></td>
+                            <td class="px-4 py-3 border text-center">
+                                <a href="mark.php?invoice_id=<?= urlencode($invoice['invoice_id']) ?>"
+                                   class="inline-block bg-red-600 text-white text-sm px-4 py-2 rounded hover:bg-blue-700">
+                                    Mark as delivered
+                                </a>
+                            </td>
+                            
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    <?php endif; ?>
+
+   
+
+
+
+
+    
 </div>
 
 </body>
