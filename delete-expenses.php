@@ -23,7 +23,7 @@ if(isset($_GET['id'])) {
     $id = $_GET['id'];
   
     $stmt = $pdo->prepare("DELETE FROM expenses WHERE id = ?");
-    if($stmt->execute([$invoiceId])) {
+    if($stmt->execute([$id])) {
         $success = '<div class="mb-4 px-4 py-3 rounded text-green-700 bg-green-100">Expenses deleted!</div>';
     }
     
