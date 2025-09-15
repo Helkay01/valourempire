@@ -56,12 +56,10 @@ $stmt->bindParam(':status', $status);
 $stmt->execute();
 $count = $stmt->rowCount();
 if($count > 0) {
-      $invAlert = '
-            <div class="m-6 bg-yellow-100 border border-yellow-400 text-yellow-800 px-4 py-3 rounded relative" role="alert">
+      $invAlert = '<div class="m-6 bg-yellow-100 border border-yellow-400 text-yellow-800 px-4 py-3 rounded relative" role="alert">
                 <strong class="font-bold">Info!</strong>
-                '.$invAlert.'
-            </div>
-      ';
+                There are '.$count.' unpaid invoice(s).
+            </div>';
   
 }
 
