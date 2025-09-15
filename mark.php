@@ -11,18 +11,37 @@ if (!isset($_SESSION['user'])) {
 $user_id = $_SESSION['user']['user_id'];
 $success = "";
 
-  
-if(isset($_GET['invoice_id'])) {
-    $id = $_GET['invoice_id'];
-    $status = "delivered";
-    $del = $pdo->prepare("UPDATE invoices SET job_status = :status WHERE invoice_id = :ivid");
-    $del->bindParam(':ivid', $id);
-    $del->bindParam(':status', $status);
-    
-    if($del->execute()) {
-        $success = '<div class="mb-4 px-4 py-3 rounded text-green-700 bg-green-100">Marked as delivered</div>';
-    }
-    
+
+
+
+
+if(isset($_GET['type'])) {
+
+   if(isset($_GET['type']) == "delivered" && isset($_GET['invoice_id'])) {
+      
+       $id = $_GET['invoice_id'];
+       $status = "delivered";
+       $del = $pdo->prepare("UPDATE invoices SET job_status = :status WHERE invoice_id = :ivid");
+       $del->bindParam(':ivid', $id);
+       $del->bindParam(':status', $status);
+       
+       if($del->execute()) {
+           $success = '<div class="mb-4 px-4 py-3 rounded text-green-700 bg-green-100">Marked as delivered</div>';
+       }
+   }
+
+   else if(isset($_GET['type']) == "undelivered" && isset($_GET['invoice_id'])) {
+       $id = $_GET['invoice_id'];
+       $status = "undelivered";
+       $del = $pdo->prepare("UPDATE invoices SET job_status = :status WHERE invoice_id = :ivid");
+       $del->bindParam(':ivid', $id);
+       $del->bindParam(':status', $status);
+       
+       if($del->execute()) {
+           $success = '<div class="mb-4 px-4 py-3 rounded text-green-700 bg-green-100">Marked as undelivered</div>';
+       }
+   }
+   
 }
 
 
