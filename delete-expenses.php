@@ -28,7 +28,7 @@ if(isset($_GET['id'])) {
 
     if(isset($_GET['pm']) && isset($_GET['amount'])) {
         $pm = $_GET['pm'];
-        $amount = $_GET['amount'];
+        $amount = (float)$_GET['amount'];
 
         if($pm == "cash" || $pm == "Cash") {
              $selCashBal = $pdo->prepare("SELECT * FROM cash_bal");
