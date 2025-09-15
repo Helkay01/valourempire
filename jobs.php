@@ -89,7 +89,7 @@ try {
     <h1 class="text-2xl font-bold mb-6 text-gray-800">Delivered jobs</h1>
 
     <?php if (empty($dlinvoices)): ?>
-        <div class="text-gray-600">No delivered jobs..</div>
+        <div class="text-gray-600">No undelivered jobs..</div>
     <?php else: ?>
         <div class="overflow-x-auto">
             <table class="min-w-full text-sm text-left border border-gray-300">
