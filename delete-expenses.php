@@ -23,8 +23,32 @@ if(isset($_GET['id'])) {
     $id = $_GET['id'];
   
     $stmt = $pdo->prepare("DELETE FROM expenses WHERE id = ?");
-    if($stmt->execute([$id])) {
-        $success = '<div class="mb-4 px-4 py-3 rounded text-green-700 bg-green-100">Expenses deleted!</div>';
+    $stmtexec = $stmt->execute([$id]);
+   
+
+    if(isset($_GET['pm']) && isset($_GET['amount'])) {
+        $pm = $_GET['pm'];
+        $amount = $_GET['amount'];
+
+        if($pm == "cash" || $pm == "Cash") {
+             $selCashBal = $pdo->prepare("SELECT * FROM cash_bal");
+             $selCashBal->execute();
+             $assoc = $selCashBal->fetch(PDO::FETCH_ASSOC);
+             $cash_bal = (float)$assoc['balance'] ?? 0;
+
+             $new_bal = $cash_bal + $amount;
+                       
+              $updCashBal = $pdo->prepare("UPDATE cash_bal SET balance = :bal");
+              $updCashBal->bindParam(':bal', $new_bal);
+              $updCashBalExec = $updCashBal->execute();
+
+
+            
+            if($stmtexec && $updCashBalExec) {
+                 $success = '<div class="mb-4 px-4 py-3 rounded text-green-700 bg-green-100">Expenses deleted!</div>';
+            }
+            
+        }
     }
     
   
