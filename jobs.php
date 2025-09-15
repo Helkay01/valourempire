@@ -134,7 +134,7 @@ try {
                             <td class="px-4 py-3 border text-right">₦<?= number_format($dlinvoice['discount'], 2) ?></td>
                             <td class="px-4 py-3 border text-right font-semibold">₦<?= number_format($dlinvoice['total'], 2) ?></td>
                             <td class="px-4 py-3 border text-center">
-                                <a href="mark.php?type=delivered&invoice_id=<?= urlencode($dlinvoice['invoice_id']) ?>"
+                                <a href="mark.php?type=undelivered&invoice_id=<?= urlencode($dlinvoice['invoice_id']) ?>"
                                    class="inline-block bg-green-600 text-white text-sm px-4 py-2 rounded hover:bg-blue-700">
                                     Mark as undelivered
                                 </a>
