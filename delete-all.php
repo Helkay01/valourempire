@@ -24,15 +24,22 @@ $arr = ["bank", "bank_bal", "cash", "cash_bal", "expenses", "invoice_items", "in
 $allSuccessful = true;
 
 foreach($arr as $key) {
-    // Properly prepare the DELETE query
-    $stmt = $pdo->prepare("DELETE FROM `$key`"); // backticks to prevent SQL issues with table names
-    $stexec = $stmt->execute();
+    // Directly include table name (safe since it's hardcoded)
+    $sql = "DELETE FROM $key";
+    try {
+        $stmt = $pdo->prepare($sql);
+        $stexec = $stmt->execute();
 
-    if (!$stexec) {
+        if (!$stexec) {
+            $allSuccessful = false;
+            break;
+        }
+    } catch (PDOException $e) {
         $allSuccessful = false;
-        break; // optional: stop on first failure
+        break;
     }
 }
+
 
 // Show success message once, if all succeeded
 if ($allSuccessful) {
