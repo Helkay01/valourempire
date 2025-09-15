@@ -222,14 +222,16 @@ $exp = array_sum(array_column($ExpDetails, 'amount'));
 
 
       <!-- Wipe All data -->
-      <div onclick="
-        let del = window.confirm('You are about to delete all financial data. Click OK to confirm');
-        if(del) {
-          window.location.href = 'https://valourempire.onrender.com/delete-all.php';
-        }
-        " class="m-6 bg-yellow-100 border border-yellow-400 text-yellow-800 px-4 py-3 rounded relative" role="alert">
+      <div class="m-6 bg-yellow-100 border border-yellow-400 text-yellow-800 px-4 py-3 rounded relative" role="alert">
         <strong class="font-bold">Wipe Data! </strong>
-        Delete all data
+        <p onclick="
+            let del = window.confirm('You are about to delete all financial data. Click OK to confirm');
+            if(del) {
+              window.location.href = 'https://valourempire.onrender.com/delete-all.php';
+            }
+            "
+          
+          style="color: blue; font-weight: bold">Delete all data</p>
       </div>
 
 
