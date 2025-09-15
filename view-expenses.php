@@ -102,7 +102,7 @@ window.onload = function() {
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
             <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Amount (₦)</th>
            
-             <!---    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th> -->
+            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-gray-200 bg-white">
@@ -130,13 +130,13 @@ window.onload = function() {
                 </td>
 
                  
-         <!--
+         
                 <td class="px-6 py-4 whitespace-nowrap text-center">
-                  <a href="edit-expenses.php?id=<?= $expense['id'] ?>&cat=<?= $expense['category'] ?>&des=<?= $expense['des'] ?>&amount=<?= number_format($expense['amount'], 2) ?>&pm=<?= $expense['payment_method'] ?>" class="inline-flex items-center px-3 py-1.5 border border-blue-600 text-blue-600 rounded hover:bg-blue-50">
-                    Edit
+                  <a href="delete-expenses.php?id=<?= $expense['id'] ?>&cat=<?= $expense['category'] ?>&des=<?= $expense['des'] ?>&amount=<?= number_format($expense['amount'], 2) ?>&pm=<?= $expense['payment_method'] ?>" class="inline-flex items-center px-3 py-1.5 border border-red-600 text-blue-600 rounded hover:bg-blue-50">
+                    Delete expenses
                   </a>
                 </td>
-         -->
+         
 
                  
               </tr>
