@@ -56,7 +56,13 @@ $stmt->bindParam(':status', $status);
 $stmt->execute();
 $count = $stmt->rowCount();
 if($count > 0) {
-      $invAlert = '<span class="block sm:inline">There are '.$count.' unpaid invoices. <a style="color: blue" href="outstanding-invoices.php">Write receipt</a></span>';
+      $invAlert = '
+            <div class="m-6 bg-yellow-100 border border-yellow-400 text-yellow-800 px-4 py-3 rounded relative" role="alert">
+                <strong class="font-bold">Info!</strong>
+                '.$invAlert.' ?>
+            </div>
+      ';
+  
 }
 
 /// JOBS
@@ -215,10 +221,9 @@ $exp = array_sum(array_column($ExpDetails, 'amount'));
       </header>
 
       <!-- Alert -->
-      <div class="m-6 bg-yellow-100 border border-yellow-400 text-yellow-800 px-4 py-3 rounded relative" role="alert">
-        <strong class="font-bold">Info!</strong>
+      
         <?php echo $invAlert; ?>
-      </div>
+  
 
 
       <!-- Wipe All data -->
