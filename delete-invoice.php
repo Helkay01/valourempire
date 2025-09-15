@@ -20,7 +20,7 @@ $biz_name = $assoc['biz_name'];
 
 
 if(isset($_GET['invoice_id'])) {
-    $invoiceId = $_GET['invoice_id']);
+    $invoiceId = $_GET['invoice_id'];
   
     $stmt = $pdo->prepare("DELETE FROM invoices WHERE invoice_id = ?");
     if($stmt->execute([$invoiceId])) {
