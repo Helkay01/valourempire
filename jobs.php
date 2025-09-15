@@ -21,6 +21,25 @@ try {
 } catch (Exception $e) {
     die("Failed to load invoices: " . $e->getMessage());
 }
+
+
+
+
+//undelivered
+$dlquery = "SELECT * FROM invoices WHERE job_status = :un ORDER BY issue_date DESC";
+
+try {
+    $dlstatus = "delivered";
+    $dlstmt = $pdo->prepare($dlquery);
+    $dlstmt->bindParam(':un', $dlstatus);
+    $dlstmt->execute();
+    $dlinvoices = $dlstmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (Exception $e) {
+    die("Failed to load invoices: " . $e->getMessage());
+}
+
+
+    
 ?>
 
 <!DOCTYPE html>
@@ -66,7 +85,7 @@ try {
                             <td class="px-4 py-3 border text-right">₦<?= number_format($invoice['discount'], 2) ?></td>
                             <td class="px-4 py-3 border text-right font-semibold">₦<?= number_format($invoice['total'], 2) ?></td>
                             <td class="px-4 py-3 border text-center">
-                                <a href="mark.php?invoice_id=<?= urlencode($invoice['invoice_id']) ?>"
+                                <a href="mark.php?type=delivered&invoice_id=<?= urlencode($invoice['invoice_id']) ?>"
                                    class="inline-block bg-red-600 text-white text-sm px-4 py-2 rounded hover:bg-blue-700">
                                     Mark as delivered
                                 </a>
@@ -80,11 +99,15 @@ try {
     <?php endif; ?>
 
 
-
+<br>
+<br>
+<br>
+    
+<! --- DELIVERED JOBS -->
 
 <h1 class="text-2xl font-bold mb-6 text-gray-800">Delivered jobs</h1>
 
-    <?php if (!empty($invoices)): ?>
+    <?php if (empty($dlinvoices)): ?>
         <div class="text-gray-600">Delivered jobs..</div>
    
         <div class="overflow-x-auto">
@@ -102,18 +125,18 @@ try {
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
-                    <?php foreach ($invoices as $invoice): ?>
+                    <?php foreach ($dlinvoices as $dlinvoice): ?>
                         <tr class="hover:bg-gray-50">
-                            <td class="px-4 py-3 border"><?= htmlspecialchars($invoice['invoice_id']) ?></td>
-                            <td class="px-4 py-3 border"><?= htmlspecialchars($invoice['bill_to']) ?></td>
-                            <td class="px-4 py-3 border"><?= htmlspecialchars($invoice['issue_date']) ?></td>
-                            <td class="px-4 py-3 border text-right">₦<?= number_format($invoice['subtotal'], 2) ?></td>
-                            <td class="px-4 py-3 border text-right">₦<?= number_format($invoice['discount'], 2) ?></td>
-                            <td class="px-4 py-3 border text-right font-semibold">₦<?= number_format($invoice['total'], 2) ?></td>
+                            <td class="px-4 py-3 border"><?= htmlspecialchars($dlinvoice['invoice_id']) ?></td>
+                            <td class="px-4 py-3 border"><?= htmlspecialchars($dlinvoice['bill_to']) ?></td>
+                            <td class="px-4 py-3 border"><?= htmlspecialchars($dlinvoice['issue_date']) ?></td>
+                            <td class="px-4 py-3 border text-right">₦<?= number_format($dlinvoice['subtotal'], 2) ?></td>
+                            <td class="px-4 py-3 border text-right">₦<?= number_format($dlinvoice['discount'], 2) ?></td>
+                            <td class="px-4 py-3 border text-right font-semibold">₦<?= number_format($dlinvoice['total'], 2) ?></td>
                             <td class="px-4 py-3 border text-center">
-                                <a href="mark.php?invoice_id=<?= urlencode($invoice['invoice_id']) ?>"
-                                   class="inline-block bg-red-600 text-white text-sm px-4 py-2 rounded hover:bg-blue-700">
-                                    Mark as delivered
+                                <a href="mark.php?type=delivered&invoice_id=<?= urlencode($dlinvoice['invoice_id']) ?>"
+                                   class="inline-block bg-green-600 text-white text-sm px-4 py-2 rounded hover:bg-blue-700">
+                                    Mark as undelivered
                                 </a>
                             </td>
                             
