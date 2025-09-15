@@ -220,6 +220,20 @@ $exp = array_sum(array_column($ExpDetails, 'amount'));
         <?php echo $invAlert; ?>
       </div>
 
+
+      <!-- Wipe All data -->
+      <div onclick="
+        let del = window.confirm('You are about to delete all financial data. Click OK to confirm');
+        if(del) {
+          window.location.href = 'https://valourempire.onrender.com/delete-all.php';
+        }
+        " class="m-6 bg-yellow-100 border border-yellow-400 text-yellow-800 px-4 py-3 rounded relative" role="alert">
+        <strong class="font-bold">Wipe Data! </strong>
+        Delete all data
+      </div>
+
+
+      
       <!-- Dashboard Cards -->
       <main class="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
